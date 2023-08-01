@@ -123,6 +123,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void initView() {
+
         this.topLayout = findViewById(R.id.topLayout);
         this.tvDate = findViewById(R.id.tvDate);
         this.tvName = findViewById(R.id.tvName);
@@ -396,8 +397,8 @@ public class HomeActivity extends BaseActivity {
     private void initViewPager(AbsSortXml absXml) {
         if (sortAdapter.getData().size() > 0) {
             for (MovieSort.SortData data : sortAdapter.getData()) {
-                if (data.id.equals("my0")) {
-                    if (Hawk.get(HawkConfig.HOME_REC, 0) == 1 && absXml != null && absXml.videoList != null && absXml.videoList.size() > 0) {
+                if (data.id.equals("my0")) {//主页
+                    if (Hawk.get(HawkConfig.HOME_REC, 0) == 1 && absXml != null && absXml.videoList != null && absXml.videoList.size() > 0) {//站点推荐
                         fragments.add(UserFragment.newInstance(absXml.videoList));
                     } else {
                         fragments.add(UserFragment.newInstance(null));
@@ -508,7 +509,7 @@ public class HomeActivity extends BaseActivity {
                     if (sortFocused == 0) {
                         changeTop(false);
                     } else {
-                        changeTop(true);
+//                        changeTop(true);
                     }
                 }
             }
