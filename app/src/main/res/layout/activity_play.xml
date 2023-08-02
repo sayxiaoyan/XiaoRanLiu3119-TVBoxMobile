@@ -13,8 +13,8 @@
 
     <ProgressBar
         android:id="@+id/play_loading"
-        android:layout_width="@dimen/vs_50"
-        android:layout_height="@dimen/vs_50"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_50"
         android:layout_gravity="center"
         android:indeterminateBehavior="repeat"
         android:indeterminateDrawable="@drawable/anim_loading"
@@ -22,8 +22,8 @@
 
     <ImageView
         android:id="@+id/play_load_error"
-        android:layout_width="@dimen/vs_50"
-        android:layout_height="@dimen/vs_50"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_50"
         android:layout_gravity="center"
         android:alpha="0.75"
         android:focusable="false"
@@ -37,8 +37,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/vs_50"
+        android:layout_marginTop="@dimen/dp_50"
         android:text="1111111111111"
         android:textColor="@color/color_CCFFFFFF"
-        android:textSize="@dimen/ts_24" />
+         />
 </FrameLayout>

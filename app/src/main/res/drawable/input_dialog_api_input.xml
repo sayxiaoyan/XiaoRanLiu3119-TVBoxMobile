@@ -4,9 +4,9 @@
 
     <item android:state_focused="true">
         <layer-list>
-            <item android:bottom="@dimen/vs_5" android:left="@dimen/vs_20_" android:right="@dimen/vs_20_" android:top="@dimen/vs_20_">
+            <item android:bottom="@dimen/dp_5" android:left="@dimen/dp_20_" android:right="@dimen/dp_20_" android:top="@dimen/dp_20_">
                 <shape android:shape="rectangle">
-                    <stroke android:width="@dimen/vs_2" android:color="@color/color_CC000000" />
+                    <stroke android:width="@dimen/dp_2" android:color="@color/color_CC000000" />
                     <solid android:color="@android:color/transparent" />
                 </shape>
             </item>
@@ -14,9 +14,9 @@
     </item>
     <item android:state_focused="false">
         <layer-list>
-            <item android:bottom="@dimen/vs_5" android:left="@dimen/vs_20_" android:right="@dimen/vs_20_" android:top="@dimen/vs_20_">
+            <item android:bottom="@dimen/dp_5" android:left="@dimen/dp_20_" android:right="@dimen/dp_20_" android:top="@dimen/dp_20_">
                 <shape android:shape="rectangle">
-                    <stroke android:width="@dimen/vs_1" android:color="@color/color_6C3D3D3D" />
+                    <stroke android:width="@dimen/dp_1" android:color="@color/color_6C3D3D3D" />
                     <solid android:color="@android:color/transparent" />
                 </shape>
             </item>

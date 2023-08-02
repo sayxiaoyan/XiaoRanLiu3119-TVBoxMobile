@@ -23,7 +23,7 @@
             android:padding="5dp"
             android:text="16:9"
             android:textAlignment="center"
-            android:textColor="@android:color/white"
+
             android:textSize="14sp" />
 
         <TextView
@@ -37,7 +37,7 @@
             android:padding="5dp"
             android:text="x1"
             android:textAlignment="center"
-            android:textColor="@android:color/white"
+
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -61,7 +61,7 @@
             android:id="@+id/curr_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+
             android:textSize="@dimen/dkplayer_controller_time_text_size"
             tools:text="00:00" />
 
@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="@dimen/dkplayer_controller_icon_padding"
-            android:textColor="@android:color/white"
+
             android:textSize="@dimen/dkplayer_controller_time_text_size"
             tools:text="00:00" />
 
@@ -100,7 +100,7 @@
             android:layout_marginRight="@dimen/dkplayer_controller_icon_padding"
             android:background="@android:color/transparent"
             android:text="上一集"
-            android:textColor="@android:color/white"
+
             android:textSize="@dimen/dkplayer_controller_time_text_size" />
 
         <TextView
@@ -111,7 +111,7 @@
             android:layout_marginRight="@dimen/dkplayer_controller_icon_padding"
             android:background="@android:color/transparent"
             android:text="下一集"
-            android:textColor="@android:color/white"
+
             android:textSize="@dimen/dkplayer_controller_time_text_size" />
 
 
@@ -144,7 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:text="http://"
-            android:textColor="@android:color/white"
+
             android:textSize="24mm" />
 
         <TextView
@@ -153,7 +153,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:text="按上下键可以换集"
-            android:textColor="@android:color/white"
+
             android:textSize="24mm" />
     </FrameLayout>
 
@@ -186,7 +186,7 @@
             android:layout_marginTop="20mm"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:textColor="@android:color/white"
+
             android:textSize="30mm"
             tools:text="100" />
     </LinearLayout>
@@ -220,7 +220,7 @@
             android:layout_marginTop="20mm"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:textColor="@android:color/white"
+
             android:textSize="30mm"
             tools:text="100" />
 
@@ -252,7 +252,7 @@
             android:paddingRight="5mm"
             android:singleLine="true"
             android:text="下一集"
-            android:textColor="@android:color/white"
+
             android:textSize="22mm" />
 
         <TextView
@@ -270,7 +270,7 @@
             android:paddingRight="5mm"
             android:singleLine="true"
             android:text="上一集"
-            android:textColor="@android:color/white"
+
             android:textSize="22mm" />
 
 
@@ -289,7 +289,7 @@
             android:paddingRight="5mm"
             android:singleLine="true"
             android:text="x1"
-            android:textColor="@android:color/white"
+
             android:textSize="22mm" />
 
         <TextView
@@ -307,7 +307,7 @@
             android:paddingRight="5mm"
             android:singleLine="true"
             android:text="16:9"
-            android:textColor="@android:color/white"
+
             android:textSize="22mm" />
 
     </LinearLayout>

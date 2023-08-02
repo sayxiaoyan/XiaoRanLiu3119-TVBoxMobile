@@ -3,19 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_margin="@dimen/vs_5"
+    android:layout_margin="@dimen/dp_5"
     android:background="@drawable/shape_source_series_focus"
     android:focusable="true">
 
     <TextView
         android:id="@+id/tvSeries"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/vs_50"
+        android:layout_height="@dimen/dp_50"
         android:ellipsize="marquee"
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
-        android:padding="@dimen/vs_10"
+        android:padding="@dimen/dp_10"
         android:singleLine="true"
-        android:textColor="@android:color/white"
+
         android:textSize="@dimen/ts_20" />
 </LinearLayout>

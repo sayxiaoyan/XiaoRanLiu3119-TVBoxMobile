@@ -162,7 +162,7 @@ public class GridFragment extends BaseLazyFragment {
         if(isFolederMode()){
             mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 1, false));
         }else{
-            mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, isBaseOnWidth() ? 5 : 6));
+            mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
         }
 
         gridAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {

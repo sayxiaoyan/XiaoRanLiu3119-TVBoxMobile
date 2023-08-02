@@ -19,7 +19,7 @@
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
-        android:textColor="@android:color/white"
+
         android:textSize="22mm" />
 
     <TextView
@@ -31,6 +31,6 @@
         android:gravity="left"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
-        android:textColor="@android:color/white"
+
         android:textSize="22mm" />
 </LinearLayout>

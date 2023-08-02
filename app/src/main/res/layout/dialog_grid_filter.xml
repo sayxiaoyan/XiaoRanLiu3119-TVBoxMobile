@@ -11,7 +11,7 @@
         android:layout_gravity="bottom"
         android:background="@drawable/shape_dialog_filter_bg"
         android:orientation="vertical"
-        android:padding="@dimen/vs_20">
+        android:padding="@dimen/dp_20">
 
     </LinearLayout>
 </FrameLayout>

@@ -164,39 +164,6 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 dialog.show();
             }
         });
-        findViewById(R.id.llWp).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FastClickCheckUtil.check(v);
-                if (!ApiConfig.get().wallpaper.isEmpty())
-                    OkGo.<File>get(ApiConfig.get().wallpaper).execute(new FileCallback(requireActivity().getFilesDir().getAbsolutePath(), "wp") {
-                        @Override
-                        public void onSuccess(Response<File> response) {
-                            ((BaseActivity) requireActivity()).changeWallpaper(true);
-                        }
-
-                        @Override
-                        public void onError(Response<File> response) {
-                            super.onError(response);
-                        }
-
-                        @Override
-                        public void downloadProgress(Progress progress) {
-                            super.downloadProgress(progress);
-                        }
-                    });
-            }
-        });
-        findViewById(R.id.llWpRecovery).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FastClickCheckUtil.check(v);
-                File wp = new File(requireActivity().getFilesDir().getAbsolutePath() + "/wp");
-                if (wp.exists())
-                    wp.delete();
-                ((BaseActivity) requireActivity()).changeWallpaper(true);
-            }
-        });
         findViewById(R.id.llHomeApi).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,7 +257,6 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        ((BaseActivity) mActivity).hideSysBar();
                         EventBus.getDefault().unregister(dialog);
                     }
                 });

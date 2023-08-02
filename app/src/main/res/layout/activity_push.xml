@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/ivQRCode"
-            android:layout_width="@dimen/vs_300"
-            android:layout_height="@dimen/vs_300"
+            android:layout_width="@dimen/dp_300"
+            android:layout_height="@dimen/dp_300"
             android:layout_gravity="center" />
 
         <TextView
@@ -22,12 +22,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/vs_20"
+            android:layout_marginTop="@dimen/dp_20"
             android:gravity="center"
             android:lineSpacingMultiplier="1.5"
             android:textAlignment="gravity"
             android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/ts_24"
+
             tools:text="1111111111111111111111111111111111111111111111111111" />
 
         <TextView
@@ -35,13 +35,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/vs_20"
+            android:layout_marginTop="@dimen/dp_20"
             android:background="@drawable/shape_user_focus"
             android:focusable="true"
             android:gravity="center"
-            android:padding="@dimen/vs_10"
+            android:padding="@dimen/dp_10"
             android:text="推送剪贴板内容"
             android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/ts_24" />
+             />
     </LinearLayout>
 </FrameLayout>

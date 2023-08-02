@@ -60,7 +60,7 @@ public class HistoryActivity extends BaseActivity {
         tvDelTip = findViewById(R.id.tvDelTip);
         mGridView = findViewById(R.id.mGridView);
         mGridView.setHasFixedSize(true);
-        mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, isBaseOnWidth() ? 5 : 6));
+        mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
         historyAdapter = new HistoryAdapter();
         mGridView.setAdapter(historyAdapter);
         tvDel.setOnClickListener(new View.OnClickListener() {

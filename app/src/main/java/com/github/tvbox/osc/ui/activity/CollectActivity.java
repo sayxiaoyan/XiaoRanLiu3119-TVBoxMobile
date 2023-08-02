@@ -56,7 +56,7 @@ public class CollectActivity extends BaseActivity {
         tvDelTip = findViewById(R.id.tvDelTip);
         mGridView = findViewById(R.id.mGridView);
         mGridView.setHasFixedSize(true);
-        mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, isBaseOnWidth() ? 5 : 6));
+        mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
         collectAdapter = new CollectAdapter();
         mGridView.setAdapter(collectAdapter);
         tvDel.setOnClickListener(new View.OnClickListener() {

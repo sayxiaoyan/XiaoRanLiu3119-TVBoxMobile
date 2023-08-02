@@ -33,6 +33,6 @@
         android:paddingLeft="5mm"
         android:paddingRight="5mm"
         android:singleLine="true"
-        android:textColor="@android:color/white"
+
         android:textSize="22mm" />
 </FrameLayout>

@@ -12,9 +12,9 @@
             android:tag="tv_top_container"
             android:visibility="gone"
             tools:visibility="visible"
-            android:layout_marginStart="@dimen/vs_20"
-            android:layout_marginLeft="@dimen/vs_20"
-            android:layout_marginTop="@dimen/vs_10"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
             android:orientation="vertical">
 
             <TextView
@@ -25,10 +25,10 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:width="680dp"
-                android:paddingTop="@dimen/vs_20"
-                android:paddingLeft="@dimen/vs_20"
+                android:paddingTop="@dimen/dp_20"
+                android:paddingLeft="@dimen/dp_20"
                 android:text="http://"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <TextView
@@ -38,10 +38,10 @@
                 android:layout_gravity="left"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:paddingLeft="@dimen/vs_20"
+                android:paddingLeft="@dimen/dp_20"
                 android:tag="vod_video_size"
                 android:text="[ 1024 x 768 ]"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
     </LinearLayout>
@@ -54,8 +54,8 @@
         android:visibility="gone"
         tools:visibility="visible"
         android:layout_gravity="right"
-        android:layout_marginRight="@dimen/vs_20"
-        android:layout_marginTop="@dimen/vs_10"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
         android:orientation="vertical">
 
         <TextView
@@ -65,11 +65,11 @@
             android:layout_gravity="right"
             android:ellipsize="end"
             android:maxLines="1"
-            android:paddingTop="@dimen/vs_20"
-            android:paddingRight="@dimen/vs_20"
+            android:paddingTop="@dimen/dp_20"
+            android:paddingRight="@dimen/dp_20"
             android:tag="vod_control_pause_time"
             android:text="00:00:00"
-            android:textColor="@android:color/white"
+
             android:textSize="@dimen/ts_20" />
 
         <TextView
@@ -79,10 +79,10 @@
             android:layout_gravity="right"
             android:ellipsize="end"
             android:maxLines="1"
-            android:paddingRight="@dimen/vs_20"
+            android:paddingRight="@dimen/dp_20"
             android:tag="vod_control_pause_time"
             android:text="0Kb/s"
-            android:textColor="@android:color/white"
+
             android:textSize="@dimen/ts_20" />
     </LinearLayout>
 
@@ -92,10 +92,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:gravity="center"
-        android:paddingLeft="@dimen/vs_20"
-        android:paddingTop="@dimen/vs_15"
-        android:paddingRight="@dimen/vs_20"
-        android:paddingBottom="@dimen/vs_15"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_15"
         android:text=""
         android:textColor="#ffffff"
         android:textSize="16sp"
@@ -109,26 +109,26 @@
         android:background="@drawable/shape_dialog_filter_bg"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/vs_20"
-        android:paddingTop="@dimen/vs_20"
-        android:paddingRight="@dimen/vs_20"
-        android:paddingBottom="@dimen/vs_10"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_10"
         android:visibility="gone"
         tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_10"
+            android:layout_marginBottom="@dimen/dp_10"
             android:orientation="horizontal">
 
             <TextView
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
-                android:paddingRight="@dimen/vs_10"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_10"
                 android:text="播放"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/ts_20" />
@@ -138,13 +138,13 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:text="下一集"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <TextView
@@ -152,13 +152,13 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:text="上一集"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <TextView
@@ -166,13 +166,13 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:text="重播"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <TextView
@@ -180,13 +180,13 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:text="刷新"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <TextView
@@ -194,13 +194,13 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:text="16:9"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <TextView
@@ -208,13 +208,13 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:text="x1.0"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <TextView
@@ -222,13 +222,13 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:text="系统播放器"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <TextView
@@ -236,13 +236,13 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:text="硬解码"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <TextView
@@ -250,9 +250,9 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
-                android:padding="@dimen/vs_10"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
+                android:padding="@dimen/dp_10"
                 android:text="片头片尾"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/ts_20" />
@@ -262,13 +262,13 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:text="01:00"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <TextView
@@ -276,13 +276,13 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:text="01:00"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <!--添加片头片尾重置按钮-->
@@ -291,13 +291,13 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:text="重置"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <TextView
@@ -305,41 +305,41 @@
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:text="字幕"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
 
             <TextView
                 android:id="@+id/audio_track_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:visibility="gone"
                 android:text="音轨"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20"/>
 
             <TextView
                 android:id="@+id/landscape_portrait"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
                 android:background="@drawable/button_dialog_main"
                 android:focusable="true"
-                android:padding="@dimen/vs_10"
+                android:padding="@dimen/dp_10"
                 android:visibility="gone"
                 android:text="横竖屏"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20"/>
 
         </LinearLayout>
@@ -349,7 +349,7 @@
             android:id="@+id/parse_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_10"
+            android:layout_marginBottom="@dimen/dp_10"
             android:orientation="horizontal"
             android:visibility="gone"
             tools:visibility="visible">
@@ -358,9 +358,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/vs_5"
-                android:layout_marginRight="@dimen/vs_5"
-                android:paddingRight="@dimen/vs_10"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_10"
                 android:text="解析"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/ts_20" />
@@ -371,24 +371,24 @@
                 android:layout_height="wrap_content"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                app:tv_horizontalSpacingWithMargins="@dimen/vs_5"
+                app:tv_horizontalSpacingWithMargins="@dimen/dp_5"
                 app:tv_selectedItemIsCentered="true"
-                app:tv_verticalSpacingWithMargins="@dimen/vs_5" />
+                app:tv_verticalSpacingWithMargins="@dimen/dp_5" />
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_10"
+            android:layout_marginBottom="@dimen/dp_10"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/curr_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingEnd="@dimen/vs_10"
-                android:paddingRight="@dimen/vs_10"
+                android:paddingEnd="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
                 android:text="00:00"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/ts_20" />
@@ -403,21 +403,21 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:max="1000"
-                android:maxHeight="@dimen/vs_6"
-                android:minHeight="@dimen/vs_6"
-                android:padding="@dimen/vs_0"
-                android:paddingStart="@dimen/vs_0"
-                android:paddingEnd="@dimen/vs_0"
+                android:maxHeight="@dimen/dp_6"
+                android:minHeight="@dimen/dp_6"
+                android:padding="@dimen/dp_0"
+                android:paddingStart="@dimen/dp_0"
+                android:paddingEnd="@dimen/dp_0"
                 android:progressDrawable="@drawable/shape_player_control_vod_seek"
                 android:thumb="@drawable/shape_player_control_vod_seek_thumb"
-                android:thumbOffset="@dimen/vs_0" />
+                android:thumbOffset="@dimen/dp_0" />
 
             <TextView
                 android:id="@+id/total_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/vs_10"
-                android:paddingLeft="@dimen/vs_10"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_10"
                 android:text="00:00"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/ts_20" />
@@ -438,9 +438,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_marginStart="@dimen/vs_20"
-            android:layout_marginLeft="@dimen/vs_20"
-            android:layout_marginTop="@dimen/vs_10"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
             android:orientation="vertical">
 
             <TextView
@@ -450,16 +450,16 @@
                 android:layout_gravity="left"
                 android:maxLines="3"
                 android:ellipsize="end"
-                android:paddingTop="@dimen/vs_20"
-                android:paddingLeft="@dimen/vs_20"
+                android:paddingTop="@dimen/dp_20"
+                android:paddingLeft="@dimen/dp_20"
                 android:text="http://"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_20" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="@dimen/vs_280"
-            android:layout_height="@dimen/vs_200"
+            android:layout_width="@dimen/dp_280"
+            android:layout_height="@dimen/dp_200"
             android:layout_gravity="center"
             android:background="@drawable/shape_user_focus"
             android:focusable="false"
@@ -468,8 +468,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="@dimen/vs_60"
-                android:layout_height="@dimen/vs_60"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_60"
                 android:layout_gravity="center"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
@@ -480,11 +480,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/vs_20"
+                android:layout_marginTop="@dimen/dp_20"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:tag="vod_control_pause_t"
-                android:textColor="@android:color/white"
+
                 android:textSize="@dimen/ts_30"
                 tools:text="100" />
         </LinearLayout>
@@ -493,8 +493,8 @@
 
     <TextView
         android:id="@+id/tv_slide_progress_text"
-        android:layout_width="@dimen/vs_200"
-        android:layout_height="@dimen/vs_100"
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="@dimen/dp_100"
         android:layout_gravity="center"
         android:background="@drawable/shape_user_focus"
         android:focusable="false"
@@ -502,15 +502,15 @@
         android:gravity="center"
         android:tag="vod_control_slide_info"
         android:textAlignment="gravity"
-        android:textColor="@android:color/white"
+
         android:textSize="@dimen/ts_30"
         android:visibility="gone"
         tools:text="100" />
 
     <LinearLayout
         android:id="@+id/tv_progress_container"
-        android:layout_width="@dimen/vs_280"
-        android:layout_height="@dimen/vs_200"
+        android:layout_width="@dimen/dp_280"
+        android:layout_height="@dimen/dp_200"
         android:layout_gravity="center"
         android:background="@drawable/shape_user_focus"
         android:focusable="false"
@@ -522,8 +522,8 @@
 
         <ImageView
             android:id="@+id/tv_progress_icon"
-            android:layout_width="@dimen/vs_60"
-            android:layout_height="@dimen/vs_60"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
             android:focusable="false"
             android:focusableInTouchMode="false"
             tools:src="@drawable/icon_back" />
@@ -533,18 +533,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/vs_20"
+            android:layout_marginTop="@dimen/dp_20"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:textColor="@android:color/white"
+
             android:textSize="@dimen/ts_30"
             tools:text="100" />
 
     </LinearLayout>
 
     <ProgressBar
-        android:layout_width="@dimen/vs_50"
-        android:layout_height="@dimen/vs_50"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_50"
         android:layout_gravity="center"
         android:indeterminateBehavior="repeat"
         android:indeterminateDrawable="@drawable/anim_loading"
@@ -557,7 +557,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/vs_40"
+        android:layout_marginTop="@dimen/dp_40"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:tag="play_load_net_speed"

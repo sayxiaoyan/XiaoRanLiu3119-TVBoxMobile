@@ -129,10 +129,10 @@ public class HomeActivity extends BaseActivity {
                             textView.getPaint().setFakeBoldText(false);
                             if (sortFocused == p) {
                                 view.animate().scaleX(1.1f).scaleY(1.1f).setInterpolator(new BounceInterpolator()).setDuration(300).start();
-                                textView.setTextColor(HomeActivity.this.getResources().getColor(R.color.color_FFFFFF));
+                                textView.setTextColor(HomeActivity.this.getResources().getColor(R.color.text_gray));
                             } else {
                                 view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).start();
-                                textView.setTextColor(HomeActivity.this.getResources().getColor(R.color.color_BBFFFFFF));
+                                textView.setTextColor(HomeActivity.this.getResources().getColor(R.color.text_gray));
                                 view.findViewById(R.id.tvFilter).setVisibility(View.GONE);
                                 view.findViewById(R.id.tvFilterColor).setVisibility(View.GONE);
                             }
@@ -382,13 +382,13 @@ public class HomeActivity extends BaseActivity {
     private void initViewPager(AbsSortXml absXml) {
         if (sortAdapter.getData().size() > 0) {
             for (MovieSort.SortData data : sortAdapter.getData()) {
-                if (data.id.equals("my0")) {//tab是主页,添加用户fragment 根据设置项显示豆瓣热门/站点推荐(每个源不一样)/历史记录
+                if (data.id.equals("my0")) {//tab是主页,添加主页fragment 根据设置项显示豆瓣热门/站点推荐(每个源不一样)/历史记录
                     if (Hawk.get(HawkConfig.HOME_REC, 0) == 1 && absXml != null && absXml.videoList != null && absXml.videoList.size() > 0) {//站点推荐
                         fragments.add(UserFragment.newInstance(absXml.videoList));
-                    } else {
+                    } else {//豆瓣热门/历史记录
                         fragments.add(UserFragment.newInstance(null));
                     }
-                } else {
+                } else {//来自源的分类
                     fragments.add(GridFragment.newInstance(data));
                 }
             }

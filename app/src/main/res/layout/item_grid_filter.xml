@@ -6,19 +6,19 @@
     android:layout_height="wrap_content"
     android:focusable="false"
     android:orientation="horizontal"
-    android:padding="@dimen/vs_1">
+    android:padding="@dimen/dp_1">
 
     <TextView
         android:id="@+id/filterName"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginEnd="@dimen/vs_10"
-        android:layout_marginRight="@dimen/vs_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
         android:gravity="center"
         android:textAlignment="gravity"
         android:textColor="@color/color_FFFFFF"
-        android:textSize="@dimen/ts_24"
+
         tools:text="11111111111" />
 
     <com.owen.tvrecyclerview.widget.TvRecyclerView
@@ -27,8 +27,8 @@
         android:layout_height="wrap_content"
         android:clipChildren="false"
         android:clipToPadding="false"
-        app:tv_horizontalSpacingWithMargins="@dimen/vs_5"
+        app:tv_horizontalSpacingWithMargins="@dimen/dp_5"
         app:tv_selectedItemIsCentered="true"
-        app:tv_verticalSpacingWithMargins="@dimen/vs_5" />
+        app:tv_verticalSpacingWithMargins="@dimen/dp_5" />
 
 </LinearLayout>
