@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -95,7 +96,6 @@ public class DetailActivity extends BaseActivity {
     private TextView tvDes;
     private TextView tvPlay;
     private TextView tvSort;
-    private TextView tvQuickSearch;
     private TextView tvCollect;
     private TvRecyclerView mGridViewFlag;
     private TvRecyclerView mGridView;
@@ -152,7 +152,6 @@ public class DetailActivity extends BaseActivity {
         tvPlay = findViewById(R.id.tvPlay);
         tvSort = findViewById(R.id.tvSort);
         tvCollect = findViewById(R.id.tvCollect);
-        tvQuickSearch = findViewById(R.id.tvQuickSearch);
         mEmptyPlayList = findViewById(R.id.mEmptyPlaylist);
         mGridView = findViewById(R.id.mGridView);
         mGridView.setHasFixedSize(true);
@@ -334,7 +333,7 @@ public class DetailActivity extends BaseActivity {
                     seriesAdapter.getData().get(vodInfo.playIndex).selected = true;
                     seriesAdapter.notifyItemChanged(vodInfo.playIndex);
                     //选集全屏 想选集不全屏的注释下面一行
-                    if (showPreview && !fullWindows) toggleFullPreview();
+//                    if (showPreview && !fullWindows) toggleFullPreview();
                     if (!showPreview || reload) {
                         jumpToPlay();
                         firstReverse=false;
@@ -553,6 +552,7 @@ public class DetailActivity extends BaseActivity {
         sourceViewModel.detailResult.observe(this, new Observer<AbsXml>() {
             @Override
             public void onChanged(AbsXml absXml) {
+                LogUtils.d("detailResult onChanged");
                 if (absXml != null && absXml.movie != null && absXml.movie.videoList != null && absXml.movie.videoList.size() > 0) {
                     showSuccess();
                     mVideo = absXml.movie.videoList.get(0);
@@ -911,7 +911,6 @@ public class DetailActivity extends BaseActivity {
         tvPlay.setFocusable(!fullWindows);
         tvSort.setFocusable(!fullWindows);
         tvCollect.setFocusable(!fullWindows);
-        tvQuickSearch.setFocusable(!fullWindows);
         toggleSubtitleTextSize();
     }
 
