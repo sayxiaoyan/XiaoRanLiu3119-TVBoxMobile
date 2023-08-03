@@ -10,22 +10,6 @@
         android:id="@+id/tvHotList1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        app:tv_layoutManager="V7GridLayoutManager"
-        app:tv_selectedItemIsCentered="true"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
-    <com.owen.tvrecyclerview.widget.TvRecyclerView
-        android:id="@+id/tvHotList2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:orientation="horizontal"
-        app:tv_layoutManager="V7LinearLayoutManager"
-        app:tv_selectedItemIsCentered="true"
-        android:visibility="gone" />
+        />
 
 </RelativeLayout>

@@ -2,13 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/shape_user_focus"
     android:focusable="true"
     android:padding="@dimen/dp_1">
 
     <FrameLayout
-        android:layout_width="@dimen/dp_214"
-        android:layout_height="@dimen/dp_280">
+        android:layout_width="100dp"
+        android:layout_height="140dp">
 
         <ImageView
             android:id="@+id/ivThumb"
@@ -36,9 +37,7 @@
                 android:gravity="center"
                 android:paddingLeft="@dimen/dp_5"
                 android:paddingRight="@dimen/dp_5"
-                android:singleLine="true"
-
-                android:textSize="@dimen/ts_20" />
+                android:singleLine="true"/>
 
         </LinearLayout>
 
@@ -64,8 +63,9 @@
                 android:paddingLeft="@dimen/dp_5"
                 android:paddingRight="@dimen/dp_5"
                 android:singleLine="true"
-
-                android:textSize="@dimen/ts_20" />
+                android:textSize="12dp"
+                android:textColor="@color/white"
+                tools:text="哈哈"/>
 
             <TextView
                 android:id="@+id/tvName"
@@ -76,8 +76,8 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:padding="@dimen/dp_5"
                 android:singleLine="true"
-
-                android:textSize="@dimen/ts_22" />
+                android:textColor="@color/white"
+                tools:text="哈哈" />
         </LinearLayout>
     </FrameLayout>
 </FrameLayout>

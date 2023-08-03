@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tvSearchWord"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:background="@drawable/shape_user_focus"
     android:ellipsize="marquee"
     android:focusable="true"
     android:marqueeRepeatLimit="marquee_forever"
-    android:padding="@dimen/dp_10"
+    android:paddingVertical="6dp"
+    android:paddingHorizontal="10dp"
     android:singleLine="true"
     android:textAlignment="center"
-    android:textColor="@color/color_FFFFFF"
-    android:textSize="@dimen/ts_22" />
+    android:textColor="@color/white"
+    tools:text="釜山行"/>

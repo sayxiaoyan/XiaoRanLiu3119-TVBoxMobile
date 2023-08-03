@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
@@ -56,7 +58,6 @@ public class UserFragment extends BaseLazyFragment {
     private HomeHotVodAdapter homeHotVodAdapter;
     private List<Movie.Video> homeSourceRec;
     TvRecyclerView tvHotList1;
-    TvRecyclerView tvHotList2;
 
     public static UserFragment newInstance() {
         return new UserFragment();
@@ -73,16 +74,11 @@ public class UserFragment extends BaseLazyFragment {
 
     @Override
     protected void onFragmentResume() {
-        if(Hawk.get(HawkConfig.HOME_REC_STYLE, false)){
-            tvHotList1.setVisibility(View.VISIBLE);
-            tvHotList2.setVisibility(View.GONE);
-            tvHotList1.setHasFixedSize(true);
-            tvHotList1.setLayoutManager(new V7GridLayoutManager(this.mContext, 5));
-        }else {
-            tvHotList1.setVisibility(View.GONE);
-            tvHotList2.setVisibility(View.VISIBLE);
-        }
         super.onFragmentResume();
+
+        tvHotList1.setHasFixedSize(true);
+        tvHotList1.setLayoutManager(new GridLayoutManager(this.mContext, 3));
+
         if (Hawk.get(HawkConfig.HOME_REC, 0) == 2) {
             List<VodInfo> allVodRecord = RoomDataManger.getAllVodRecord(30);
             List<Movie.Video> vodList = new ArrayList<>();
@@ -108,7 +104,6 @@ public class UserFragment extends BaseLazyFragment {
     @Override
     protected void init() {
         tvHotList1 = findViewById(R.id.tvHotList1);
-        tvHotList2 = findViewById(R.id.tvHotList2);
         homeHotVodAdapter = new HomeHotVodAdapter();
         homeHotVodAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -169,23 +164,6 @@ public class UserFragment extends BaseLazyFragment {
             }
         });
         tvHotList1.setAdapter(homeHotVodAdapter);
-        tvHotList2.setOnItemListener(new TvRecyclerView.OnItemListener() {
-            @Override
-            public void onItemPreSelected(TvRecyclerView parent, View itemView, int position) {
-                itemView.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).setInterpolator(new BounceInterpolator()).start();
-            }
-
-            @Override
-            public void onItemSelected(TvRecyclerView parent, View itemView, int position) {
-                itemView.animate().scaleX(1.05f).scaleY(1.05f).setDuration(300).setInterpolator(new BounceInterpolator()).start();
-            }
-
-            @Override
-            public void onItemClick(TvRecyclerView parent, View itemView, int position) {
-
-            }
-        });
-        tvHotList2.setAdapter(homeHotVodAdapter);
 
         initHomeHotVod(homeHotVodAdapter);
     }

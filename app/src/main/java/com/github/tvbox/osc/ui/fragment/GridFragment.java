@@ -94,7 +94,6 @@ public class GridFragment extends BaseLazyFragment {
         initViewModel();
         initData();
     }
-    public boolean isFolederMode(){ return (getUITag() =='1'); }
     // 获取当前页面UI的显示模式 ‘0’ 正常模式 '1' 文件夹模式 '2' 显示缩略图的文件夹模式
     public char getUITag(){
         System.out.println(sortData);
@@ -150,7 +149,7 @@ public class GridFragment extends BaseLazyFragment {
             mGridView.setVisibility(View.VISIBLE);
         }
         mGridView.setHasFixedSize(true);
-        gridAdapter = new GridAdapter(isFolederMode());
+        gridAdapter = new GridAdapter();
         this.page =1;
         this.maxPage =1;
         this.isLoad = false;
@@ -159,11 +158,7 @@ public class GridFragment extends BaseLazyFragment {
     private void initView() {
         this.createView();
         mGridView.setAdapter(gridAdapter);
-        if(isFolederMode()){
-            mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 1, false));
-        }else{
-            mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
-        }
+        mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
 
         gridAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -215,7 +210,8 @@ public class GridFragment extends BaseLazyFragment {
                         jumpActivity(FastSearchActivity.class, bundle);
                     }else{
                         if(video.id == null || video.id.isEmpty() || video.id.startsWith("msearch:")){
-                            jumpActivity(SearchActivity.class, bundle);
+                            jumpActivity(FastSearchActivity.class, bundle);
+//                            jumpActivity(SearchActivity.class, bundle);
                         }else {
                             jumpActivity(DetailActivity.class, bundle);
                         }

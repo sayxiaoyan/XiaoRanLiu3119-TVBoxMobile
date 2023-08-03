@@ -21,7 +21,7 @@
             android:focusable="false" />
 
         <LinearLayout
-            android:layout_width="@dimen/dp_480"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dp_20"
             android:orientation="vertical">
@@ -29,7 +29,7 @@
 
             <TextView
                 android:id="@+id/tvAddress"
-                android:layout_width="@dimen/dp_480"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingMultiplier="1.5"
                 android:textColor="@color/color_CC000000"

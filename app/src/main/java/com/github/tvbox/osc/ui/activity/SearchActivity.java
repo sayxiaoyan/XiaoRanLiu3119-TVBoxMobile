@@ -1,18 +1,15 @@
 package com.github.tvbox.osc.ui.activity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,16 +25,11 @@ import com.github.tvbox.osc.bean.Movie;
 import com.github.tvbox.osc.bean.SourceBean;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.event.ServerEvent;
-import com.github.tvbox.osc.server.ControlManager;
 import com.github.tvbox.osc.ui.adapter.PinyinAdapter;
 import com.github.tvbox.osc.ui.adapter.SearchAdapter;
-import com.github.tvbox.osc.ui.dialog.RemoteDialog;
 import com.github.tvbox.osc.ui.dialog.SearchCheckboxDialog;
-import com.github.tvbox.osc.ui.tv.QRCodeGen;
-import com.github.tvbox.osc.ui.tv.widget.SearchKeyboard;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
-import com.github.tvbox.osc.util.LOG;
 import com.github.tvbox.osc.util.SearchHelper;
 import com.github.tvbox.osc.util.js.JSEngine;
 import com.github.tvbox.osc.viewmodel.SourceViewModel;
@@ -74,11 +66,8 @@ public class SearchActivity extends BaseActivity {
     private TvRecyclerView mGridView;
     private TvRecyclerView mGridViewWord;
     SourceViewModel sourceViewModel;
-    private RemoteDialog remoteDialog;
     private EditText etSearch;
-    private TextView tvSearch;
-    private TextView tvClear;
-    private SearchKeyboard keyboard;
+
     private SearchAdapter searchAdapter;
     private PinyinAdapter wordAdapter;
     private String searchTitle = "";
@@ -92,39 +81,13 @@ public class SearchActivity extends BaseActivity {
         return R.layout.activity_search;
     }
 
-
-    private static Boolean hasKeyBoard;
     private static Boolean isSearchBack;
     @Override
     protected void init() {
         initView();
         initViewModel();
         initData();
-        hasKeyBoard = true;
         isSearchBack = false;
-    }
-
-    /*
-     * 禁止软键盘
-     * @param activity Activity
-     */
-    public static void disableKeyboard(Activity activity) {
-        hasKeyBoard = false;
-        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-    }
-
-    /*
-     * 启用软键盘
-     * @param activity Activity
-     */
-    public static void enableKeyboard(Activity activity) {
-        hasKeyBoard = true;
-        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-    }
-
-    public void openSystemKeyBoard() {
-        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(this.getCurrentFocus(), InputMethodManager.SHOW_FORCED);
     }
 
     private List<Runnable> pauseRunnable = null;
@@ -141,29 +104,20 @@ public class SearchActivity extends BaseActivity {
             pauseRunnable.clear();
             pauseRunnable = null;
         }
-        if (hasKeyBoard) {
-            tvSearch.requestFocus();
-            tvSearch.requestFocusFromTouch();
-        }else {
-            if(!isSearchBack){
-                etSearch.requestFocus();
-                etSearch.requestFocusFromTouch();
-            }
-        }
     }
 
     private void initView() {
         EventBus.getDefault().register(this);
         llLayout = findViewById(R.id.llLayout);
-        etSearch = findViewById(R.id.etSearch);
-        tvSearch = findViewById(R.id.tvSearch);
+        etSearch = findViewById(R.id.et_search);
+
         tvSearchCheckboxBtn = findViewById(R.id.tvSearchCheckboxBtn);
-        tvClear = findViewById(R.id.tvClear);
+
         mGridView = findViewById(R.id.mGridView);
-        keyboard = findViewById(R.id.keyBoardRoot);
+
         mGridViewWord = findViewById(R.id.mGridViewWord);
         mGridViewWord.setHasFixedSize(true);
-        mGridViewWord.setLayoutManager(new V7LinearLayoutManager(this.mContext, 1, false));
+        mGridViewWord.setLayoutManager(new V7GridLayoutManager(this.mContext, 4));
         wordAdapter = new PinyinAdapter();
         mGridViewWord.setAdapter(wordAdapter);
         wordAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -173,12 +127,7 @@ public class SearchActivity extends BaseActivity {
             }
         });
         mGridView.setHasFixedSize(true);
-        // lite
-        if (Hawk.get(HawkConfig.SEARCH_VIEW, 0) == 0)
-            mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 1, false));
-            // with preview
-        else
-            mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
+        mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
         searchAdapter = new SearchAdapter();
         mGridView.setAdapter(searchAdapter);
         searchAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -196,7 +145,7 @@ public class SearchActivity extends BaseActivity {
                     } catch (Throwable th) {
                         th.printStackTrace();
                     }
-                    hasKeyBoard = false;
+
                     isSearchBack = true;
                     Bundle bundle = new Bundle();
                     bundle.putString("id", video.id);
@@ -205,12 +154,11 @@ public class SearchActivity extends BaseActivity {
                 }
             }
         });
-        tvSearch.setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.btn_search).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                FastClickCheckUtil.check(v);
-                hasKeyBoard = true;
-                String wd = etSearch.getText().toString().trim();
+            public void onClick(View view) {
+                String wd = etSearch.getText().toString();
                 if (!TextUtils.isEmpty(wd)) {
                     search(wd);
                 } else {
@@ -218,48 +166,23 @@ public class SearchActivity extends BaseActivity {
                 }
             }
         });
-        tvClear.setOnClickListener(new View.OnClickListener() {
+        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View v) {
-                FastClickCheckUtil.check(v);
-                etSearch.setText("");
-            }
-        });
-//        etSearch.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                enableKeyboard(SearchActivity.this);
-//                openSystemKeyBoard();//再次尝试拉起键盘
-//                SearchActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-//            }
-//        });
-
-//        etSearch.setOnFocusChangeListener(tvSearchFocusChangeListener);
-        keyboard.setOnSearchKeyListener(new SearchKeyboard.OnSearchKeyListener() {
-            @Override
-            public void onSearchKey(int pos, String key) {
-                if (pos > 1) {
-                    String text = etSearch.getText().toString().trim();
-                    text += key;
-                    etSearch.setText(text);
-                    if (text.length() > 0) {
-                        loadRec(text);
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String wd = etSearch.getText().toString();
+                    if (!TextUtils.isEmpty(wd)) {
+                        search(wd);
+                    } else {
+                        Toast.makeText(mContext, "输入内容不能为空", Toast.LENGTH_SHORT).show();
                     }
-                } else if (pos == 1) {
-                    String text = etSearch.getText().toString().trim();
-                    if (text.length() > 0) {
-                        text = text.substring(0, text.length() - 1);
-                        etSearch.setText(text);
-                    }
-                    if (text.length() > 0) {
-                        loadRec(text);
-                    }
-                } else if (pos == 0) {
-                    remoteDialog = new RemoteDialog(mContext);
-                    remoteDialog.show();
+                    return true;
                 }
+                return false;
             }
         });
+
+
         setLoadSir(llLayout);
         tvSearchCheckboxBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -419,10 +342,7 @@ public class SearchActivity extends BaseActivity {
 
     private void search(String title) {
         cancel();
-        if (remoteDialog != null) {
-            remoteDialog.dismiss();
-            remoteDialog = null;
-        }
+
         showLoading();
         etSearch.setText(title);
         this.searchTitle = title;

@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId 'com.github.tvbox.osc'
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName '1.0.0'
@@ -107,4 +107,14 @@ dependencies {
     implementation 'com.github.hedzr:android-file-chooser:v1.2.0-final'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
+
+    //沉浸式状态栏
+    implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
+    //标题栏
+    implementation 'com.github.getActivity:TitleBar:10.5'
+    //弹窗
+    implementation 'com.github.li-xiaojun:XPopup:2.9.19'
+    //工具类
+    implementation 'com.blankj:utilcodex:1.29.0'
+
 }

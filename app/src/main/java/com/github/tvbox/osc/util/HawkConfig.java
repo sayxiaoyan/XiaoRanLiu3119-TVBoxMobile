@@ -23,7 +23,6 @@ public class HawkConfig {
     public static final String DOH_URL = "doh_url";
     public static final String HOME_REC = "home_rec"; // 0 豆瓣热播 1 数据源推荐 2 历史
     public static final String HISTORY_NUM = "history_num";
-    public static final String SEARCH_VIEW = "search_view"; // 0 列表 1 缩略图
     public static final String LIVE_CHANNEL = "last_live_channel_name";
     public static final String LIVE_CHANNEL_REVERSE = "live_channel_reverse";
     public static final String LIVE_CROSS_GROUP = "live_cross_group";
@@ -34,7 +33,6 @@ public class HawkConfig {
     public static final String SUBTITLE_TEXT_SIZE = "subtitle_text_size";
     public static final String SUBTITLE_TIME_DELAY = "subtitle_time_delay";
     public static final String SOURCES_FOR_SEARCH = "checked_sources_for_search";
-    public static final String HOME_REC_STYLE = "home_rec_style";
     public static final String NOW_DATE = "now_date"; //当前日期
     public static final String REMOTE_TVBOX = "remote_tvbox_host";
     public static final String IJK_CACHE_PLAY = "ijk_cache_play";

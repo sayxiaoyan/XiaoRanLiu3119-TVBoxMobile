@@ -3,45 +3,41 @@ package com.github.tvbox.osc.base;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
-import android.content.res.Resources;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
-import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.PermissionChecker;
 
-import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.callback.EmptyCallback;
 import com.github.tvbox.osc.callback.LoadingCallback;
 import com.github.tvbox.osc.util.AppManager;
+import com.gyf.immersionbar.ImmersionBar;
+import com.hjq.bar.OnTitleBarListener;
+import com.hjq.bar.TitleBar;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import me.jessyan.autosize.AutoSizeCompat;
 import me.jessyan.autosize.internal.CustomAdapt;
-import xyz.doikki.videoplayer.util.CutoutUtil;
 
 /**
  * @author pj567
  * @date :2020/12/17
  * @description:
  */
-public abstract class BaseActivity extends AppCompatActivity implements CustomAdapt {
+public abstract class BaseActivity extends AppCompatActivity implements CustomAdapt, OnTitleBarListener {
     protected Context mContext;
     private LoadService mLoadService;
 
+    private ImmersionBar mImmersionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +45,33 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
         setContentView(getLayoutResID());
         mContext = this;
         AppManager.getInstance().addActivity(this);
+        initStatusBar();
         init();
+    }
+
+    private void initStatusBar(){
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)
+                .titleBar(findTitleBar(getWindow().getDecorView().findViewById(android.R.id.content)))
+                .init();
+    }
+
+    /**
+     * 递归获取 ViewGroup 中的 TitleBar 对象
+     */
+    private TitleBar findTitleBar(ViewGroup group) {
+        for (int i = 0; i < group.getChildCount(); i++) {
+            View view = group.getChildAt(i);
+            if ((view instanceof TitleBar)) {
+                return (TitleBar) view;
+            } else if (view instanceof ViewGroup) {
+                TitleBar titleBar = findTitleBar((ViewGroup) view);
+                if (titleBar != null) {
+                    return titleBar;
+                }
+            }
+        }
+        return null;
     }
 
     public boolean hasPermission(String permission) {

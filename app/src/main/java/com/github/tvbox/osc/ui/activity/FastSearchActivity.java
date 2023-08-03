@@ -62,7 +62,7 @@ public class FastSearchActivity extends BaseActivity {
     private TvRecyclerView mGridView;
     private TvRecyclerView mGridViewFilter;
     private TvRecyclerView mGridViewWord;
-    private TvRecyclerView mGridViewWordFenci;
+
     SourceViewModel sourceViewModel;
     //    private EditText etSearch;
 //    private TextView tvSearch;
@@ -70,7 +70,7 @@ public class FastSearchActivity extends BaseActivity {
 //    private SearchKeyboard keyboard;
 //    private TextView tvAddress;
 //    private ImageView ivQRCode;
-    private SearchWordAdapter searchWordAdapter;
+
     private FastSearchAdapter searchAdapter;
     private FastSearchAdapter searchAdapterFilter;
     private FastListAdapter spListAdapter;
@@ -181,7 +181,7 @@ public class FastSearchActivity extends BaseActivity {
         });
 
         mGridView.setHasFixedSize(true);
-        mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 5));
+        mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
 
         searchAdapter = new FastSearchAdapter();
         mGridView.setAdapter(searchAdapter);
@@ -210,7 +210,7 @@ public class FastSearchActivity extends BaseActivity {
         });
 
 
-        mGridViewFilter.setLayoutManager(new V7GridLayoutManager(this.mContext, 5));
+        mGridViewFilter.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
         searchAdapterFilter = new FastSearchAdapter();
         mGridViewFilter.setAdapter(searchAdapterFilter);
         searchAdapterFilter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -237,20 +237,6 @@ public class FastSearchActivity extends BaseActivity {
         });
 
         setLoadSir(llLayout);
-
-        // 分词
-        searchWordAdapter = new SearchWordAdapter();
-        mGridViewWordFenci = findViewById(R.id.mGridViewWordFenci);
-        mGridViewWordFenci.setAdapter(searchWordAdapter);
-        mGridViewWordFenci.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));
-        searchWordAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                String str = searchWordAdapter.getData().get(position);
-                search(str);
-            }
-        });
-        searchWordAdapter.setNewData(new ArrayList<>());
     }
 
     private void initViewModel() {
@@ -339,11 +325,6 @@ public class FastSearchActivity extends BaseActivity {
                 searchData(event.obj == null ? null : (AbsXml) event.obj);
             } catch (Exception e) {
                 searchData(null);
-            }
-        } else if (event.type == RefreshEvent.TYPE_QUICK_SEARCH_WORD) {
-            if (event.obj != null) {
-                List<String> data = (List<String>) event.obj;
-                searchWordAdapter.setNewData(data);
             }
         }
         if (mSearchTitle != null) {

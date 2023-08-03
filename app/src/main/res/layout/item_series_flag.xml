@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginRight="@dimen/dp_10"
     android:background="@drawable/shape_source_flag_focus"
     android:clickable="true"
@@ -15,13 +15,11 @@
     <TextView
         android:id="@+id/tvSeriesFlag"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_30"
+        android:layout_height="wrap_content"
         android:ellipsize="end"
         android:gravity="center"
         android:singleLine="true"
-        android:text="11111111111"
-
-        android:textSize="@dimen/ts_20" />
+        android:text="11111111111" />
 
     <View
         android:id="@+id/tvSeriesFlagSelect"

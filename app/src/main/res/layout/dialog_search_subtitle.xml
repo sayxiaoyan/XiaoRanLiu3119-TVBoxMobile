@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="@dimen/dp_960"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/dp_480"
         android:layout_gravity="center"
         android:background="#6632364E"
