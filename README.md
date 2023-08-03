@@ -8,7 +8,7 @@
 * [q215613905](https://github.com/q215613905)/[TVBoxOS](https://github.com/q215613905/TVBoxOS)
 
 ## 进度
--[x] 所有操作页面改为竖屏   
+[x] 所有操作页面改为竖屏   
 
 -[x] 设置页面抽离出来   
 
