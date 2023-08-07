@@ -56,7 +56,11 @@
             android:id="@+id/mGridView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tv_selectedItemIsCentered="true" />
+            app:tv_selectedItemIsCentered="true"
+            tools:listitem="@layout/item_home_sort"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:orientation="horizontal"
+            />
 
         <com.github.tvbox.osc.ui.tv.widget.NoScrollViewPager
             android:id="@+id/mViewPager"

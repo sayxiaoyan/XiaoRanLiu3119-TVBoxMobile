@@ -3,18 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
-    android:clipToPadding="false"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <com.owen.tvrecyclerview.widget.TvRecyclerView
         android:id="@+id/mGridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:paddingBottom="@dimen/dp_10"
-        app:tv_horizontalSpacingWithMargins="@dimen/dp_10"
         app:tv_selectedItemIsCentered="true"
-        app:tv_verticalSpacingWithMargins="@dimen/dp_10" />
+        app:tv_verticalSpacingWithMargins="@dimen/dp_10"
+        tools:listitem="@layout/item_grid"
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:spanCount="3" />
+
 </LinearLayout>

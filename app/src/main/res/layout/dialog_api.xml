@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_360"
+        android:layout_height="500dp"
         android:layout_gravity="center"
         android:background="@drawable/shape_dialog_bg_main"
         android:orientation="horizontal"
@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/ivQRCode"
-            android:layout_width="@dimen/dp_300"
-            android:layout_height="@dimen/dp_300"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             android:focusable="false" />
 
@@ -60,7 +60,7 @@
                     android:padding="@dimen/dp_10"
                     android:text="配置历史"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/ts_22" />
+                     />
 
                 <TextView
                 android:id="@+id/storagePermission"
@@ -75,7 +75,7 @@
                 android:padding="@dimen/dp_10"
                 android:text="存储权限"
                 android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/ts_22" />
+                 />
             </LinearLayout>
 
             <Space
@@ -104,7 +104,7 @@
                     android:paddingBottom="@dimen/dp_10"
                     android:textColor="@color/color_CC000000"
                     android:textColorHint="@color/color_6C3D3D3D"
-                    android:textSize="@dimen/ts_26" />
+                     />
 
                 <TextView
                     android:id="@+id/inputSubmit"
@@ -118,7 +118,7 @@
                     android:padding="@dimen/dp_10"
                     android:text="确定"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/ts_22" />
+                     />
             </LinearLayout>
 
         </LinearLayout>
