@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -14,6 +15,8 @@ import com.github.tvbox.osc.R;
 import xyz.doikki.videoplayer.util.CutoutUtil;
 
 public class BaseDialog extends Dialog {
+
+
     public BaseDialog(@NonNull Context context) {
         super(context, R.style.CustomDialogStyle);
     }
@@ -26,6 +29,13 @@ public class BaseDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         CutoutUtil.adaptCutoutAboveAndroidP(this, true);//设置刘海
         super.onCreate(savedInstanceState);
+
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(getWindow().getAttributes());
+        lp.gravity = Gravity.BOTTOM | Gravity.LEFT | Gravity.RIGHT;
+        getWindow().setAttributes(lp);
+        getWindow().setWindowAnimations(R.style.BottomDialogAnimation); // Set the animation style
     }
 
     @Override

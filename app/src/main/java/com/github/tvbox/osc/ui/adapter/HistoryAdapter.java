@@ -39,30 +39,7 @@ public class HistoryAdapter extends BaseQuickAdapter<VodInfo, BaseViewHolder> {
             tvYear.setVisibility(View.VISIBLE);
         }*/
         tvYear.setText(ApiConfig.get().getSource(item.sourceKey).getName());
-        /*TextView tvLang = helper.getView(R.id.tvLang);
-        if (TextUtils.isEmpty(item.lang)) {
-            tvLang.setVisibility(View.GONE);
-        } else {
-            tvLang.setText(item.lang);
-            tvLang.setVisibility(View.VISIBLE);
-        }
-        TextView tvArea = helper.getView(R.id.tvArea);
-        if (TextUtils.isEmpty(item.area)) {
-            tvArea.setVisibility(View.GONE);
-        } else {
-            tvArea.setText(item.area);
-            tvArea.setVisibility(View.VISIBLE);
-        }
 
-        TextView tvNote = helper.getView(R.id.tvNote);
-        if (TextUtils.isEmpty(item.note)) {
-            tvNote.setVisibility(View.GONE);
-        } else {
-            tvNote.setText(item.note);
-            tvNote.setVisibility(View.VISIBLE);
-        }*/
-        helper.setVisible(R.id.tvLang, false);
-        helper.setVisible(R.id.tvArea, false);
         if (item.note == null || item.note.isEmpty()) {
             helper.setVisible(R.id.tvNote, false);
         } else {
@@ -75,10 +52,10 @@ public class HistoryAdapter extends BaseQuickAdapter<VodInfo, BaseViewHolder> {
         if (!TextUtils.isEmpty(item.pic)) {
             Picasso.get()
                     .load(DefaultConfig.checkReplaceProxy(item.pic))
-                    .transform(new RoundTransformation(MD5.string2MD5(item.pic + item.name))
+                    .transform(new RoundTransformation(MD5.string2MD5(item.pic + "position=" + helper.getLayoutPosition()))
                             .centerCorp(true)
-                            .override(AutoSizeUtils.mm2px(mContext, 300), AutoSizeUtils.mm2px(mContext, 400))
-                            .roundRadius(AutoSizeUtils.mm2px(mContext, 10), RoundTransformation.RoundType.ALL))
+                            .override(AutoSizeUtils.dp2px(mContext, 100), AutoSizeUtils.dp2px(mContext, 140))
+                            .roundRadius(AutoSizeUtils.dp2px(mContext, 20), RoundTransformation.RoundType.ALL))
                     .placeholder(R.drawable.img_loading_placeholder)
                     .error(R.drawable.img_loading_placeholder)
                     .into(ivThumb);

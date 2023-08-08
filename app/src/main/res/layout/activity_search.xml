@@ -5,69 +5,57 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <com.hjq.bar.TitleBar
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/dp_20">
+        app:title="搜索"
+        app:leftIcon="@null"
+        app:rightIcon="@drawable/icon_filter"
+        app:rightIconHeight="20dp"
+        app:rightIconWidth="20dp"
+        app:rightIconTint="@color/text_gray"
+        />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:gravity="bottom">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_10"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
-            <TextView
-                android:id="@+id/tvSearchCheckboxBtn"
+            <EditText
+                android:id="@+id/et_search"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_50"
-                android:layout_weight="1"
-                android:background="@drawable/shape_user_focus"
-                android:focusable="true"
-                android:gravity="center"
-                android:text="指定搜索源"
-                android:textSize="@dimen/ts_20" />
-
-        </LinearLayout>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+                android:background="@null"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/et_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@null"
-                    android:inputType="text"
-                    android:imeOptions="actionSearch"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="搜索"/>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:insetTop="0dp"
+            android:textSize="14dp"
+            android:insetBottom="0dp"
+            android:layout_marginLeft="10dp"
+            android:text="搜索"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <LinearLayout
         android:id="@+id/llWord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="@dimen/dp_20"
-        android:paddingBottom="@dimen/dp_20">
+        android:padding="10dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -77,7 +65,7 @@
             android:text="热门搜索"
             android:textAlignment="center"/>
 
-        <com.owen.tvrecyclerview.widget.TvRecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mGridViewWord"
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -91,11 +79,12 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="@dimen/dp_20">
+        >
 
-        <com.owen.tvrecyclerview.widget.TvRecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mGridView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:paddingHorizontal="10dp"/>
     </LinearLayout>
 </LinearLayout>

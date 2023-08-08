@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="400dp">
     <LinearLayout
         android:id="@+id/root"
-        android:layout_width="@dimen/dp_420"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="@drawable/shape_dialog_pg_search_checkbox"
         android:orientation="vertical">
-
 
         <LinearLayout
             android:orientation="horizontal"
@@ -28,9 +27,9 @@
                 android:background="@drawable/button_dialog_main"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="@dimen/dp_30"
                 android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/ts_26"
+                android:textSize="16sp"
+                android:paddingVertical="8dp"
                 android:text="全选" />
 
             <TextView
@@ -44,13 +43,13 @@
                 android:background="@drawable/button_dialog_main"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="@dimen/dp_30"
+                android:textSize="16sp"
+                android:paddingVertical="8dp"
                 android:text="全不选"
-                android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/ts_26" />
+                android:textColor="@color/color_FFFFFF"/>
         </LinearLayout>
 
-        <com.owen.tvrecyclerview.widget.TvRecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mGridView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

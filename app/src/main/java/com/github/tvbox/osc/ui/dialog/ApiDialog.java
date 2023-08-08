@@ -51,7 +51,7 @@ public class ApiDialog extends BaseDialog {
     public ApiDialog(@NonNull @NotNull Context context) {
         super(context);
         setContentView(R.layout.dialog_api);
-        setCanceledOnTouchOutside(false);
+        
         ivQRCode = findViewById(R.id.ivQRCode);
         tvAddress = findViewById(R.id.tvAddress);
         inputApi = findViewById(R.id.input);

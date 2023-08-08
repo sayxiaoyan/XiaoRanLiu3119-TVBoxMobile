@@ -16,7 +16,7 @@ public class TipDialog extends BaseDialog {
     public TipDialog(@NonNull @NotNull Context context, String tip, String left, String right, OnListener listener) {
         super(context);
         setContentView(R.layout.dialog_tip);
-        setCanceledOnTouchOutside(false);
+        
         TextView tipInfo = findViewById(R.id.tipInfo);
         TextView leftBtn = findViewById(R.id.leftBtn);
         TextView rightBtn = findViewById(R.id.rightBtn);

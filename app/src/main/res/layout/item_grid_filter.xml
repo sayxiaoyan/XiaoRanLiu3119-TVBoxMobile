@@ -17,8 +17,7 @@
         android:layout_marginRight="@dimen/dp_10"
         android:gravity="center"
         android:textAlignment="gravity"
-        android:textColor="@color/color_FFFFFF"
-
+        android:textColor="@color/text_gray"
         tools:text="11111111111" />
 
     <com.owen.tvrecyclerview.widget.TvRecyclerView

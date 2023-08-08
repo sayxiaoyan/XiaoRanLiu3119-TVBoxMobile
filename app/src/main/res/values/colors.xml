@@ -21,6 +21,7 @@
     <color name="red">#ff4444</color>
 
     <color name="disable_text">#b3b3b3</color>
+    <color name="bg_popup">#ececec</color>
 
     <!--    制定颜色-->
     <!--    页面背景色,activity.fragment等-->
@@ -57,7 +58,7 @@
     <color name="color_BBFFFFFF">#bbffffff</color>
     <color name="color_FFFFFF">#ffffffff</color>
     <color name="color_33FFFFFF">#33ffffff</color>
-    <color name="color_99FFFFFF">#4D000000</color>
+    <color name="color_99FFFFFF">#4D777373</color>
     <color name="color_59353744">#59353744</color>
     <color name="color_80FF0057">#66FF0057</color>
 

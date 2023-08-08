@@ -9,7 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.bean.SourceBean;
 import com.github.tvbox.osc.ui.adapter.CheckboxSearchAdapter;
@@ -27,7 +29,7 @@ import me.jessyan.autosize.utils.AutoSizeUtils;
 
 public class SearchCheckboxDialog extends BaseDialog{
 
-    private TvRecyclerView mGridView;
+    private RecyclerView mGridView;
     private CheckboxSearchAdapter checkboxSearchAdapter;
     private final List<SourceBean> mSourceList;
     TextView checkAll;
@@ -40,7 +42,7 @@ public class SearchCheckboxDialog extends BaseDialog{
         if (context instanceof Activity) {
             setOwnerActivity((Activity) context);
         }
-        setCanceledOnTouchOutside(false);
+        
         setCancelable(true);
         mSourceList = sourceList;
         mCheckSourcees = checkedSources;
@@ -71,14 +73,11 @@ public class SearchCheckboxDialog extends BaseDialog{
         });
         mGridView.setHasFixedSize(true);
 
-        int size = mSourceList.size();
-        int spanCount = (int) Math.floor(size / 10);
-        if (spanCount <= 0) spanCount = 1;
-        if (spanCount > 3) spanCount = 3;
-        mGridView.setLayoutManager(new V7GridLayoutManager(getContext(), spanCount));
+        mGridView.setLayoutManager(new V7GridLayoutManager(getContext(), 2));
         View root = findViewById(R.id.root);
         ViewGroup.LayoutParams clp = root.getLayoutParams();
-        clp.width = AutoSizeUtils.mm2px(getContext(), 400 + 260 * (spanCount - 1));
+        //设置跟布局为屏幕宽度
+        clp.width = ScreenUtils.getScreenWidth();
 
         mGridView.setAdapter(checkboxSearchAdapter);
         checkboxSearchAdapter.setData(mSourceList, mCheckSourcees);

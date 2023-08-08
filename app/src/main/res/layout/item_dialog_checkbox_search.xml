@@ -15,10 +15,8 @@
             android:id="@+id/oneSearchSource"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_dialog_main"
             android:clickable="true"
             android:focusable="true"
-
-            android:text="1111"/>
+            android:text="源名称"/>
     </LinearLayout>
 </FrameLayout>

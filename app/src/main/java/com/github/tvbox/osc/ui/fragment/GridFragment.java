@@ -213,6 +213,8 @@ public class GridFragment extends BaseLazyFragment {
             }
         });
         gridAdapter.setLoadMoreView(new LoadMoreView());
+
+        findViewById(R.id.btn_filter).setOnClickListener(view -> showFilter());
         setLoadSir2(mGridView);
     }
 

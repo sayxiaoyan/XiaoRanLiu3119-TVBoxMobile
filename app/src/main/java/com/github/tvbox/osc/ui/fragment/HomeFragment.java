@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.BounceInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +36,9 @@ import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.server.ControlManager;
 import com.github.tvbox.osc.ui.activity.DetailActivity;
 
+import com.github.tvbox.osc.ui.activity.HistoryActivity;
 import com.github.tvbox.osc.ui.activity.MainActivity;
+import com.github.tvbox.osc.ui.activity.SearchActivity;
 import com.github.tvbox.osc.ui.adapter.HomePageAdapter;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.ui.adapter.SortAdapter;
@@ -104,6 +107,7 @@ public class HomeFragment extends BaseLazyFragment {
         contentLayout = findViewById(R.id.contentLayout);
         mGridView = findViewById(R.id.mGridView);
         mViewPager = findViewById(R.id.mViewPager);
+
         sortAdapter = new SortAdapter();
         mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));
         mGridView.setSpacingWithMargins(0, AutoSizeUtils.dp2px(this.mContext, 10.0f));
@@ -192,6 +196,9 @@ public class HomeFragment extends BaseLazyFragment {
                 showSiteSwitch();
             }
         });
+
+        findViewById(R.id.iv_search).setOnClickListener(view -> jumpActivity(SearchActivity.class));
+        findViewById(R.id.iv_history).setOnClickListener(view -> jumpActivity(HistoryActivity.class));
         setLoadSir(this.contentLayout);
         //mHandler.postDelayed(mFindFocus, 500);
     }

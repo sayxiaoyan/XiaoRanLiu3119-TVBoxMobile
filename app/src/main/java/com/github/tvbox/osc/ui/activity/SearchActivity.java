@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
@@ -37,6 +38,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.hjq.bar.TitleBar;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
@@ -63,16 +65,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class SearchActivity extends BaseActivity {
     private LinearLayout llLayout;
-    private TvRecyclerView mGridView;
-    private TvRecyclerView mGridViewWord;
+    private RecyclerView mGridView;
+    private RecyclerView mGridViewWord;
     SourceViewModel sourceViewModel;
     private EditText etSearch;
 
     private SearchAdapter searchAdapter;
     private PinyinAdapter wordAdapter;
     private String searchTitle = "";
-    private TextView tvSearchCheckboxBtn;
-
     private static HashMap<String, String> mCheckSources = null;
     private SearchCheckboxDialog mSearchCheckboxDialog = null;
 
@@ -110,8 +110,6 @@ public class SearchActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         llLayout = findViewById(R.id.llLayout);
         etSearch = findViewById(R.id.et_search);
-
-        tvSearchCheckboxBtn = findViewById(R.id.tvSearchCheckboxBtn);
 
         mGridView = findViewById(R.id.mGridView);
 
@@ -166,46 +164,29 @@ public class SearchActivity extends BaseActivity {
                 }
             }
         });
-        etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    String wd = etSearch.getText().toString();
-                    if (!TextUtils.isEmpty(wd)) {
-                        search(wd);
-                    } else {
-                        Toast.makeText(mContext, "输入内容不能为空", Toast.LENGTH_SHORT).show();
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
 
+        TitleBar titleBar = findViewById(R.id.title_bar);
+        titleBar.getRightView().setOnClickListener(view -> {
+            if (mSearchCheckboxDialog == null) {
+                List<SourceBean> allSourceBean = ApiConfig.get().getSourceBeanList();
+                List<SourceBean> searchAbleSource = new ArrayList<>();
+                for(SourceBean sourceBean : allSourceBean) {
+                    if (sourceBean.isSearchable()) {
+                        searchAbleSource.add(sourceBean);
+                    }
+                }
+                mSearchCheckboxDialog = new SearchCheckboxDialog(SearchActivity.this, searchAbleSource, mCheckSources);
+            }
+            mSearchCheckboxDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    dialog.dismiss();
+                }
+            });
+            mSearchCheckboxDialog.show();
+        });
 
         setLoadSir(llLayout);
-        tvSearchCheckboxBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mSearchCheckboxDialog == null) {
-                    List<SourceBean> allSourceBean = ApiConfig.get().getSourceBeanList();
-                    List<SourceBean> searchAbleSource = new ArrayList<>();
-                    for(SourceBean sourceBean : allSourceBean) {
-                        if (sourceBean.isSearchable()) {
-                            searchAbleSource.add(sourceBean);
-                        }
-                    }
-                    mSearchCheckboxDialog = new SearchCheckboxDialog(SearchActivity.this, searchAbleSource, mCheckSources);
-                }
-                mSearchCheckboxDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        dialog.dismiss();
-                    }
-                });
-                mSearchCheckboxDialog.show();
-            }
-        });
     }
 
     private void initViewModel() {

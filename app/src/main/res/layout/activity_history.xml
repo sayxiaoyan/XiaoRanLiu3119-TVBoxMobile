@@ -5,72 +5,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <com.hjq.bar.TitleBar
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:leftTitle="历史记录"
+        app:leftTitleSize="16sp"
+        app:leftIcon="@null"
+        app:rightIcon="@drawable/ic_clear"
+        app:lineVisible="false"/>
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dp_50"
-        android:paddingTop="@dimen/dp_20"
-        android:paddingRight="@dimen/dp_50"
-        android:paddingBottom="@dimen/dp_20">
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="10dp"
+        android:text="长按记录逐条删除"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_50"
-            android:drawablePadding="@dimen/dp_10"
-            android:gravity="center"
-            android:text="历史记录"
-
-            android:textSize="@dimen/ts_34"
-            android:textStyle="bold" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/tvDelTip"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_50"
-            android:layout_gravity="center"
-            android:layout_marginRight="@dimen/dp_10"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="center"
-            android:text="确定键删除当前选中记录"
-
-
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tvDel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/shape_user_focus"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="center"
-            android:padding="@dimen/dp_10"
-            android:text="删除记录"
-
-             />
-    </LinearLayout>
-
-    <com.owen.tvrecyclerview.widget.TvRecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mGridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:paddingLeft="10dp"
-        android:paddingTop="8dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="@dimen/dp_10"
-        app:tv_horizontalSpacingWithMargins="@dimen/dp_10"
-        app:tv_selectedItemIsCentered="true"
-        app:tv_verticalSpacingWithMargins="@dimen/dp_10" />
+        android:padding="10dp" />
 </LinearLayout>

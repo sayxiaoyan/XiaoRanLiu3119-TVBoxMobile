@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 <!--    筛选页背景颜色-->
     <corners
-        android:topLeftRadius="@dimen/dp_10"
-        android:topRightRadius="@dimen/dp_10" />
-    <solid android:color="@color/color_99FFFFFF" />
+        android:topLeftRadius="20dp"
+        android:topRightRadius="20dp" />
+    <solid android:color="@color/bg_popup" />
 </shape>
