@@ -7,6 +7,7 @@ import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
@@ -57,7 +58,7 @@ public class UserFragment extends BaseLazyFragment {
 
     private HomeHotVodAdapter homeHotVodAdapter;
     private List<Movie.Video> homeSourceRec;
-    TvRecyclerView tvHotList1;
+    RecyclerView tvHotList1;
 
     public static UserFragment newInstance() {
         return new UserFragment();
@@ -147,22 +148,6 @@ public class UserFragment extends BaseLazyFragment {
             }
         });
 
-        tvHotList1.setOnItemListener(new TvRecyclerView.OnItemListener() {
-            @Override
-            public void onItemPreSelected(TvRecyclerView parent, View itemView, int position) {
-                itemView.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).setInterpolator(new BounceInterpolator()).start();
-            }
-
-            @Override
-            public void onItemSelected(TvRecyclerView parent, View itemView, int position) {
-                itemView.animate().scaleX(1.05f).scaleY(1.05f).setDuration(300).setInterpolator(new BounceInterpolator()).start();
-            }
-
-            @Override
-            public void onItemClick(TvRecyclerView parent, View itemView, int position) {
-
-            }
-        });
         tvHotList1.setAdapter(homeHotVodAdapter);
 
         initHomeHotVod(homeHotVodAdapter);
