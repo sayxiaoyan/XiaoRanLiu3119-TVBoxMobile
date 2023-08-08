@@ -110,7 +110,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void initView() {
-        findViewById(R.id.ivMy).setOnClickListener(view -> startActivity(new Intent(HomeActivity.this,MyActivity.class)));
         tvName = findViewById(R.id.tvName);
         contentLayout = findViewById(R.id.contentLayout);
         mGridView = findViewById(R.id.mGridView);

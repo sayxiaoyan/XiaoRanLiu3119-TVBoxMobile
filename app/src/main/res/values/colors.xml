@@ -9,6 +9,8 @@
     <!--    默认window窗口(activity)背景颜色-->
     <color name="windowBackground">#fff</color>
 
+    <color name="bg_gray">#f7f7f7</color>
+    |
     <!--    通用颜色-->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>

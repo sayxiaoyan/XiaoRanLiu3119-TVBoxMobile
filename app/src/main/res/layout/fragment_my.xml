@@ -3,231 +3,292 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/black">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    android:orientation="vertical">
     <LinearLayout
-        android:id="@+id/tvUserHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="40dp"
+        >
 
         <LinearLayout
-            android:id="@+id/tvHistory"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:paddingHorizontal="20dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:background="@drawable/shape_user_focus"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:focusable="true"
-            android:nextFocusLeft="@+id/tvSetting"
-            android:orientation="horizontal">
-
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:alpha="0.75"
-                android:src="@drawable/icon_history" />
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/app_icon"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="center"
-                android:text="历史"
-                android:textAlignment="gravity"
-
-                 />
-
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="4dp"
+                android:text="TVBox"/>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tvLive"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:paddingHorizontal="20dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:background="@drawable/shape_user_focus"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:focusable="true"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:background="@drawable/bg_large_round_gray"
+            android:orientation="vertical"
+            android:layout_margin="20dp"
+            android:layout_height="wrap_content">
 
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:alpha="0.75"
-                android:src="@drawable/icon_live" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/tvHistory"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="center"
-                android:text="直播"
-                android:textAlignment="gravity"
+                android:padding="24dp"
+                android:orientation="horizontal">
 
-                 />
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_history" />
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:text="观看历史"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/text_gray"
+                    android:textSize="16sp"
+                    />
 
-        <LinearLayout
-            android:id="@+id/tvSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:paddingHorizontal="20dp"
-            android:layout_gravity="center"
-            android:background="@drawable/shape_user_focus"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:focusable="true"
-            android:orientation="horizontal">
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:alpha="0.75"
+                    android:src="@drawable/icon_pre"
+                    app:tint="@color/text_gray"/>
+
+            </LinearLayout>
 
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:alpha="0.75"
-                android:src="@drawable/icon_search" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/tvLive"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="center"
-                android:text="搜索"
-                android:textAlignment="gravity"
+                android:padding="24dp"
+                android:orientation="horizontal">
 
-                 />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_live" />
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:text="直播"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/text_gray"
+                    android:textSize="16sp"
+                    />
 
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:alpha="0.75"
+                    android:src="@drawable/icon_pre"
+                    app:tint="@color/text_gray"/>
 
-        <LinearLayout
-            android:id="@+id/tvPush"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:paddingHorizontal="20dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:background="@drawable/shape_user_focus"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:focusable="true"
-            android:orientation="horizontal">
+            </LinearLayout>
 
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:alpha="0.75"
-                android:src="@drawable/icon_push" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/tvSearch"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="center"
-                android:text="推送"
-                android:textAlignment="gravity"
+                android:padding="24dp"
+                android:orientation="horizontal">
 
-                 />
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_search" />
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:text="搜索"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/text_gray"
+                    android:textSize="16sp"
+                    />
 
-        <LinearLayout
-            android:id="@+id/tvFavorite"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:paddingHorizontal="20dp"
-            android:layout_gravity="center"
-            android:background="@drawable/shape_user_focus"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:focusable="true"
-            android:orientation="horizontal">
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:alpha="0.75"
+                    android:src="@drawable/icon_pre"
+                    app:tint="@color/text_gray"/>
 
+            </LinearLayout>
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:alpha="0.75"
-                android:src="@drawable/icon_collect" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/tvPush"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="center"
-                android:text="收藏"
-                android:textAlignment="gravity"
+                android:padding="24dp"
+                android:orientation="horizontal">
 
-                 />
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_push" />
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:text="推送"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/text_gray"
+                    android:textSize="16sp"
+                    />
 
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:alpha="0.75"
+                    android:src="@drawable/icon_pre"
+                    app:tint="@color/text_gray"/>
 
-        <LinearLayout
-            android:id="@+id/tvSetting"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:paddingHorizontal="20dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:background="@drawable/shape_user_focus"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:focusable="true"
-            android:nextFocusRight="@+id/tvHistory"
-            android:orientation="horizontal">
+            </LinearLayout>
 
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:alpha="0.75"
-                android:src="@drawable/icon_setting" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/tvFavorite"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="center"
-                android:text="设置"
-                android:textAlignment="gravity"
+                android:padding="24dp"
+                android:orientation="horizontal">
 
-                 />
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_collect" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:text="收藏"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/text_gray"
+                    android:textSize="16sp"
+                    />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:alpha="0.75"
+                    android:src="@drawable/icon_pre"
+                    app:tint="@color/text_gray"/>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/tvSetting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="24dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_settings" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:text="设置"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/text_gray"
+                    android:textSize="16sp"
+                    />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:alpha="0.75"
+                    android:src="@drawable/icon_pre"
+                    app:tint="@color/text_gray"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
