@@ -106,7 +106,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@drawable/shape_dialog_filter_bg"
+        tools:background="@color/black"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="@dimen/dp_20"
@@ -125,77 +125,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp_10"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:singleLine="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
-                    android:layout_marginRight="@dimen/dp_5"
-                    android:paddingRight="@dimen/dp_10"
-                    android:text="播放"
-                    android:textColor="@color/color_FFFFFF"
-                    />
-
-                <TextView
-                    android:id="@+id/play_next"
-                    android:singleLine="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
-                    android:layout_marginRight="@dimen/dp_5"
-                    android:background="@drawable/button_dialog_main"
-                    android:focusable="true"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="4dp"
-                    android:text="下一集"
-
-                    />
-
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/play_pre"
-                    android:singleLine="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
-                    android:layout_marginRight="@dimen/dp_5"
-                    android:background="@drawable/button_dialog_main"
-                    android:focusable="true"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
-                    android:text="上一集"
-                    />
+                    android:src="@drawable/ic_play_pre"/>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/play_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:src="@drawable/ic_play_next"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/play_retry"
-                    android:singleLine="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
-                    android:layout_marginRight="@dimen/dp_5"
-                    android:background="@drawable/button_dialog_main"
-                    android:focusable="true"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
-                    android:text="重播"
+                    android:src="@drawable/ic_re_play"/>
 
-                    />
-
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/play_refresh"
-                    android:singleLine="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_5"
-                    android:layout_marginRight="@dimen/dp_5"
-                    android:background="@drawable/button_dialog_main"
-                    android:focusable="true"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
-                    android:text="刷新"
+                    android:src="@drawable/ic_refresh"/>
 
-                    />
+
 
                 <TextView
                     android:id="@+id/play_scale"
@@ -204,12 +169,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_5"
                     android:layout_marginRight="@dimen/dp_5"
-                    android:background="@drawable/button_dialog_main"
                     android:focusable="true"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
                     android:text="16:9"
-
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
                     />
 
                 <TextView
@@ -219,7 +184,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_5"
                     android:layout_marginRight="@dimen/dp_5"
-                    android:background="@drawable/button_dialog_main"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
                     android:focusable="true"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
@@ -233,7 +199,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_5"
                     android:layout_marginRight="@dimen/dp_5"
-                    android:background="@drawable/button_dialog_main"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
                     android:focusable="true"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
@@ -248,12 +215,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_5"
                     android:layout_marginRight="@dimen/dp_5"
-                    android:background="@drawable/button_dialog_main"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
                     android:focusable="true"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
                     android:text="硬解码"
-
+                    android:visibility="gone"
                     />
 
                 <TextView
@@ -266,7 +234,8 @@
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
                     android:text="片头片尾"
-                    android:textColor="@color/color_FFFFFF"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
                     />
 
                 <TextView
@@ -276,7 +245,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_5"
                     android:layout_marginRight="@dimen/dp_5"
-                    android:background="@drawable/button_dialog_main"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
                     android:focusable="true"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
@@ -291,7 +261,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_5"
                     android:layout_marginRight="@dimen/dp_5"
-                    android:background="@drawable/button_dialog_main"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
                     android:focusable="true"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
@@ -307,7 +278,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_5"
                     android:layout_marginRight="@dimen/dp_5"
-                    android:background="@drawable/button_dialog_main"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
                     android:focusable="true"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
@@ -322,7 +294,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_5"
                     android:layout_marginRight="@dimen/dp_5"
-                    android:background="@drawable/button_dialog_main"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
                     android:focusable="true"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
@@ -477,8 +450,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="@dimen/dp_280"
-            android:layout_height="@dimen/dp_200"
+            android:layout_width="180dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             android:background="@drawable/shape_user_focus"
             android:focusable="false"
@@ -487,8 +460,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="@dimen/dp_60"
-                android:layout_height="@dimen/dp_60"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
@@ -499,13 +472,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginTop="10dp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:tag="vod_control_pause_t"
-
-                android:textSize="@dimen/ts_30"
-                tools:text="100" />
+                tools:text="30:10" />
         </LinearLayout>
 
     </FrameLayout>
@@ -528,8 +499,8 @@
 
     <LinearLayout
         android:id="@+id/tv_progress_container"
-        android:layout_width="@dimen/dp_280"
-        android:layout_height="@dimen/dp_200"
+        android:layout_width="180dp"
+        android:layout_height="100dp"
         android:layout_gravity="center"
         android:background="@drawable/shape_user_focus"
         android:focusable="false"
@@ -541,8 +512,8 @@
 
         <ImageView
             android:id="@+id/tv_progress_icon"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_60"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
             tools:src="@drawable/icon_back" />
@@ -552,18 +523,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginTop="10dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
-
-            android:textSize="@dimen/ts_30"
-            tools:text="100" />
+            tools:text="30:10/40:10" />
 
     </LinearLayout>
 
     <ProgressBar
-        android:layout_width="@dimen/dp_50"
-        android:layout_height="@dimen/dp_50"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
         android:indeterminateBehavior="repeat"
         android:indeterminateDrawable="@drawable/anim_loading"
@@ -580,7 +549,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:tag="play_load_net_speed"
-        android:text="0"
+        tools:text="10kb/s"
         android:textColor="@color/color_FFFFFF"
          />
 
