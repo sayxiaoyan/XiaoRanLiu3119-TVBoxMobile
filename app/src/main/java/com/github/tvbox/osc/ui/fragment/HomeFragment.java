@@ -36,6 +36,7 @@ import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.server.ControlManager;
 import com.github.tvbox.osc.ui.activity.DetailActivity;
 
+import com.github.tvbox.osc.ui.activity.FastSearchActivity;
 import com.github.tvbox.osc.ui.activity.HistoryActivity;
 import com.github.tvbox.osc.ui.activity.MainActivity;
 import com.github.tvbox.osc.ui.activity.SearchActivity;
@@ -197,7 +198,7 @@ public class HomeFragment extends BaseLazyFragment {
             }
         });
 
-        findViewById(R.id.iv_search).setOnClickListener(view -> jumpActivity(SearchActivity.class));
+        findViewById(R.id.iv_search).setOnClickListener(view -> jumpActivity(FastSearchActivity.class));
         findViewById(R.id.iv_history).setOnClickListener(view -> jumpActivity(HistoryActivity.class));
         setLoadSir(this.contentLayout);
         //mHandler.postDelayed(mFindFocus, 500);

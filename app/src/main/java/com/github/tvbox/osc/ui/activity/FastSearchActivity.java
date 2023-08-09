@@ -2,16 +2,24 @@ package com.github.tvbox.osc.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
@@ -23,7 +31,7 @@ import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.event.ServerEvent;
 import com.github.tvbox.osc.ui.adapter.FastListAdapter;
 import com.github.tvbox.osc.ui.adapter.FastSearchAdapter;
-import com.github.tvbox.osc.ui.adapter.SearchWordAdapter;
+import com.github.tvbox.osc.ui.adapter.PinyinAdapter;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.SearchHelper;
 import com.github.tvbox.osc.util.js.JSEngine;
@@ -31,6 +39,8 @@ import com.github.tvbox.osc.viewmodel.SourceViewModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
@@ -58,12 +68,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class FastSearchActivity extends BaseActivity {
     private LinearLayout llLayout;
-    private TextView mSearchTitle;
     private TvRecyclerView mGridView;
     private TvRecyclerView mGridViewFilter;
     private TvRecyclerView mGridViewWord;
 
     SourceViewModel sourceViewModel;
+    private View mllHotSearch;
+    private RecyclerView mRvHotSearch;
+
     //    private EditText etSearch;
 //    private TextView tvSearch;
 //    private TextView tvClear;
@@ -81,6 +93,8 @@ public class FastSearchActivity extends BaseActivity {
     private HashMap<String, ArrayList<Movie.Video>> resultVods; // 搜索结果
     private List<String> quickSearchWord = new ArrayList<>();
     private HashMap<String, String> mCheckSources = null;
+    private List<Runnable> pauseRunnable = null;
+    private PinyinAdapter mHotAdapter;
 
     private View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
         @Override
@@ -101,6 +115,7 @@ public class FastSearchActivity extends BaseActivity {
 
         }
     };
+    private EditText mEtSearch;
 
     @Override
     protected int getLayoutResID() {
@@ -114,9 +129,64 @@ public class FastSearchActivity extends BaseActivity {
         initView();
         initViewModel();
         initData();
+        initHotAndHistorySearch();
     }
 
-    private List<Runnable> pauseRunnable = null;
+    private void hideHotAndHistorySearch(boolean isHide){
+        if(isHide){
+            mllHotSearch.setVisibility(View.GONE);
+            mRvHotSearch.setVisibility(View.GONE);
+        }else{
+            mllHotSearch.setVisibility(View.VISIBLE);
+            mRvHotSearch.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void initHotAndHistorySearch(){
+        mRvHotSearch.setHasFixedSize(true);
+        mRvHotSearch.setLayoutManager(new V7GridLayoutManager(this.mContext, 4));
+        mHotAdapter = new PinyinAdapter();
+        mRvHotSearch.setAdapter(mHotAdapter);
+        mHotAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                search(mHotAdapter.getItem(position));
+            }
+        });
+        getHotWords();
+    }
+
+    private void getHotWords(){
+        // 加载热词
+        OkGo.<String>get("https://node.video.qq.com/x/api/hot_search")
+//        OkGo.<String>get("https://api.web.360kan.com/v1/rank")
+//                .params("cat", "1")
+                .params("channdlId", "0")
+                .params("_", System.currentTimeMillis())
+                .execute(new AbsCallback<String>() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            ArrayList<String> hots = new ArrayList<>();
+                            JsonArray itemList = JsonParser.parseString(response.body()).getAsJsonObject().get("data").getAsJsonObject().get("mapResult").getAsJsonObject().get("0").getAsJsonObject().get("listInfo").getAsJsonArray();
+//                            JsonArray itemList = JsonParser.parseString(response.body()).getAsJsonObject().get("data").getAsJsonArray();
+                            for (JsonElement ele : itemList) {
+                                JsonObject obj = (JsonObject) ele;
+                                hots.add(obj.get("title").getAsString().trim().replaceAll("<|>|《|》|-", "").split(" ")[0]);
+                            }
+                            mHotAdapter.setNewData(hots);
+                        } catch (Throwable th) {
+                            th.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public String convertResponse(okhttp3.Response response) throws Throwable {
+                        return response.body().string();
+                    }
+                });
+
+    }
 
     @Override
     protected void onResume() {
@@ -134,8 +204,13 @@ public class FastSearchActivity extends BaseActivity {
 
     private void initView() {
         EventBus.getDefault().register(this);
+        //搜索建议模块(热门/历史)
+        mllHotSearch = findViewById(R.id.llHotSearch);
+        mRvHotSearch = findViewById(R.id.rvHotSearch);
+
+        mEtSearch = findViewById(R.id.et_search);
+
         llLayout = findViewById(R.id.llLayout);
-        mSearchTitle = findViewById(R.id.mSearchTitle);
         mGridView = findViewById(R.id.mGridView);
         mGridViewWord = findViewById(R.id.mGridViewWord);
         mGridViewFilter = findViewById(R.id.mGridViewFilter);
@@ -151,6 +226,30 @@ public class FastSearchActivity extends BaseActivity {
 //            @Override
 //            public void onFocusChange(View itemView, boolean hasFocus) {}
 //        });
+
+        mEtSearch.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                search(mEtSearch.getText().toString());
+                return true;
+            }
+            return false;
+        });
+
+        findViewById(R.id.iv_filter).setOnClickListener(view -> {
+            ToastUtils.showShort("等候开放");
+        });
+        findViewById(R.id.iv_back).setOnClickListener(view -> {
+            finish();
+        });
+        findViewById(R.id.iv_search).setOnClickListener(view -> {
+            String s = mEtSearch.getText().toString();
+            if (TextUtils.isEmpty(s)) {
+                ToastUtils.showShort("请输入搜索内容");
+            }else {
+                search(s);
+            }
+        });
+
 
         mGridViewWord.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override
@@ -181,7 +280,7 @@ public class FastSearchActivity extends BaseActivity {
         });
 
         mGridView.setHasFixedSize(true);
-        mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
+        mGridView.setLayoutManager(new LinearLayoutManager(this.mContext));
 
         searchAdapter = new FastSearchAdapter();
         mGridView.setAdapter(searchAdapter);
@@ -210,7 +309,7 @@ public class FastSearchActivity extends BaseActivity {
         });
 
 
-        mGridViewFilter.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
+        mGridViewFilter.setLayoutManager(new LinearLayoutManager(mContext));
         searchAdapterFilter = new FastSearchAdapter();
         mGridViewFilter.setAdapter(searchAdapterFilter);
         searchAdapterFilter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -304,6 +403,7 @@ public class FastSearchActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("title")) {
             String title = intent.getStringExtra("title");
+            mEtSearch.setText(title);
             showLoading();
             search(title);
         }
@@ -327,9 +427,6 @@ public class FastSearchActivity extends BaseActivity {
                 searchData(null);
             }
         }
-        if (mSearchTitle != null) {
-            mSearchTitle.setText(String.format("搜索(%d/%d)", resultVods.size(), spNames.size()));
-        }
     }
 
     private void initCheckedSourcesForSearch() {
@@ -337,6 +434,12 @@ public class FastSearchActivity extends BaseActivity {
     }
 
     private void search(String title) {
+        if (TextUtils.isEmpty(title)) {
+            ToastUtils.showShort("请输入搜索内容");
+            return;
+        }
+        hideHotAndHistorySearch(true);
+        KeyboardUtils.hideSoftInput(this);
         cancel();
         showLoading();
         this.searchTitle = title;

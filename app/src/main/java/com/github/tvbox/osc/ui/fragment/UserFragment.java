@@ -123,12 +123,12 @@ public class UserFragment extends BaseLazyFragment {
                         jumpActivity(DetailActivity.class, bundle);
                     }
                 } else {
-                    Intent newIntent;
-                    if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
-                        newIntent = new Intent(mContext, FastSearchActivity.class);
-                    }else {
-                        newIntent = new Intent(mContext, SearchActivity.class);
-                    }
+                    Intent newIntent = new Intent(mContext, FastSearchActivity.class);
+//                    if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
+//                        newIntent = new Intent(mContext, FastSearchActivity.class);
+//                    }else {
+//                        newIntent = new Intent(mContext, SearchActivity.class);
+//                    }
                     newIntent.putExtra("title", vod.name);
                     newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     mActivity.startActivity(newIntent);

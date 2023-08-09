@@ -1,83 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="120dp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="10dp"
-    android:layout_marginHorizontal="5dp"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="10dp"
+    android:layout_marginBottom="10dp"
+    android:orientation="horizontal">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="140dp">
+    <ImageView
+        android:id="@+id/ivThumb"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="match_parent"/>
 
-        <ImageView
-            android:id="@+id/ivThumb"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/dp_1"
-            android:scaleType="fitXY" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="7"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="12dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:layout_marginTop="@dimen/dp_5"
-            android:layout_marginRight="@dimen/dp_5"
-            android:orientation="horizontal">
+            tools:text="肖申克的救赎"
+            android:textColor="@color/text_gray"
+            android:ellipsize="end"
+            android:singleLine="true"
+            />
 
-            <TextView
-                android:id="@+id/tvSite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_5"
-                android:layout_marginRight="@dimen/dp_5"
-                android:background="@drawable/shape_thumb_year"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:paddingLeft="@dimen/dp_5"
-                android:paddingRight="@dimen/dp_5"
-                android:singleLine="true"/>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvSite"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="vertical"
-            android:padding="@dimen/dp_1">
+            tools:text="剪片小站"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:layout_marginTop="8dp"
+            android:textColor="#3F51B5"
+            />
 
-            <TextView
-                android:id="@+id/tvNote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="@dimen/dp_5"
-                android:layout_marginRight="@dimen/dp_5"
-                android:layout_marginBottom="@dimen/dp_5"
-                android:background="@drawable/shape_thumb_note"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:paddingLeft="@dimen/dp_5"
-                android:paddingRight="@dimen/dp_5"
-                android:singleLine="true"
-                android:textSize="12dp"
-                android:textColor="@color/white"
-                tools:text="哈哈"/>
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_thumb_bottom_name"
-                android:ellipsize="marquee"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:padding="@dimen/dp_5"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                tools:text="哈哈" />
-        </LinearLayout>
-    </FrameLayout>
-</FrameLayout>
+        <TextView
+            android:id="@+id/tvNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="更新至10集 1080p"
+            android:ellipsize="end"
+            android:maxLines="2"
+            />
+    </LinearLayout>
+
+</LinearLayout>

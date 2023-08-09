@@ -3,26 +3,79 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:paddingTop="40dp">
 
 
     <LinearLayout
+        android:id="@+id/llSearchBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginBottom="@dimen/dp_10"
-        android:paddingLeft="20mm">
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="8dp"
+        android:layout_marginBottom="18dp"
+        >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bar_arrows_left_black"/>
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="搜索"
+            android:textSize="16sp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@null"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            />
+
+        <ImageView
+            android:id="@+id/iv_filter"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_filter"
+            app:tint="@color/text_gray"
+            android:visibility="gone"/>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="18dp"
+            android:background="@color/text_gray"/>
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_search"
+            android:paddingHorizontal="6dp"
+            app:tint="@color/text_gray"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llHotSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        >
 
         <TextView
-            android:id="@+id/mSearchTitle"
-            android:layout_width="@dimen/dp_180"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingTop="8dp"
-            android:text="搜索(0/0)"
-            android:textAlignment="center"
-            android:textSize="@dimen/ts_22" />
+            android:layout_marginBottom="@dimen/dp_10"
+            android:text="热门搜索"
+            android:textAlignment="center"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHotSearch"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -32,7 +85,7 @@
 
         <LinearLayout
             android:id="@+id/llWord"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingLeft="20mm">

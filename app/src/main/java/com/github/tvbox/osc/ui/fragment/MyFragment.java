@@ -52,7 +52,6 @@ import java.util.List;
  */
 public class MyFragment extends BaseLazyFragment implements View.OnClickListener {
     private LinearLayout tvLive;
-    private LinearLayout tvSearch;
     private LinearLayout tvSetting;
     private LinearLayout tvHistory;
     private LinearLayout tvCollect;
@@ -66,13 +65,11 @@ public class MyFragment extends BaseLazyFragment implements View.OnClickListener
     @Override
     protected void init() {
         tvLive = findViewById(R.id.tvLive);
-        tvSearch = findViewById(R.id.tvSearch);
         tvSetting = findViewById(R.id.tvSetting);
         tvCollect = findViewById(R.id.tvFavorite);
         tvHistory = findViewById(R.id.tvHistory);
         tvPush = findViewById(R.id.tvPush);
         tvLive.setOnClickListener(this);
-        tvSearch.setOnClickListener(this);
         tvSetting.setOnClickListener(this);
         tvHistory.setOnClickListener(this);
         tvPush.setOnClickListener(this);
@@ -84,8 +81,6 @@ public class MyFragment extends BaseLazyFragment implements View.OnClickListener
         FastClickCheckUtil.check(v);
         if (v.getId() == R.id.tvLive) {
             jumpActivity(LivePlayActivity.class);
-        } else if (v.getId() == R.id.tvSearch) {
-            jumpActivity(SearchActivity.class);
         } else if (v.getId() == R.id.tvSetting) {
             jumpActivity(SettingActivity.class);
         } else if (v.getId() == R.id.tvHistory) {
