@@ -25,6 +25,7 @@ import com.github.tvbox.osc.ui.activity.LivePlayActivity;
 import com.github.tvbox.osc.ui.activity.PushActivity;
 import com.github.tvbox.osc.ui.activity.SearchActivity;
 import com.github.tvbox.osc.ui.activity.SettingActivity;
+import com.github.tvbox.osc.ui.adapter.GridAdapter;
 import com.github.tvbox.osc.ui.adapter.HomeHotVodAdapter;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
@@ -56,7 +57,7 @@ import java.util.List;
  */
 public class UserFragment extends BaseLazyFragment {
 
-    private HomeHotVodAdapter homeHotVodAdapter;
+    private GridAdapter homeHotVodAdapter;
     private List<Movie.Video> homeSourceRec;
     RecyclerView tvHotList1;
 
@@ -105,7 +106,7 @@ public class UserFragment extends BaseLazyFragment {
     @Override
     protected void init() {
         tvHotList1 = findViewById(R.id.tvHotList1);
-        homeHotVodAdapter = new HomeHotVodAdapter();
+        homeHotVodAdapter = new GridAdapter();
         homeHotVodAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -153,7 +154,7 @@ public class UserFragment extends BaseLazyFragment {
         initHomeHotVod(homeHotVodAdapter);
     }
 
-    private void initHomeHotVod(HomeHotVodAdapter adapter) {
+    private void initHomeHotVod(GridAdapter adapter) {
         if (Hawk.get(HawkConfig.HOME_REC, 0) == 1) {
             if (homeSourceRec != null) {
                 adapter.setNewData(homeSourceRec);

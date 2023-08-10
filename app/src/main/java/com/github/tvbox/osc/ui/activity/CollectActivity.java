@@ -51,7 +51,7 @@ public class CollectActivity extends BaseActivity {
     }
 
     private void initView() {
-        EventBus.getDefault().register(this);
+
         tvDel = findViewById(R.id.tvDel);
         tvDelTip = findViewById(R.id.tvDelTip);
         mGridView = findViewById(R.id.mGridView);
@@ -126,20 +126,6 @@ public class CollectActivity extends BaseActivity {
             vodInfoList.add(vodInfo);
         }
         collectAdapter.setNewData(vodInfoList);
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refresh(RefreshEvent event) {
-        if (event.type == RefreshEvent.TYPE_HISTORY_REFRESH) {
-            initData();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

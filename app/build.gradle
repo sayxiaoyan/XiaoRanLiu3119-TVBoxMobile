@@ -116,5 +116,7 @@ dependencies {
     implementation 'com.github.li-xiaojun:XPopup:2.9.19'
     //工具类
     implementation 'com.blankj:utilcodex:1.29.0'
+    //阴影/shape/选择器/圆角/...
+    implementation 'com.github.lihangleo2:ShadowLayout:3.3.3'
 
 }

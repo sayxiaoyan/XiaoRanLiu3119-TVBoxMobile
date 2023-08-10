@@ -1,61 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.lihang.ShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="140dp"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="5dp"
     android:layout_marginTop="10dp"
+    app:hl_cornerRadius="20dp"
     >
 
-    <ImageView
-        android:id="@+id/ivThumb"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvYear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:padding="5dp"
-        android:singleLine="true"
-        tools:text="1970"
-        android:textColor="@color/white"
-        android:textSize="10dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:layout_alignParentBottom="true"
-        android:padding="@dimen/dp_1">
+        <ImageView
+            android:id="@+id/ivThumb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
 
         <TextView
-            android:id="@+id/tvNote"
+            android:id="@+id/tvYear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:padding="@dimen/dp_5"
             android:ellipsize="end"
             android:gravity="center"
+            android:padding="5dp"
             android:singleLine="true"
+            tools:text="1970"
             android:textColor="@color/white"
-            />
+            android:textSize="10dp" />
 
-        <TextView
-            android:id="@+id/tvName"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:padding="@dimen/dp_5"
-            android:textColor="@color/white"
-            tools:text="爱上大大"
-            android:singleLine="true"
-            android:background="@drawable/shape_thumb_bottom_name"/>
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_gradient_primary_b2t">
 
-    </LinearLayout>
-</RelativeLayout>
+            <TextView
+                android:id="@+id/tvNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                tools:text="更新至10集"
+                />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/white"
+                tools:text="爱上大大"
+                android:singleLine="true"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</com.lihang.ShadowLayout>
