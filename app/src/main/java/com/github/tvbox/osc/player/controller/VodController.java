@@ -292,6 +292,13 @@ public class VodController extends BaseController {
                 hideBottom();
             }
         });
+        findViewById(R.id.iv_fullscreen).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.toggleFullScreen();
+                hideBottom();
+            }
+        });
         mPlayerScaleBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -699,6 +706,8 @@ public class VodController extends BaseController {
         void selectSubtitle();
 
         void selectAudioTrack();
+
+        void toggleFullScreen();
     }
 
     public void setListener(VodControlListener listener) {

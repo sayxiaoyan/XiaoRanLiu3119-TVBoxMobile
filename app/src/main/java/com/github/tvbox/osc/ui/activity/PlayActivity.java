@@ -237,6 +237,11 @@ public class PlayActivity extends BaseActivity {
             public void prepared() {
                 initSubtitleView();
             }
+
+            @Override
+            public void toggleFullScreen() {
+
+            }
         });
         mVideoView.setVideoController(mController);
     }

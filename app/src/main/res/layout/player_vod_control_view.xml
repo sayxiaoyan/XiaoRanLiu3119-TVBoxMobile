@@ -129,28 +129,13 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/play_pre"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="4dp"
-                    android:src="@drawable/ic_play_pre"/>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/play_next"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="4dp"
-                    android:src="@drawable/ic_play_next"/>
-
-                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/play_retry"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
-                    android:src="@drawable/ic_re_play"/>
+                    android:src="@drawable/ic_re_play"
+                    />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/play_refresh"
@@ -373,7 +358,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_10"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/curr_time"
@@ -395,8 +381,8 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:max="1000"
-                android:maxHeight="@dimen/dp_6"
-                android:minHeight="@dimen/dp_6"
+                android:maxHeight="3dp"
+                android:minHeight="3dp"
                 android:padding="@dimen/dp_0"
                 android:paddingStart="@dimen/dp_0"
                 android:paddingEnd="@dimen/dp_0"
@@ -413,6 +399,32 @@
                 android:text="00:00"
                 android:textColor="@color/color_FFFFFF"
                  />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/play_pre"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:scaleType="centerCrop"
+                android:padding="4dp"
+                android:src="@drawable/ic_play_pre"/>
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/play_next"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:scaleType="centerCrop"
+                android:padding="4dp"
+                android:layout_marginHorizontal="4dp"
+                android:src="@drawable/ic_play_next"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_fullscreen"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:scaleType="centerCrop"
+                android:padding="4dp"
+                android:src="@drawable/ic_fullscreen"/>
         </LinearLayout>
 
 
