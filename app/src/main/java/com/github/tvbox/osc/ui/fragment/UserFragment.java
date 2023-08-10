@@ -113,27 +113,31 @@ public class UserFragment extends BaseLazyFragment {
                 if (ApiConfig.get().getSourceBeanList().isEmpty())
                     return;
                 Movie.Video vod = ((Movie.Video) adapter.getItem(position));
-                if (vod.id != null && !vod.id.isEmpty()) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("id", vod.id);
-                    bundle.putString("sourceKey", vod.sourceKey);
-                    if(Hawk.get(HawkConfig.HOME_REC, 0)==1 && Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
-                        bundle.putString("title", vod.name);
-                        jumpActivity(FastSearchActivity.class, bundle);
-                    }else {
-                        jumpActivity(DetailActivity.class, bundle);
-                    }
-                } else {
-                    Intent newIntent = new Intent(mContext, FastSearchActivity.class);
-//                    if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
-//                        newIntent = new Intent(mContext, FastSearchActivity.class);
+//                if (vod.id != null && !vod.id.isEmpty()) {
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("id", vod.id);
+//                    bundle.putString("sourceKey", vod.sourceKey);
+//                    if(Hawk.get(HawkConfig.HOME_REC, 0)==1 && Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
+//                        bundle.putString("title", vod.name);
+//                        jumpActivity(FastSearchActivity.class, bundle);
 //                    }else {
-//                        newIntent = new Intent(mContext, SearchActivity.class);
+//                        jumpActivity(DetailActivity.class, bundle);
 //                    }
-                    newIntent.putExtra("title", vod.name);
-                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    mActivity.startActivity(newIntent);
-                }
+//                } else {
+//                    Intent newIntent = new Intent(mContext, FastSearchActivity.class);
+////                    if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
+////                        newIntent = new Intent(mContext, FastSearchActivity.class);
+////                    }else {
+////                        newIntent = new Intent(mContext, SearchActivity.class);
+////                    }
+//                    newIntent.putExtra("title", vod.name);
+//                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    mActivity.startActivity(newIntent);
+//                }
+
+                Bundle bundle = new Bundle();
+                bundle.putString("title", vod.name);
+                jumpActivity(FastSearchActivity.class, bundle);
             }
         });
 
@@ -184,24 +188,24 @@ public class UserFragment extends BaseLazyFragment {
             OkGo.<String>get(doubanUrl)
                     .headers("User-Agent", UA.randomOne())
                     .execute(new AbsCallback<String>() {
-                @Override
-                public void onSuccess(Response<String> response) {
-                    String netJson = response.body();
-                    Hawk.put("home_hot_day", today);
-                    Hawk.put("home_hot", netJson);
-                    mActivity.runOnUiThread(new Runnable() {
                         @Override
-                        public void run() {
-                            adapter.setNewData(loadHots(netJson));
+                        public void onSuccess(Response<String> response) {
+                            String netJson = response.body();
+                            Hawk.put("home_hot_day", today);
+                            Hawk.put("home_hot", netJson);
+                            mActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.setNewData(loadHots(netJson));
+                                }
+                            });
+                        }
+
+                        @Override
+                        public String convertResponse(okhttp3.Response response) throws Throwable {
+                            return response.body().string();
                         }
                     });
-                }
-
-                @Override
-                public String convertResponse(okhttp3.Response response) throws Throwable {
-                    return response.body().string();
-                }
-            });
         } catch (Throwable th) {
             th.printStackTrace();
         }
@@ -217,8 +221,8 @@ public class UserFragment extends BaseLazyFragment {
                 Movie.Video vod = new Movie.Video();
                 vod.name = obj.get("title").getAsString();
                 vod.note = obj.get("rate").getAsString();
-                if(!vod.note.isEmpty())vod.note+=" 分";
-                vod.pic = obj.get("cover").getAsString()+"@User-Agent=com.douban.frodo";
+                if (!vod.note.isEmpty()) vod.note += " 分";
+                vod.pic = obj.get("cover").getAsString() + "@User-Agent=com.douban.frodo";
                 result.add(vod);
             }
         } catch (Throwable th) {

@@ -191,6 +191,17 @@
                         android:gravity="center"
                         android:text="收藏"
                         android:textSize="@dimen/dp_20" />
+
+                    <TextView
+                        android:id="@+id/tvDownload"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="@dimen/dp_40"
+                        android:background="@drawable/button_detail_collect"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:text="下载"
+                        android:textSize="@dimen/dp_20" />
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

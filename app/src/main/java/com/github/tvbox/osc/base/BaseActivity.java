@@ -38,6 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
     private LoadService mLoadService;
 
     private ImmersionBar mImmersionBar;
+    private TitleBar mTitleBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
         mContext = this;
         AppManager.getInstance().addActivity(this);
         initStatusBar();
+        initTitleBar();
         init();
     }
 
@@ -54,6 +56,12 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
                 .statusBarDarkFont(true)
                 .titleBar(findTitleBar(getWindow().getDecorView().findViewById(android.R.id.content)))
                 .init();
+    }
+
+    private void initTitleBar(){
+        if (getTitleBar() != null) {
+            getTitleBar().setOnTitleBarListener(this);
+        }
     }
 
     /**
@@ -73,6 +81,14 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
         }
         return null;
     }
+
+    private TitleBar getTitleBar() {
+        if (mTitleBar == null) {
+            mTitleBar = findTitleBar(getWindow().getDecorView().findViewById(android.R.id.content));
+        }
+        return mTitleBar;
+    }
+
 
     public boolean hasPermission(String permission) {
         boolean has = true;
@@ -157,5 +173,10 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
     @Override
     public boolean isBaseOnWidth() {
         return true;
+    }
+
+    @Override
+    public void onLeftClick(TitleBar titleBar) {
+        finish();
     }
 }

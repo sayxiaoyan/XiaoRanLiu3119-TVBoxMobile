@@ -55,7 +55,6 @@ public class MyFragment extends BaseLazyFragment implements View.OnClickListener
     private LinearLayout tvSetting;
     private LinearLayout tvHistory;
     private LinearLayout tvCollect;
-    private LinearLayout tvPush;
 
     @Override
     protected int getLayoutResID() {
@@ -68,11 +67,9 @@ public class MyFragment extends BaseLazyFragment implements View.OnClickListener
         tvSetting = findViewById(R.id.tvSetting);
         tvCollect = findViewById(R.id.tvFavorite);
         tvHistory = findViewById(R.id.tvHistory);
-        tvPush = findViewById(R.id.tvPush);
         tvLive.setOnClickListener(this);
         tvSetting.setOnClickListener(this);
         tvHistory.setOnClickListener(this);
-        tvPush.setOnClickListener(this);
         tvCollect.setOnClickListener(this);
     }
 
@@ -85,8 +82,6 @@ public class MyFragment extends BaseLazyFragment implements View.OnClickListener
             jumpActivity(SettingActivity.class);
         } else if (v.getId() == R.id.tvHistory) {
             jumpActivity(HistoryActivity.class);
-        } else if (v.getId() == R.id.tvPush) {
-            jumpActivity(PushActivity.class);
         } else if (v.getId() == R.id.tvFavorite) {
             jumpActivity(CollectActivity.class);
         }

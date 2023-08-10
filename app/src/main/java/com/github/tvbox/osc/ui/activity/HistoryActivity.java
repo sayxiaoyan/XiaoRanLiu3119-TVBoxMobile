@@ -37,7 +37,6 @@ import java.util.List;
  * @description:
  */
 public class HistoryActivity extends BaseActivity {
-    private TextView tvDelTip;
     private RecyclerView mGridView;
     private HistoryAdapter historyAdapter;
     private TitleBar mTitleBar;
@@ -54,10 +53,8 @@ public class HistoryActivity extends BaseActivity {
     }
 
     private void initView() {
-        EventBus.getDefault().register(this);
 
         mTitleBar = findViewById(R.id.title_bar);
-        tvDelTip = findViewById(R.id.tvDelTip);
         mGridView = findViewById(R.id.mGridView);
         mGridView.setHasFixedSize(true);
         mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
@@ -119,11 +116,5 @@ public class HistoryActivity extends BaseActivity {
         if (event.type == RefreshEvent.TYPE_HISTORY_REFRESH) {
             initData();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 }

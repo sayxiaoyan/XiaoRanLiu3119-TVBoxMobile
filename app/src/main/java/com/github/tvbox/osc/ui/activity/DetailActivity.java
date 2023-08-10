@@ -1,9 +1,13 @@
 package com.github.tvbox.osc.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,12 +19,14 @@ import android.widget.Toast;
 import android.content.ClipboardManager;
 import android.content.ClipData;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SpanUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.github.tvbox.osc.R;
@@ -193,6 +199,12 @@ public class DetailActivity extends BaseActivity {
 
         llPlayerFragmentContainerBlock.setOnClickListener((view -> toggleFullPreview()));
 
+        findViewById(R.id.tvDownload).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                use1DMDownload();
+            }
+        });
         tvSort.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -920,5 +932,45 @@ public class DetailActivity extends BaseActivity {
             subtitleTextSize *= 0.6;
         }
         EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_SUBTITLE_SIZE_CHANGE, subtitleTextSize));
+    }
+
+    private void use1DMDownload() {
+        if (vodInfo != null && vodInfo.seriesMap.get(vodInfo.playFlag).size() > 0){
+            VodInfo.VodSeries vod = vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex);
+
+            // 创建Intent对象，启动1DM App
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(vod.url));
+            intent.setDataAndType(Uri.parse(vod.url), "video/mp4");
+            intent.putExtra("title", vodInfo.name+" "+vod.name); // 传入文件保存名
+//            intent.setClassName("idm.internet.download.manager.plus", "idm.internet.download.manager.MainActivity");
+            intent.setClassName("idm.internet.download.manager.plus", "idm.internet.download.manager.Downloader");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            // 检查1DM App是否已安装
+            PackageManager pm = getPackageManager();
+            List<ResolveInfo> activities = pm.queryIntentActivities(intent, 0);
+            boolean isIntentSafe = activities.size() > 0;
+
+            if (isIntentSafe) {
+                startActivity(intent); // 启动1DM App
+            } else {
+                // 如果1DM App未安装，提示用户安装1DM App
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("请先安装1DM+下载管理器");
+                builder.setMessage("为了下载视频，请先安装1DM+下载管理器。是否现在安装？");
+                builder.setPositiveButton("立即下载", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 跳转到下载链接
+                        Intent downloadIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://od.lk/d/MzRfMTg0NTcxMDdf/1DM _v15.6.apk"));
+                        startActivity(downloadIntent);
+                    }
+                });
+                builder.setNegativeButton("取消", null);
+                builder.show();
+            }
+        } else {
+            ToastUtils.showShort("资源异常,请稍后重试");
+        }
     }
 }
