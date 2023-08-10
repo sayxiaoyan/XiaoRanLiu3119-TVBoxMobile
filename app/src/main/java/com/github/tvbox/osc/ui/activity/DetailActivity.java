@@ -105,6 +105,9 @@ public class DetailActivity extends BaseActivity {
     private TextView tvCollect;
     private TvRecyclerView mGridViewFlag;
     private TvRecyclerView mGridView;
+    /**
+     * 集数的分组
+     */
     private TvRecyclerView mSeriesGroupView;
     private LinearLayout mEmptyPlayList;
     private SourceViewModel sourceViewModel;
@@ -595,7 +598,7 @@ public class DetailActivity extends BaseActivity {
 //                        ivThumb.setImageResource(R.drawable.img_loading_placeholder);
 //                    }
 
-                    if (vodInfo.seriesMap != null && vodInfo.seriesMap.size() > 0) {
+                    if (vodInfo.seriesMap != null && vodInfo.seriesMap.size() > 0) {//线路
                         mGridViewFlag.setVisibility(View.VISIBLE);
                         mGridView.setVisibility(View.VISIBLE);
                         tvPlay.setVisibility(View.VISIBLE);
@@ -633,6 +636,7 @@ public class DetailActivity extends BaseActivity {
                         }
                         //设置播放地址
                         setTextShow(tvPlayUrl, "播放地址：", vodInfo.seriesMap.get(vodInfo.playFlag).get(0).url);
+                        //设置线路数据
                         seriesFlagAdapter.setNewData(vodInfo.seriesFlags);
                         mGridViewFlag.scrollToPosition(flagScrollTo);
 
@@ -644,7 +648,7 @@ public class DetailActivity extends BaseActivity {
                             toggleSubtitleTextSize();
                         }
                         // startQuickSearch();
-                    } else {
+                    } else {//空布局
                         mGridViewFlag.setVisibility(View.GONE);
                         mGridView.setVisibility(View.GONE);
                         mSeriesGroupView.setVisibility(View.GONE);

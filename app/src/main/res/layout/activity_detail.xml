@@ -234,6 +234,7 @@
                  />
         </LinearLayout>
 
+<!--        线路列表-->
         <com.owen.tvrecyclerview.widget.TvRecyclerView
             android:id="@+id/mGridViewFlag"
             android:layout_width="match_parent"
@@ -246,6 +247,7 @@
             tools:listitem="@layout/item_series_flag"
             />
 
+<!--        集数分组-->
         <com.owen.tvrecyclerview.widget.TvRecyclerView
             android:id="@+id/mSeriesGroupView"
             android:layout_width="match_parent"
@@ -256,6 +258,7 @@
             app:tv_horizontalSpacingWithMargins="@dimen/dp_10"
             app:tv_selectedItemIsCentered="true" />
 
+<!--        集数列表-->
         <com.owen.tvrecyclerview.widget.TvRecyclerView
             android:id="@+id/mGridView"
             android:layout_width="match_parent"

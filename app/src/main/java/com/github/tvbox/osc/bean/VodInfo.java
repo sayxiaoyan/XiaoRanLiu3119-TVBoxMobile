@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * @author pj567
  * @date :2020/12/22
- * @description:
+ * @description: 自定义装载解析后影片的容器对象,包括影片信息,线路信息,播放信息,记录当前选择的线路,集数等
  */
 public class VodInfo implements Serializable {
     public String last;//时间
@@ -43,9 +43,18 @@ public class VodInfo implements Serializable {
     //导演<![CDATA[陈国星]]>
     public String director;
     public ArrayList<VodSeriesFlag> seriesFlags;
+    /**
+     * 线路集合
+     */
     public LinkedHashMap<String, List<VodSeries>> seriesMap;
     public String des;// <![CDATA[权来]
+    /**
+     * 记录选择线路存储于seriesMap的key
+     */
     public String playFlag = null;
+    /**
+     * 记录当前选择的集数
+     */
     public int playIndex = 0;
     public String playNote = "";
     public String sourceKey;
@@ -110,10 +119,15 @@ public class VodInfo implements Serializable {
         }
     }
 
+    /**
+     * 线路的子资源(如: 第*集 )
+     */
     public static class VodSeries implements Serializable {
-
+        //第*集
         public String name;
+        //第*集的url
         public String url;
+        //选中状态
         public boolean selected;
 
         public VodSeries() {
