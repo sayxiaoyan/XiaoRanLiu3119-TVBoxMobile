@@ -2,7 +2,10 @@ package com.github.tvbox.osc.ui.dialog;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,22 +40,14 @@ import me.jessyan.autosize.utils.AutoSizeUtils;
  * @since 2020/12/27
  */
 public class ApiDialog extends BaseDialog {
-    private ImageView ivQRCode;
     private TextView tvAddress;
     private EditText inputApi;
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refresh(RefreshEvent event) {
-        if (event.type == RefreshEvent.TYPE_API_URL_CHANGE) {
-            inputApi.setText((String) event.obj);
-        }
-    }
 
     public ApiDialog(@NonNull @NotNull Context context) {
         super(context);
         setContentView(R.layout.dialog_api);
         
-        ivQRCode = findViewById(R.id.ivQRCode);
         tvAddress = findViewById(R.id.tvAddress);
         inputApi = findViewById(R.id.input);
         //内置网络接口在此处添加
@@ -130,13 +125,7 @@ public class ApiDialog extends BaseDialog {
                 }
             }
         });
-        refreshQRCode();
-    }
 
-    private void refreshQRCode() {
-        String address = ControlManager.get().getAddress(false);
-        tvAddress.setText(String.format("手机/电脑扫描上方二维码或者直接浏览器访问地址\n%s", address));
-        ivQRCode.setImageBitmap(QRCodeGen.generateBitmap(address, AutoSizeUtils.mm2px(getContext(), 300), AutoSizeUtils.mm2px(getContext(), 300)));
     }
 
     public void setOnListener(OnListener listener) {

@@ -40,8 +40,7 @@
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/dp_20"
                 android:paddingRight="@dimen/dp_20"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -207,7 +206,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingRight="@dimen/dp_20"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -288,7 +288,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingRight="@dimen/dp_20"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -408,7 +409,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingRight="@dimen/dp_20"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,9 @@ public class BaseDialog extends Dialog {
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(getWindow().getAttributes());
-        lp.gravity = Gravity.BOTTOM | Gravity.LEFT | Gravity.RIGHT;
+        lp.gravity = Gravity.BOTTOM | Gravity.START | Gravity.END;
+        lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+
         getWindow().setAttributes(lp);
         getWindow().setWindowAnimations(R.style.BottomDialogAnimation); // Set the animation style
     }

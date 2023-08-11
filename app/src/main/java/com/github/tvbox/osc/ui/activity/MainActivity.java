@@ -49,6 +49,12 @@ public class MainActivity extends BaseActivity {
             mVp.setCurrentItem(menuItem.getOrder(), false);
             return true;
         });
+        mVp.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                mBottomNav.getMenu().getItem(position).setChecked(true);
+            }
+        });
     }
 
     private void initVp() {

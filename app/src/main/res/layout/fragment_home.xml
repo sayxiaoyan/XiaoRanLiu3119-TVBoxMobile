@@ -65,7 +65,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topLayout"
-        android:paddingTop="10dp">
+        android:paddingTop="20dp">
 
         <com.owen.tvrecyclerview.widget.TvRecyclerView
             android:id="@+id/mGridView"
@@ -75,6 +75,7 @@
             tools:listitem="@layout/item_home_sort"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:orientation="horizontal"
+            android:paddingLeft="20dp"
             />
 
         <com.github.tvbox.osc.ui.tv.widget.NoScrollViewPager
