@@ -242,6 +242,11 @@ public class PlayActivity extends BaseActivity {
             public void toggleFullScreen() {
 
             }
+
+            @Override
+            public void exit() {
+
+            }
         });
         mVideoView.setVideoController(mController);
     }

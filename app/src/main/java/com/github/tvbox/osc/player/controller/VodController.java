@@ -141,14 +141,17 @@ public class VodController extends BaseController {
         @Override
         public void run() {
             Date date = new Date();
-            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
             mPlayPauseTime.setText(timeFormat.format(date));
             String speed = PlayerHelper.getDisplaySpeed(mControlWrapper.getTcpSpeed());
             mPlayLoadNetSpeedRightTop.setText(speed);
             mPlayLoadNetSpeed.setText(speed);
-            String width = Integer.toString(mControlWrapper.getVideoSize()[0]);
-            String height = Integer.toString(mControlWrapper.getVideoSize()[1]);
-            mVideoSize.setText("[ " + width + " X " + height +" ]");
+
+            if (mControlWrapper.getVideoSize()[0] > 0 && mControlWrapper.getVideoSize()[1] > 0){
+                String width = Integer.toString(mControlWrapper.getVideoSize()[0]);
+                String height = Integer.toString(mControlWrapper.getVideoSize()[1]);
+                mVideoSize.setText(width + " x " + height);
+            }
 
             mHandler.postDelayed(this, 1000);
         }
@@ -264,6 +267,10 @@ public class VodController extends BaseController {
                 mControlWrapper.startFadeOut();
             }
         });
+
+        mPlayTitle.setOnClickListener(view -> listener.exit());
+        mPlayTitle1.setOnClickListener(view -> listener.exit());
+
         mPlayerRetry.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -708,6 +715,8 @@ public class VodController extends BaseController {
         void selectAudioTrack();
 
         void toggleFullScreen();
+
+        void exit();
     }
 
     public void setListener(VodControlListener listener) {

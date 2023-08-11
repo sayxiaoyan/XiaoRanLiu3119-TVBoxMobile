@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:background="@color/black">
 
     <LinearLayout
             android:id="@+id/tv_top_l_container"
-            android:layout_width="720dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:tag="tv_top_container"
             android:visibility="gone"
@@ -24,11 +25,11 @@
                 android:layout_gravity="left"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:width="680dp"
                 android:paddingTop="@dimen/dp_20"
-                android:paddingLeft="@dimen/dp_20"
                 android:text="http://"
-
+                android:textColor="@color/white"
+                android:drawablePadding="20dp"
+                android:drawableLeft="@drawable/dkplayer_ic_action_arrow_back"
                  />
 
             <TextView
@@ -40,8 +41,8 @@
                 android:maxLines="1"
                 android:paddingLeft="@dimen/dp_20"
                 android:tag="vod_video_size"
-                android:text="[ 1024 x 768 ]"
-
+                tools:text="1024 x 768"
+                android:textColor="@color/white"
                  />
 
     </LinearLayout>
@@ -68,8 +69,8 @@
             android:paddingTop="@dimen/dp_20"
             android:paddingRight="@dimen/dp_20"
             android:tag="vod_control_pause_time"
-            android:text="00:00:00"
-
+            android:text="12:00"
+            android:textColor="@color/white"
              />
 
         <TextView
@@ -82,7 +83,7 @@
             android:paddingRight="@dimen/dp_20"
             android:tag="vod_control_pause_time"
             android:text="0Kb/s"
-
+            android:textColor="@color/white"
              />
     </LinearLayout>
 
@@ -119,7 +120,8 @@
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -361,6 +363,14 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/play_pre"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:scaleType="centerCrop"
+                android:padding="4dp"
+                android:src="@drawable/ic_play_pre"/>
+
             <TextView
                 android:id="@+id/curr_time"
                 android:layout_width="wrap_content"
@@ -399,15 +409,6 @@
                 android:text="00:00"
                 android:textColor="@color/color_FFFFFF"
                  />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/play_pre"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:scaleType="centerCrop"
-                android:padding="4dp"
-                android:src="@drawable/ic_play_pre"/>
-
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/play_next"
@@ -455,9 +456,10 @@
                 android:maxLines="3"
                 android:ellipsize="end"
                 android:paddingTop="@dimen/dp_20"
-                android:paddingLeft="@dimen/dp_20"
                 android:text="http://"
-
+                android:textColor="@color/white"
+                android:drawablePadding="20dp"
+                android:drawableLeft="@drawable/dkplayer_ic_action_arrow_back"
                  />
         </LinearLayout>
 
@@ -465,7 +467,6 @@
             android:layout_width="180dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:background="@drawable/shape_user_focus"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:gravity="center"
@@ -488,6 +489,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:tag="vod_control_pause_t"
+                android:textColor="@color/white"
                 tools:text="30:10" />
         </LinearLayout>
 
@@ -498,15 +500,14 @@
         android:layout_width="@dimen/dp_200"
         android:layout_height="@dimen/dp_100"
         android:layout_gravity="center"
-        android:background="@drawable/shape_user_focus"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:gravity="center"
         android:tag="vod_control_slide_info"
         android:textAlignment="gravity"
-
-        android:textSize="@dimen/ts_30"
+        tools:visibility="visible"
         android:visibility="gone"
+        android:textColor="@color/white"
         tools:text="100" />
 
     <LinearLayout
@@ -514,13 +515,11 @@
         android:layout_width="180dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:background="@drawable/shape_user_focus"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/tv_progress_icon"
@@ -538,7 +537,8 @@
             android:layout_marginTop="10dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            tools:text="30:10/40:10" />
+            tools:text="30:10/40:10"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 

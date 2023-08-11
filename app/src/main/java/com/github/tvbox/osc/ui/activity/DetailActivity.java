@@ -51,6 +51,8 @@ import com.github.tvbox.osc.viewmodel.SourceViewModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.gyf.immersionbar.BarHide;
+import com.gyf.immersionbar.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
@@ -139,6 +141,10 @@ public class DetailActivity extends BaseActivity {
         initView();
         initViewModel();
         initData();
+
+        ImmersionBar.with(this)
+                .statusBarDarkFont(false)
+                .init();
     }
 
     private void initView() {
@@ -909,8 +915,10 @@ public class DetailActivity extends BaseActivity {
         fullWindows = !fullWindows;
 
         if (fullWindows){
+            ImmersionBar.hideStatusBar(getWindow());
             ScreenUtils.setLandscape(this);
         }else {
+            ImmersionBar.showStatusBar(getWindow());
             ScreenUtils.setPortrait(this);
         }
 

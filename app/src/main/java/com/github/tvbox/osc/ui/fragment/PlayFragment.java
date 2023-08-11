@@ -39,6 +39,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.github.catvod.crawler.Spider;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
@@ -253,6 +254,16 @@ public class PlayFragment extends BaseLazyFragment {
             public void toggleFullScreen() {
                 DetailActivity activity = (DetailActivity) mActivity;
                 activity.toggleFullPreview();
+            }
+
+            @Override
+            public void exit() {
+                DetailActivity activity = (DetailActivity) mActivity;
+                if (ScreenUtils.isLandscape()) {//横屏直接调用activity的切换横竖屏方法, DetailActivity中切换横竖屏后设置了屏幕方向,在此直接判断即可,不用在activity中处理
+                    activity.toggleFullPreview();
+                } else {
+                    activity.finish();
+                }
             }
         });
         mVideoView.setVideoController(mController);
