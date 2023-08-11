@@ -9,7 +9,10 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.ui.fragment.HomeFragment;
@@ -18,6 +21,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends BaseActivity {
 
@@ -73,6 +78,17 @@ public class MainActivity extends BaseActivity {
             }
         });
         mVp.setOffscreenPageLimit(fragments.size());
+    }
+
+    private long exitTime = 0L;
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - exitTime > 2000) {
+            ToastUtils.showShort("再按一次退出程序");
+            exitTime = System.currentTimeMillis();
+        } else {
+            ActivityUtils.finishAllActivities(true);
+        }
     }
 
 }

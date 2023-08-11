@@ -124,7 +124,7 @@
 
 				<com.owen.tvrecyclerview.widget.TvRecyclerView
 					android:id="@+id/mGroupGridView"
-					android:layout_width="@dimen/dp_240"
+					android:layout_width="140dp"
 					android:layout_height="wrap_content"
 					android:divider="@null"
 					android:fadeScrollbars="false"
@@ -193,7 +193,7 @@
 
 			<com.owen.tvrecyclerview.widget.TvRecyclerView
 				android:id="@+id/mChannelGridView"
-				android:layout_width="@dimen/dp_280"
+				android:layout_width="140dp"
 				android:layout_height="match_parent"
 				android:divider="@null"
 				android:fadeScrollbars="false"
@@ -401,8 +401,8 @@
 		android:gravity="center_vertical"
 		android:id="@+id/ll_epg"
 		android:paddingBottom="5dp"
-		android:layout_width="@dimen/dp_960"
-		android:layout_height="@dimen/dp_140">
+		android:layout_width="match_parent"
+		android:layout_height="140dp">
 		<View
 			android:id="@+id/view_bg"
 			android:background="@drawable/shape_user_focus"
@@ -456,8 +456,8 @@
 				>
 				<FrameLayout
 					android:id="@+id/live_icon_null_bg"
-					android:layout_width="@dimen/dp_100"
-					android:layout_height="@dimen/dp_60"
+					android:layout_width="50dp"
+					android:layout_height="30dp"
 					android:layout_gravity="center">
 				</FrameLayout>
 				<TextView
@@ -474,8 +474,8 @@
 					tools:ignore="EllipsizeMaxLines" />
 				<ImageView
 					android:id="@+id/img_live_icon"
-					android:layout_width="@dimen/dp_180"
-					android:layout_height="@dimen/dp_60"
+					android:layout_width="90dp"
+					android:layout_height="60dp"
 					android:layout_gravity="center"
 					android:src="@drawable/app_banner"
 					android:scaleType="centerInside" />
@@ -501,9 +501,9 @@
 			android:gravity="center"
 			android:paddingTop="0dp"
 			android:singleLine="true"
-			android:text="CCTV 高清"
+			android:text="中央 HD"
 			android:textColor="@color/color_FFFFFF"
-			android:textSize="@dimen/ts_34" />
+			android:textSize="16sp" />
 
 		</LinearLayout>
 		<TextView
@@ -516,10 +516,9 @@
 			android:layout_toRightOf="@+id/channelinfo"
 			android:gravity="center"
 			android:text=""
-			android:textColor="@color/color_FFFFFF"
-			android:textSize="@dimen/ts_26" />
+			android:textColor="@color/color_FFFFFF" />
 		<com.github.tvbox.osc.ui.tv.widget.MarqueeTextView
-			android:textSize="@dimen/ts_26"
+
 			android:textColor="@color/color_FFFFFF"
 			android:ellipsize="marquee"
 			android:id="@+id/tv_current_program_time"
@@ -532,7 +531,7 @@
 
 		<com.github.tvbox.osc.ui.tv.widget.MarqueeTextView
 			android:id="@+id/tv_current_program_name"
-			android:layout_width="@dimen/dp_360"
+			android:layout_width="180dp"
 			android:layout_height="wrap_content"
 			android:layout_alignTop="@+id/tv_current_program"
 			android:layout_alignParentEnd="true"
@@ -548,7 +547,7 @@
 			android:singleLine="true"
 			android:text=""
 			android:textColor="@color/color_FFFFFF"
-			android:textSize="@dimen/ts_26" />
+			 />
 		<View
 			android:id="@+id/view_line"
 			android:background="@color/color_FFFFFF"
@@ -558,7 +557,6 @@
 			android:layout_alignLeft="@+id/tv_current_program"
 			android:layout_alignBottom="@+id/tv_current_program_name" />
 		<TextView
-			android:textSize="@dimen/ts_26"
 			android:textColor="@color/color_FFFFFF"
 			android:id="@+id/tv_next_program"
 			android:layout_width="wrap_content"
@@ -569,7 +567,6 @@
 			android:layout_alignBottom="@+id/view_line"
 			android:layout_alignParentBottom="true" />
 		<com.github.tvbox.osc.ui.tv.widget.MarqueeTextView
-			android:textSize="@dimen/ts_26"
 			android:textColor="@color/color_FFFFFF"
 			android:id="@+id/tv_next_program_time"
 			android:layout_width="wrap_content"
@@ -582,7 +579,7 @@
 
 		<com.github.tvbox.osc.ui.tv.widget.MarqueeTextView
 			android:id="@+id/tv_next_program_name"
-			android:layout_width="@dimen/dp_360"
+			android:layout_width="180dp"
 			android:layout_height="wrap_content"
 			android:layout_alignTop="@+id/tv_next_program"
 			android:layout_alignEnd="@+id/tv_current_program_name"
@@ -598,7 +595,7 @@
 			android:singleLine="true"
 			android:text=""
 			android:textColor="@color/color_FFFFFF"
-			android:textSize="@dimen/ts_26" />
+			 />
 
 		<TextView
 			android:id="@+id/tv_source"
@@ -611,7 +608,7 @@
 			android:layout_alignParentRight="true"
 			android:text="源 1/1"
 			android:textColor="@color/color_FFFFFF"
-			android:textSize="@dimen/ts_26" />
+			 />
 	</RelativeLayout>
 
 
@@ -710,57 +707,54 @@
 	</RelativeLayout>
 
 
-
 	<!--右上角动态状态栏-->
 	<RelativeLayout
 		android:layout_gravity="center|right|top"
 		android:orientation="vertical"
 		android:id="@+id/ll_right_top_loading"
 		android:background="@drawable/shape_user_search"
-		android:layout_width="@dimen/dp_240"
-		android:layout_height="@dimen/dp_70"
-		android:layout_marginTop="25mm"
-		android:layout_marginRight="25mm"
+		android:layout_width="140dp"
+		android:layout_height="50dp"
+		android:layout_marginTop="25dp"
+		android:layout_marginRight="25dp"
 
-		android:minWidth="270px">
+		>
 		<ImageView
 			android:id="@+id/iv_circle_bg"
-			android:layout_width="@dimen/dp_40"
-			android:layout_height="@dimen/dp_40"
+			android:layout_width="20dp"
+			android:layout_height="20dp"
 			android:layout_marginRight="@dimen/dp_10"
 			android:src="@drawable/app_icon"
 			android:layout_alignParentTop="true"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentBottom="true" />
 		<ImageView
-			android:layout_width="@dimen/dp_40"
-			android:layout_height="@dimen/dp_40"
+			android:layout_width="20dp"
+			android:layout_height="20dp"
 			android:layout_margin="@dimen/dp_10"
-			android:layout_alignLeft="@+id/iv_circle_bg"
+			android:layout_alignStart="@+id/iv_circle_bg"
 			android:layout_alignTop="@+id/iv_circle_bg"
-			android:layout_alignRight="@+id/iv_circle_bg"
+			android:layout_alignEnd="@+id/iv_circle_bg"
 			android:layout_alignBottom="@+id/iv_circle_bg" />
 
 		<com.github.tvbox.osc.ui.tv.widget.MarqueeTextView
 			android:id="@+id/tv_right_top_channel_name"
-			android:layout_width="@dimen/dp_150"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentTop="true"
 			android:layout_marginEnd="@dimen/dp_5"
-			android:layout_marginRight="@dimen/dp_5"
 			android:layout_toStartOf="@+id/iv_circle_bg"
-			android:layout_toLeftOf="@+id/iv_circle_bg"
 			android:ellipsize="marquee"
 			android:gravity="center"
 			android:marqueeRepeatLimit="marquee_forever"
 			android:singleLine="true"
 			android:text="测试频道"
 			android:textColor="#FFFCFFFF"
-			android:textSize="@dimen/dp_30" />
+			android:textSize="16sp" />
 
 		<TextView
 			android:id="@+id/tv_right_top_tipnetspeed"
-			android:layout_width="@dimen/dp_150"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
 			android:layout_gravity="center"
@@ -773,7 +767,7 @@
 			android:text=""
 			tools:text="0Kb/s"
 			android:textColor="#FFFCFFFF"
-			android:textSize="@dimen/dp_20" />
+			android:textSize="16dp" />
 	</RelativeLayout>
 
 

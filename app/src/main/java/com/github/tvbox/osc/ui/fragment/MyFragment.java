@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -23,6 +24,7 @@ import com.github.tvbox.osc.ui.activity.PushActivity;
 import com.github.tvbox.osc.ui.activity.SearchActivity;
 import com.github.tvbox.osc.ui.activity.SettingActivity;
 import com.github.tvbox.osc.ui.adapter.HomeHotVodAdapter;
+import com.github.tvbox.osc.ui.dialog.AboutDialog;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.UA;
@@ -30,6 +32,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.OnConfirmListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
@@ -50,11 +54,7 @@ import java.util.List;
  * @date :2021/3/9
  * @description:
  */
-public class MyFragment extends BaseLazyFragment implements View.OnClickListener {
-    private LinearLayout tvLive;
-    private LinearLayout tvSetting;
-    private LinearLayout tvHistory;
-    private LinearLayout tvCollect;
+public class MyFragment extends BaseLazyFragment {
 
     @Override
     protected int getLayoutResID() {
@@ -63,28 +63,13 @@ public class MyFragment extends BaseLazyFragment implements View.OnClickListener
 
     @Override
     protected void init() {
-        tvLive = findViewById(R.id.tvLive);
-        tvSetting = findViewById(R.id.tvSetting);
-        tvCollect = findViewById(R.id.tvFavorite);
-        tvHistory = findViewById(R.id.tvHistory);
-        tvLive.setOnClickListener(this);
-        tvSetting.setOnClickListener(this);
-        tvHistory.setOnClickListener(this);
-        tvCollect.setOnClickListener(this);
-    }
+        findViewById(R.id.tvLive).setOnClickListener(v -> jumpActivity(LivePlayActivity.class));
 
-    @Override
-    public void onClick(View v) {
-        FastClickCheckUtil.check(v);
-        if (v.getId() == R.id.tvLive) {
-            jumpActivity(LivePlayActivity.class);
-        } else if (v.getId() == R.id.tvSetting) {
-            jumpActivity(SettingActivity.class);
-        } else if (v.getId() == R.id.tvHistory) {
-            jumpActivity(HistoryActivity.class);
-        } else if (v.getId() == R.id.tvFavorite) {
-            jumpActivity(CollectActivity.class);
-        }
-    }
+        findViewById(R.id.tvSetting).setOnClickListener(v -> jumpActivity(SettingActivity.class));
 
+        findViewById(R.id.tvHistory).setOnClickListener(v -> jumpActivity(HistoryActivity.class));
+
+        findViewById(R.id.tvFavorite).setOnClickListener(v -> jumpActivity(CollectActivity.class));
+
+    }
 }

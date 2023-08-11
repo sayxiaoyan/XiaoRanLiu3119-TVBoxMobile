@@ -12,12 +12,11 @@
     <TextView
         android:id="@+id/tvChannelGroupName"
         android:layout_width="0mm"
-        android:layout_height="60mm"
+        android:layout_height="30dp"
         android:layout_weight="1"
         android:ellipsize="marquee"
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
-
-        android:textSize="22mm" />
+        android:textSize="18sp"/>
 </LinearLayout>

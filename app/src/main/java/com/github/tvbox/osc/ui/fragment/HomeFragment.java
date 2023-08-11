@@ -225,7 +225,7 @@ public class HomeFragment extends BaseLazyFragment {
 
     private void initData() {
 
-        MainActivity mainActivity = (MainActivity)getActivity();
+        MainActivity mainActivity = (MainActivity)mActivity;
 
         SourceBean home = ApiConfig.get().getHomeSourceBean();
         if (home != null && home.getName() != null && !home.getName().isEmpty())
