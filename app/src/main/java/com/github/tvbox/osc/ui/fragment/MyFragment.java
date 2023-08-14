@@ -37,13 +37,13 @@ public class MyFragment extends BaseLazyFragment {
 
         findViewById(R.id.tvFavorite).setOnClickListener(v -> jumpActivity(CollectActivity.class));
 
-        findViewById(R.id.tvLocal).setOnClickListener(v -> {
-            if (!XXPermissions.isGranted(mContext, Permission.MANAGE_EXTERNAL_STORAGE)) {
-                showPermissionTipPopup();
-            } else {
-                jumpActivity(LocalPlayActivity.class);
-            }
-        });
+//        findViewById(R.id.tvLocal).setOnClickListener(v -> {
+//            if (!XXPermissions.isGranted(mContext, Permission.MANAGE_EXTERNAL_STORAGE)) {
+//                showPermissionTipPopup();
+//            } else {
+//                jumpActivity(LocalPlayActivity.class);
+//            }
+//        });
 
     }
 
