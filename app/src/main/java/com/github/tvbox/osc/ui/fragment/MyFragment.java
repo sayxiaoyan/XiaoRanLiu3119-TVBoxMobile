@@ -7,6 +7,7 @@ import com.github.tvbox.osc.ui.activity.CollectActivity;
 import com.github.tvbox.osc.ui.activity.HistoryActivity;
 import com.github.tvbox.osc.ui.activity.LivePlayActivity;
 import com.github.tvbox.osc.ui.activity.LocalPlayActivity;
+import com.github.tvbox.osc.ui.activity.MovieFoldersActivity;
 import com.github.tvbox.osc.ui.activity.SettingActivity;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
@@ -37,13 +38,13 @@ public class MyFragment extends BaseLazyFragment {
 
         findViewById(R.id.tvFavorite).setOnClickListener(v -> jumpActivity(CollectActivity.class));
 
-//        findViewById(R.id.tvLocal).setOnClickListener(v -> {
-//            if (!XXPermissions.isGranted(mContext, Permission.MANAGE_EXTERNAL_STORAGE)) {
-//                showPermissionTipPopup();
-//            } else {
-//                jumpActivity(LocalPlayActivity.class);
-//            }
-//        });
+        findViewById(R.id.tvLocal).setOnClickListener(v -> {
+            if (!XXPermissions.isGranted(mContext, Permission.MANAGE_EXTERNAL_STORAGE)) {
+                showPermissionTipPopup();
+            } else {
+                jumpActivity(MovieFoldersActivity.class);
+            }
+        });
 
     }
 
@@ -63,7 +64,7 @@ public class MyFragment extends BaseLazyFragment {
                         if (!all) {
                             ToastUtils.showLong("部分权限未正常授予,请授权");
                         }
-                        jumpActivity(LocalPlayActivity.class);
+                        jumpActivity(MovieFoldersActivity.class);
                     }
 
                     @Override

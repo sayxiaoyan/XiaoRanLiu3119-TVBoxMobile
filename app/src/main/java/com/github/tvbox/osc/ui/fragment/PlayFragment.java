@@ -178,6 +178,7 @@ public class PlayFragment extends BaseLazyFragment {
         mPlayLoading = findViewById(R.id.play_loading);
         mPlayLoadErr = findViewById(R.id.play_load_error);
         mController = new VodController(requireContext());
+        mController.showParse(false);
         mController.setCanChangePosition(true);
         mController.setEnableInNormal(true);
         mController.setGestureEnabled(true);

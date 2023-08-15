@@ -43,7 +43,11 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutResID());
+        if (getLayoutResID()==-1){
+            initVb();
+        }else {
+            setContentView(getLayoutResID());
+        }
         mContext = this;
         AppManager.getInstance().addActivity(this);
         initStatusBar();
@@ -103,6 +107,10 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
     protected abstract int getLayoutResID();
 
     protected abstract void init();
+
+    protected void initVb() {
+
+    }
 
     protected void setLoadSir(View view) {
         if (mLoadService == null) {
