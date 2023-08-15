@@ -41,18 +41,16 @@ public class LocalPlayActivity extends BaseActivity {
     @Override
     protected void init() {
         mVideoView = findViewById(R.id.player);
-        String source1 = "file://"+ Environment.getExternalStorageDirectory().getPath() + "/IDMP/Camera/demo_v.mp4";
 
-
-        String path = "/storage/emulated/0/DCIM/Camera/demo_v.mp4";
+        String path = getIntent().getExtras().getString("path");
+        String uri = "";
         File file = new File(path);
         if(file.exists()){
-            path = Uri.parse("file://"+file.getAbsolutePath()).toString();
+            uri = Uri.parse("file://"+file.getAbsolutePath()).toString();
         }
-//        dkVideo.setUrl(path);
-        LogUtils.d("path====>"+path);
+        LogUtils.d("path uri====>"+ uri);
 
-        mVideoView.setUrl(path); //设置视频地址
+        mVideoView.setUrl(uri); //设置视频地址
 
         initController();
         initPlayerCfg();
@@ -60,12 +58,14 @@ public class LocalPlayActivity extends BaseActivity {
         mVideoView.setProgressManager(new ProgressManager() {
             @Override
             public void saveProgress(String url, long progress) {
-                SPUtils.getInstance().put(url, progress);
+                //有点本地文件确实总时长,设置下总时长,为什么用path,因为电影列表要通过媒体文件的path获取缓存的时长/进度,存取报纸缓存的key一直
+                SPUtils.getInstance("videoDurationSp").put(path, mVideoView.getDuration());
+                SPUtils.getInstance("videoProgressSp").put(path, progress);
             }
 
             @Override
             public long getSavedProgress(String url) {
-                return SPUtils.getInstance().getLong(url);
+                return SPUtils.getInstance("videoProgressSp").getLong(url);
             }
         });
         mVideoView.start(); //开始播放，不调用则不自动播放

@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.base.BaseVbActivity;
@@ -29,6 +31,22 @@ public class MovieFoldersActivity extends BaseVbActivity<ActivityMovieFoldersBin
 
         mFolderAdapter = new FolderAdapter();
         mBinding.rv.setAdapter(mFolderAdapter);
+        mFolderAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                VideoFolder videoFolder = (VideoFolder) adapter.getItem(position);
+                if (videoFolder != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("bucketDisplayName",videoFolder.getName());
+                    jumpActivity(VideoListActivity.class,bundle);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         groupVideos();
     }
 
