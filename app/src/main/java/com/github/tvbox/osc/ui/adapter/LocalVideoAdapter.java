@@ -15,6 +15,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.bean.VideoFolder;
 import com.github.tvbox.osc.bean.VideoInfo;
+import com.github.tvbox.osc.constant.CacheConst;
 import com.github.tvbox.osc.util.Utils;
 
 import java.util.List;
@@ -37,12 +38,12 @@ public class LocalVideoAdapter extends BaseQuickAdapter<VideoInfo, BaseViewHolde
 //
 //        String progress = "";
 //        String spacer = " / ";
-//        long cacheProgress = SPUtils.getInstance("videoProgressSp").getLong(item.getPath(), -1);
+//        long cacheProgress = SPUtils.getInstance(CacheConst.VIDEO_PROGRESS_SP).getLong(item.getPath(), -1);
 //        if (cacheProgress != -1) {
 //            progress = Utils.stringForTime(cacheProgress);
 //        }
 //        //总时长,缺失时长的,从缓存取(如果有)
-//        String duration = Utils.stringForTime((int)item.getDuration()==0?SPUtils.getInstance("videoDurationSp").getLong(item.getPath(), 0):item.getDuration());
+//        String duration = Utils.stringForTime((int)item.getDuration()==0?SPUtils.getInstance(CacheConst.VIDEO_DURATION_SP).getLong(item.getPath(), 0):item.getDuration());
 
         helper.setText(R.id.tv_name,item.getDisplayName())
                 .setText(R.id.tv_video_size, ConvertUtils.byte2FitMemorySize(item.getSize()))
@@ -55,7 +56,7 @@ public class LocalVideoAdapter extends BaseQuickAdapter<VideoInfo, BaseViewHolde
         // 总时长
         String duration = "";
         if ((int)item.getDuration() == 0) { // 缺失时长/缩略图的,从缓存取(如果有)
-            long cacheDuration = SPUtils.getInstance("videoDurationSp").getLong(item.getPath(), -1);
+            long cacheDuration = SPUtils.getInstance(CacheConst.VIDEO_DURATION_SP).getLong(item.getPath(), -1);
             if (cacheDuration != -1) { // 有缓存
                 duration = Utils.stringForTime(cacheDuration);
                 progressBar.setVisibility(View.VISIBLE);
@@ -67,7 +68,7 @@ public class LocalVideoAdapter extends BaseQuickAdapter<VideoInfo, BaseViewHolde
         }
 
         // 已播放进度时长
-        long progressPlayed = SPUtils.getInstance("videoProgressSp").getLong(item.getPath(), -1);
+        long progressPlayed = SPUtils.getInstance(CacheConst.VIDEO_PROGRESS_SP).getLong(item.getPath(), -1);
         if (progressPlayed != -1 && !duration.isEmpty()) { // 有进度且有时长都显示
             tvDuration.setText(Utils.stringForTime(progressPlayed) + "/" + duration);
             progressBar.setProgress((int) progressPlayed);

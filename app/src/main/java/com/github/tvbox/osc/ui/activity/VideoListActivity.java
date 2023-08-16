@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.base.BaseVbActivity;
@@ -38,7 +39,9 @@ public class VideoListActivity extends BaseVbActivity<ActivityMovieFoldersBindin
                 VideoInfo videoInfo = (VideoInfo) adapter.getItem(position);
                 if (videoInfo != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("path",videoInfo.getPath());
+//                    bundle.putString("path",videoInfo.getPath());
+                    bundle.putString("videoList", GsonUtils.toJson(mLocalVideoAdapter.getData()));
+                    bundle.putInt("position", position);
                     jumpActivity(LocalPlayActivity.class,bundle);
                 }
             }
