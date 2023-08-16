@@ -177,16 +177,17 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        //切换了首页数据源,切换了API,切换了首页推荐,切换了DNS
         if ((homeSourceKey != null && !homeSourceKey.equals(Hawk.get(HawkConfig.HOME_API, ""))) ||
                 !currentApi.equals(Hawk.get(HawkConfig.API_URL, "")) ||
                 homeRec != Hawk.get(HawkConfig.HOME_REC, 0) ||
                 dnsOpt != Hawk.get(HawkConfig.DOH_URL, 0)) {
             AppManager.getInstance().finishAllActivity();
-            if (currentApi.equals(Hawk.get(HawkConfig.API_URL, ""))) {
+            if (currentApi.equals(Hawk.get(HawkConfig.API_URL, ""))) {//没有切换API,只切换了首页数据源/首页推荐/DNS
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("useCache", true);
                 jumpActivity(MainActivity.class, bundle);
-            } else {
+            } else {//切换了API,全部重新加载
                 jumpActivity(MainActivity.class);
             }
         } else {
