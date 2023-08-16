@@ -34,16 +34,18 @@
         android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".ui.activity.SubscriptionActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.VideoListActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.MovieFoldersActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.LocalPlayActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

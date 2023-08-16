@@ -9,6 +9,7 @@ import com.github.tvbox.osc.ui.activity.LivePlayActivity;
 import com.github.tvbox.osc.ui.activity.LocalPlayActivity;
 import com.github.tvbox.osc.ui.activity.MovieFoldersActivity;
 import com.github.tvbox.osc.ui.activity.SettingActivity;
+import com.github.tvbox.osc.ui.activity.SubscriptionActivity;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -46,6 +47,7 @@ public class MyFragment extends BaseLazyFragment {
             }
         });
 
+        findViewById(R.id.llSubscription).setOnClickListener(v -> jumpActivity(SubscriptionActivity.class));
     }
 
     private void showPermissionTipPopup(){

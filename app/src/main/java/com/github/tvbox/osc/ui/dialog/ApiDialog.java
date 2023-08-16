@@ -2,36 +2,25 @@ package com.github.tvbox.osc.ui.dialog;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.github.tvbox.osc.R;
-import com.github.tvbox.osc.event.RefreshEvent;
-import com.github.tvbox.osc.server.ControlManager;
 import com.github.tvbox.osc.ui.adapter.ApiHistoryDialogAdapter;
-import com.github.tvbox.osc.ui.tv.QRCodeGen;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.orhanobut.hawk.Hawk;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import me.jessyan.autosize.utils.AutoSizeUtils;
 
 /**
  * 描述
@@ -57,12 +46,12 @@ public class ApiDialog extends BaseDialog {
             public void onClick(View v) {
                 String newApi = inputApi.getText().toString().trim();
                 if (!newApi.isEmpty()) {
-                    ArrayList<String> history = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<String>());
+                    ArrayList<String> history = Hawk.get(HawkConfig.SUBSCRIPTIONS, new ArrayList<String>());
                     if (!history.contains(newApi))
                         history.add(0, newApi);
                     if (history.size() > 30)
                         history.remove(30);
-                    Hawk.put(HawkConfig.API_HISTORY, history);
+                    Hawk.put(HawkConfig.SUBSCRIPTIONS, history);
                     listener.onchange(newApi);
                     dismiss();
                 }
@@ -71,7 +60,7 @@ public class ApiDialog extends BaseDialog {
         findViewById(R.id.apiHistory).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> history = Hawk.get(HawkConfig.API_HISTORY, new ArrayList<String>());
+                ArrayList<String> history = Hawk.get(HawkConfig.SUBSCRIPTIONS, new ArrayList<String>());
                 if (history.isEmpty())
                     return;
                 String current = Hawk.get(HawkConfig.API_URL, "");
@@ -90,7 +79,7 @@ public class ApiDialog extends BaseDialog {
 
                     @Override
                     public void del(String value, ArrayList<String> data) {
-                        Hawk.put(HawkConfig.API_HISTORY, data);
+                        Hawk.put(HawkConfig.SUBSCRIPTIONS, data);
                     }
                 }, history, idx);
                 dialog.show();

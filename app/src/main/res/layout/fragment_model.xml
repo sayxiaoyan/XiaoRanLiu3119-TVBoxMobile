@@ -72,89 +72,6 @@
                     app:tint="@color/text_gray"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/llHomeApi"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_60"
-                android:layout_marginBottom="@dimen/dp_10"
-
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="首页数据源"
-                    android:textColor="@color/text_gray"
-                    android:textSize="16sp"
-                    />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/tvHomeApi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="middle"
-                    android:singleLine="true"
-
-                    />
-
-                <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="center"
-                    android:alpha="0.75"
-                    android:src="@drawable/icon_pre"
-                    app:tint="@color/text_gray"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llApi"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_60"
-                android:layout_marginBottom="@dimen/dp_10"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="配置地址"
-                    android:textColor="@color/text_gray"
-                    android:textSize="16sp"
-                    />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/tvApi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="middle"
-                    android:singleLine="true"
-
-                    />
-
-                <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="center"
-                    android:alpha="0.75"
-                    android:src="@drawable/icon_pre"
-                    app:tint="@color/text_gray"/>
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/llHomeRec"
@@ -329,7 +246,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingRight="@dimen/dp_20"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -451,7 +369,9 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingRight="@dimen/dp_20"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -491,7 +411,9 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingRight="@dimen/dp_20"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -570,7 +492,9 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingRight="@dimen/dp_20"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"
