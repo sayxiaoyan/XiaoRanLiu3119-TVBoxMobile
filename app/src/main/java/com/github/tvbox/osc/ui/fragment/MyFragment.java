@@ -10,6 +10,8 @@ import com.github.tvbox.osc.ui.activity.LocalPlayActivity;
 import com.github.tvbox.osc.ui.activity.MovieFoldersActivity;
 import com.github.tvbox.osc.ui.activity.SettingActivity;
 import com.github.tvbox.osc.ui.activity.SubscriptionActivity;
+import com.github.tvbox.osc.ui.dialog.AboutDialog;
+import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -48,6 +50,12 @@ public class MyFragment extends BaseLazyFragment {
         });
 
         findViewById(R.id.llSubscription).setOnClickListener(v -> jumpActivity(SubscriptionActivity.class));
+
+        findViewById(R.id.llAbout).setOnClickListener(v -> {
+            FastClickCheckUtil.check(v);
+            AboutDialog dialog = new AboutDialog(mActivity);
+            dialog.show();
+        });
     }
 
     private void showPermissionTipPopup(){

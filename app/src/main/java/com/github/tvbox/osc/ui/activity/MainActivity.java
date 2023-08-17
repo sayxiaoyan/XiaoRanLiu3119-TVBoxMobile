@@ -50,7 +50,6 @@ public class MainActivity extends BaseActivity {
 
         initVp();
         mBottomNav.setOnNavigationItemSelectedListener(menuItem -> {
-            // menu文件夹中bottom_nav_menu.xml里加的android:orderInategory属性就是下面item.getOrder()取的值
             mVp.setCurrentItem(menuItem.getOrder(), false);
             return true;
         });

@@ -10,12 +10,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.base.BaseLazyFragment;
 import com.github.tvbox.osc.bean.IJKCode;
 import com.github.tvbox.osc.bean.SourceBean;
+import com.github.tvbox.osc.constant.CacheConst;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.player.thirdparty.RemoteTVBox;
 
@@ -35,6 +37,7 @@ import com.github.tvbox.osc.util.HistoryHelper;
 import com.github.tvbox.osc.util.LOG;
 import com.github.tvbox.osc.util.OkGoHelper;
 import com.github.tvbox.osc.util.PlayerHelper;
+import com.lxj.xpopup.XPopup;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.model.Progress;
@@ -145,14 +148,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 dialog.show();
             }
         });
-        findViewById(R.id.llAbout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FastClickCheckUtil.check(v);
-                AboutDialog dialog = new AboutDialog(mActivity);
-                dialog.show();
-            }
-        });
+
         findViewById(R.id.llDns).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -500,7 +496,12 @@ public class ModelSettingFragment extends BaseLazyFragment {
         });
 
         findViewById(R.id.llIjkCachePlay).setOnClickListener((view -> onClickIjkCachePlay(view)));
-        findViewById(R.id.llClearCache).setOnClickListener((view -> onClickClearCache(view)));
+        findViewById(R.id.llClearCache).setOnClickListener((view -> {
+            new XPopup.Builder(mActivity)
+                    .asConfirm("提示","缓存包括本地视频播放进度等,确定清空吗？", () -> {
+                        onClickClearCache(view);
+                    }).show();
+        }));
     }
 
     private void onClickIjkCachePlay(View v) {
@@ -511,6 +512,10 @@ public class ModelSettingFragment extends BaseLazyFragment {
 
     private void onClickClearCache(View v) {
         FastClickCheckUtil.check(v);
+
+        SPUtils.getInstance(CacheConst.VIDEO_DURATION_SP).clear();
+        SPUtils.getInstance(CacheConst.VIDEO_PROGRESS_SP).clear();
+
         String cachePath = FileUtils.getCachePath();
         File cacheDir = new File(cachePath);
         if (!cacheDir.exists()) return;

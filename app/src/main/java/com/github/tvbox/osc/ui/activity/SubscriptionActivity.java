@@ -3,8 +3,8 @@ package com.github.tvbox.osc.ui.activity;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -15,7 +15,13 @@ import com.github.tvbox.osc.databinding.ActivitySubscriptionBinding;
 import com.github.tvbox.osc.ui.adapter.SubscriptionAdapter;
 import com.github.tvbox.osc.ui.dialog.SubsciptionDialog;
 import com.github.tvbox.osc.util.HawkConfig;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.lxj.xpopup.XPopup;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.AbsCallback;
+import com.lzy.okgo.model.Response;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
@@ -27,21 +33,22 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
     private String mBeforeUrl;
     private String mSelectedUrl;
     private List<Subscription> mSubscriptions;
+    private SubscriptionAdapter mSubscriptionAdapter;
 
     /**
      * 单线路格式
-     * "http://yydsys.top/duo"
+     * "http://top啊啊啊阿萨啊/duo"
      *
      * 多线路格式
      * {
      *     "urls": [
      *         {
-     *             "url": "http://yydsys.top/duo",
-     *             "name": "🏡应用多多家庭版"
+     *             "url": "http://",
+     *             "name": "庭版"
      *         },
      *         {
-     *             "url": "http://cdn.yydsys.top/duo",
-     *             "name": "🏡应用多多备用"
+     *             "url": "http://",
+     *             "name": "用"
      *         }
      *     ]
      * }
@@ -49,8 +56,8 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
     @Override
     protected void init() {
 
-        SubscriptionAdapter subscriptionAdapter = new SubscriptionAdapter();
-        mBinding.rv.setAdapter(subscriptionAdapter);
+        mSubscriptionAdapter = new SubscriptionAdapter();
+        mBinding.rv.setAdapter(mSubscriptionAdapter);
         mSubscriptions = Hawk.get(HawkConfig.SUBSCRIPTIONS, new ArrayList<>());
 
         mBeforeUrl = Hawk.get(HawkConfig.API_URL,"");
@@ -60,7 +67,7 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
             }
         });
 
-        subscriptionAdapter.setNewData(mSubscriptions);
+        mSubscriptionAdapter.setNewData(mSubscriptions);
 
         mBinding.titleBar.getRightView().setOnClickListener(view -> {//添加订阅
             new XPopup.Builder(this)
@@ -71,29 +78,25 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
                                 return;
                             }
                         }
-                        mSubscriptions.add(0,new Subscription(name,url));
-                        subscriptionAdapter.setNewData(mSubscriptions);
+                        checkUrl(name, url);
                     })).show();
 
         });
 
 
-        subscriptionAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                LogUtils.d("删除订阅");
-                if (view.getId() == R.id.iv_del) {
-                    new XPopup.Builder(SubscriptionActivity.this)
-                            .asConfirm("删除订阅", "确定删除订阅吗？", () -> {
-                                mSubscriptions.remove(position);
-                                subscriptionAdapter.setNewData(mSubscriptions);
-                            }).show();
-                }
+        mSubscriptionAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            LogUtils.d("删除订阅");
+            if (view.getId() == R.id.iv_del) {
+                new XPopup.Builder(SubscriptionActivity.this)
+                        .asConfirm("删除订阅", "确定删除订阅吗？", () -> {
+                            mSubscriptions.remove(position);
+                            mSubscriptionAdapter.setNewData(mSubscriptions);
+                        }).show();
             }
         });
 
 
-        subscriptionAdapter.setOnItemClickListener((adapter, view, position) -> {//选择订阅
+        mSubscriptionAdapter.setOnItemClickListener((adapter, view, position) -> {//选择订阅
             for (int i = 0; i < mSubscriptions.size(); i++) {
                 Subscription subscription = mSubscriptions.get(i);
                 if (i==position){
@@ -107,11 +110,53 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
         });
     }
 
+    private void checkUrl(String name,String url) {
+        showLoadingDialog();
+        OkGo.<String>get(url)
+                .execute(new AbsCallback<String>() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        dismissLoadingDialog();
+                        try {
+                            JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
+                            JsonArray itemList = json.get("urls").getAsJsonArray();
+                            if (itemList!=null && itemList.size()>0
+                                    && itemList.get(0).isJsonObject()
+                                    && itemList.get(0).getAsJsonObject().has("url")
+                                    && itemList.get(0).getAsJsonObject().has("name")){//严格的多仓格式
+                                for (int i = 0; i < itemList.size(); i++) {
+                                    JsonObject obj = (JsonObject) itemList.get(i);
+                                    String name = obj.get("name").getAsString().trim().replaceAll("<|>|《|》|-", "");
+                                    String url = obj.get("url").getAsString().trim();
+                                    mSubscriptions.add(new Subscription(name,url));
+                                }
+                            }
+                        } catch (Throwable th) {//只要是能连接通的路径,json解析异常也当单线路处理
+                            mSubscriptions.add(new Subscription(name, url));
+                        }
+                        mSubscriptionAdapter.setNewData(mSubscriptions);
+                    }
+
+                    @Override
+                    public String convertResponse(okhttp3.Response response) throws Throwable {
+                        return response.body().string();
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        dismissLoadingDialog();
+                        ToastUtils.showLong("订阅失败,请检查地址或网络状态");
+                    }
+                });
+    }
+
+
     @Override
     protected void onPause() {
         super.onPause();
+        // 更新缓存
         Hawk.put(HawkConfig.API_URL, mSelectedUrl);
-        // 更新操作后的订阅列表
         Hawk.put(HawkConfig.SUBSCRIPTIONS, mSubscriptions);
     }
 
