@@ -7,6 +7,13 @@ package com.github.tvbox.osc.bean;
  * @Description :
  */
 public class Subscription {
+    public Subscription() {
+    }
+
+    public Subscription(String name, String url) {
+        this.name = name;
+        this.url = url;
+    }
 
     String name;
     String url;
