@@ -21,7 +21,7 @@
         android:singleLine="true"
         android:text="@{name}"
         android:textColor="@color/color_FFFFFF"
-        android:textSize="@dimen/ts_26"
+        android:textSize="16sp"
         tools:text="11111111111111" />
 
     <ImageView

@@ -450,7 +450,7 @@ public class HomeFragment extends BaseLazyFragment {
             SelectDialog<SourceBean> dialog = new SelectDialog<>(getActivity());
             TvRecyclerView tvRecyclerView = dialog.findViewById(R.id.list);
 
-            tvRecyclerView.setLayoutManager(new V7GridLayoutManager(dialog.getContext(), 2));
+            tvRecyclerView.setLayoutManager(new V7GridLayoutManager(dialog.getContext(), 3));
 
             dialog.setTip("请选择首页数据源");
             dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<SourceBean>() {

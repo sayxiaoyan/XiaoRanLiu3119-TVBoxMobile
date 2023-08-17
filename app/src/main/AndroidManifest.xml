@@ -147,6 +147,11 @@
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />
+
+        <!-- 告知 XXPermissions 当前项目已经适配了分区存储特性 -->
+        <meta-data
+            android:name="ScopedStorage"
+            android:value="true" />
     </application>
 
 </manifest>

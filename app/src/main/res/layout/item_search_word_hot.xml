@@ -13,4 +13,6 @@
     android:paddingHorizontal="10dp"
     android:singleLine="true"
     android:textAlignment="center"
+    android:layout_marginTop="4dp"
+    android:layout_marginRight="4dp"
     tools:text="釜山行"/>

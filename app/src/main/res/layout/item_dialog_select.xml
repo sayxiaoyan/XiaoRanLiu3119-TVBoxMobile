@@ -10,8 +10,10 @@
     android:clickable="true"
     android:focusable="true"
     android:gravity="center"
-    android:padding="@dimen/dp_10"
+    android:padding="10dp"
+    android:maxLines="2"
+    android:ellipsize="end"
     android:text="@{name}"
     android:textColor="@color/color_FFFFFF"
-    android:textSize="@dimen/ts_22"
-    tools:text="11111111111111" />
+    tools:text="小破站"
+    android:textSize="16sp"/>

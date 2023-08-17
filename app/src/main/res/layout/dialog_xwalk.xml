@@ -35,7 +35,7 @@
             android:gravity="center"
             android:text="下载"
             android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/ts_26" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 </FrameLayout>

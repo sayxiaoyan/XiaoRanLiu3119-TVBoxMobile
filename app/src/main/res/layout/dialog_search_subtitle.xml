@@ -32,7 +32,7 @@
                 android:paddingBottom="@dimen/dp_10"
                 android:textColor="@color/color_FFFFFF"
                 android:textColorHint="@color/color_6CFFFFFF"
-                android:textSize="@dimen/ts_26" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/inputSubmit"
