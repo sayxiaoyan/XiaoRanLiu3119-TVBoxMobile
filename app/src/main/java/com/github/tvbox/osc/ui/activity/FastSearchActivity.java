@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -18,7 +19,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.angcyo.tablayout.DslTabLayout;
+import com.angcyo.tablayout.DslTabLayoutConfig;
 import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
@@ -60,6 +64,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.functions.Function4;
 
 /**
  * @author pj567
@@ -116,6 +124,7 @@ public class FastSearchActivity extends BaseActivity {
         }
     };
     private EditText mEtSearch;
+    private DslTabLayout mSiteTabs;
 
     @Override
     protected int getLayoutResID() {
@@ -207,6 +216,8 @@ public class FastSearchActivity extends BaseActivity {
         //搜索建议模块(热门/历史)
         mllHotSearch = findViewById(R.id.llHotSearch);
         mRvHotSearch = findViewById(R.id.rvHotSearch);
+        //左侧的聚合站点tab
+        mSiteTabs = findViewById(R.id.tab_layout);
 
         mEtSearch = findViewById(R.id.et_search);
 
@@ -277,6 +288,25 @@ public class FastSearchActivity extends BaseActivity {
                 String spName = spListAdapter.getItem(position);
                 filterResult(spName);
             }
+        });
+
+        mSiteTabs.configTabLayoutConfig(new Function1<DslTabLayoutConfig, Unit>() {
+            @Override
+            public Unit invoke(DslTabLayoutConfig dslTabLayoutConfig) {
+                dslTabLayoutConfig.setOnSelectViewChange(new Function4<View, List<? extends View>, Boolean, Boolean, Unit>() {
+                    @Override
+                    public Unit invoke(View view, List<? extends View> views, Boolean aBoolean, Boolean aBoolean2) {
+                        TextView tvItem = (TextView) views.get(0);
+                        String spName = tvItem.getText().toString();
+                        LogUtils.d(spName);
+                        filterResult(spName);
+                        return null;
+                    }
+                });
+                return null;
+            }
+
+
         });
 
         mGridView.setHasFixedSize(true);
@@ -450,6 +480,7 @@ public class FastSearchActivity extends BaseActivity {
         searchAdapterFilter.setNewData(new ArrayList<>());
 
         spListAdapter.reset();
+        mSiteTabs.removeAllViews();
         resultVods.clear();
         searchFilterKey = "";
         isFilterMode = false;
@@ -461,6 +492,17 @@ public class FastSearchActivity extends BaseActivity {
     private ExecutorService searchExecutorService = null;
     private AtomicInteger allRunCount = new AtomicInteger(0);
 
+    private TextView getSiteTextView(String text){
+        TextView textView = new TextView(this);
+        textView.setText(text);
+        textView.setGravity(Gravity.CENTER);
+        DslTabLayout.LayoutParams params = new DslTabLayout.LayoutParams(-2, -2);
+        params.topMargin = 10;
+        params.bottomMargin = 10;
+        textView.setPadding(20, 8, 20, 8);
+        textView.setLayoutParams(params);
+        return textView;
+    }
     private void searchResult() {
         try {
             if (searchExecutorService != null) {
@@ -488,6 +530,8 @@ public class FastSearchActivity extends BaseActivity {
 
         spListAdapter.setNewData(hots);
         spListAdapter.addData("全部显示");
+        mSiteTabs.addView(getSiteTextView("全部显示"));
+        mSiteTabs.setCurrentItem(0, true,false);
         for (SourceBean bean : searchRequestList) {
             if (!bean.isSearchable()) {
                 continue;
@@ -526,6 +570,7 @@ public class FastSearchActivity extends BaseActivity {
             if (name == "") return key;
 
             List<String> names = spListAdapter.getData();
+
             for (int i = 0; i < names.size(); ++i) {
                 if (name == names.get(i)) {
                     return key;
@@ -533,6 +578,7 @@ public class FastSearchActivity extends BaseActivity {
             }
 
             spListAdapter.addData(name);
+            mSiteTabs.addView(getSiteTextView(name));
             return key;
         } catch (Exception e) {
             return key;

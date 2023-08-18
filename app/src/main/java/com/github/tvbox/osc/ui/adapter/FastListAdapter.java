@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class FastListAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     public FastListAdapter() {
-        super(R.layout.item_search_word_hot, new ArrayList<>());
+        super(R.layout.item_search_site, new ArrayList<>());
     }
 
     @Override
