@@ -210,3 +210,20 @@
 # 沉浸状态栏
 -keep class com.gyf.immersionbar.* {*;}
 -dontwarn com.gyf.immersionbar.**
+
+
+# glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+
+# ViewBinding & DataBinding
+-keepclassmembers class * implements androidx.viewbinding.ViewBinding {
+  public static * inflate(android.view.LayoutInflater);
+  public static * inflate(android.view.LayoutInflater, android.view.ViewGroup, boolean);
+  public static * bind(android.view.View);
+}
+
