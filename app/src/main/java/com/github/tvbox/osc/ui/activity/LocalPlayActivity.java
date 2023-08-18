@@ -157,7 +157,7 @@ public class LocalPlayActivity extends BaseActivity {
 
             @Override
             public void toggleFullScreen() {
-
+                finish();
             }
 
             @Override

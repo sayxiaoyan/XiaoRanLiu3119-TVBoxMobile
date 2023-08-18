@@ -251,7 +251,7 @@ public class HomeFragment extends BaseLazyFragment {
                             @Override
                             public void run() {
                                 if (!mainActivity.useCacheConfig)
-                                    ToastUtils.showShort("自定义jar加载成功");
+                                    ToastUtils.showShort("更新订阅成功");
                                 initData();
                             }
                         }, 50);
@@ -268,7 +268,7 @@ public class HomeFragment extends BaseLazyFragment {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                ToastUtils.showShort("jar加载失败");
+                                ToastUtils.showShort("更新订阅失败");
                                 initData();
                             }
                         });
