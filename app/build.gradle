@@ -130,6 +130,7 @@ dependencies {
     implementation project(":TabLayout")
     //TabLayout的非kt项目需要依赖这个包实现点击事件等
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
+    //展开收缩tv
+    implementation 'com.github.MZCretin:ExpandableTextView:v1.6.1-x'
 
 }

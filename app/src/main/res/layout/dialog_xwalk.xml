@@ -7,7 +7,7 @@
         android:layout_width="@dimen/dp_440"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/shape_dialog_bg_main"
+        android:background="@drawable/shape_bottom_dialog_bg_gray"
         android:orientation="vertical"
         android:padding="@dimen/dp_30">
 

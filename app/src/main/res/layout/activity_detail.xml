@@ -14,7 +14,7 @@
         <LinearLayout
             android:id="@+id/previewPlayerPlace"
             android:layout_width="match_parent"
-            android:layout_height="260dp"
+            android:layout_height="250dp"
             android:layout_marginTop="@dimen/dp_10"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/dp_40"
@@ -26,173 +26,118 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginLeft="@dimen/dp_20"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_5"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textSize="20sp" />
+            android:layout_marginHorizontal="10dp"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/ll_title"
+                android:layout_width="wrap_content"
+                android:paddingRight="20dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_5"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_5"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_gray"
+                    tools:text="鬼灭之刃"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="详情 >>"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="12dp"/>
+            </LinearLayout>
+
+            <com.lihang.ShadowLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:clickable="false"
+                app:hl_cornerRadius="@dimen/common_corners"
+                app:hl_layoutBackground="@color/colorPrimary"
+                android:layout_marginTop="6dp"
+                android:padding="6dp">
 
                 <TextView
                     android:id="@+id/tvSite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_10"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textSize="@dimen/ts_20"
-                    />
+                    tools:text="非凡影视"
+                    android:textSize="10sp"
+                    android:textColor="@color/white"/>
+            </com.lihang.ShadowLayout>
 
-                <TextView
-                    android:id="@+id/tvYear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textSize="@dimen/ts_20" />
-
-                <TextView
-                    android:id="@+id/tvArea"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:singleLine="true"
-
-                    android:textSize="@dimen/ts_20" />
-
-                <TextView
-                    android:id="@+id/tvLang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:singleLine="true"
-
-                    android:textSize="@dimen/ts_20" />
-
-                <TextView
-                    android:id="@+id/tvType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:singleLine="true"
-
-                    android:textSize="@dimen/ts_20" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvActor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_5"
-                android:ellipsize="end"
-                android:singleLine="true"
-
-                android:textSize="@dimen/ts_20" />
-
-            <TextView
-                android:id="@+id/tvDirector"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_5"
-                android:ellipsize="end"
-                android:singleLine="true"
-
-                android:textSize="@dimen/ts_20" />
-
-            <TextView
-                android:id="@+id/tvPlayUrl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true"
-
-                android:textSize="@dimen/ts_20" />
-
-
-            <TextView
-                android:id="@+id/tvDes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:lineSpacingMultiplier="1.2"
-                android:maxLines="3"
-
-                android:textSize="@dimen/ts_20" />
+<!--            <com.ctetin.expandabletextviewlibrary.ExpandableTextView-->
+<!--                android:id="@+id/tvDes"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="15dp"-->
+<!--                android:lineSpacingExtra="4dp"-->
+<!--                android:textSize="14sp"-->
+<!--                app:ep_contract_color="@color/colorAccent"-->
+<!--                app:ep_contract_text="收回"-->
+<!--                app:ep_expand_color="@color/colorAccent"-->
+<!--                app:ep_expand_text="展开"-->
+<!--                app:ep_max_line="4"-->
+<!--                app:ep_need_always_showright="true"-->
+<!--                app:ep_need_animation="true"-->
+<!--                app:ep_need_contract="true"-->
+<!--                app:ep_need_expand="true" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
                 android:gravity="end"
-                android:layout_marginTop="10dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tvSort"
                     android:layout_width="wrap_content"
-                    android:drawablePadding="6dp"
                     android:layout_height="@dimen/dp_40"
+                    android:drawableRight="@drawable/ic_order_reverse"
+                    android:drawablePadding="6dp"
                     android:focusable="true"
                     android:gravity="center"
-                    android:text="倒序"
-                    android:textSize="16sp"
-                    android:drawableRight="@drawable/ic_order_reverse"
-                    android:textColor="@color/text_gray"
                     android:paddingHorizontal="10dp"
-                    />
+                    android:text="倒序"
+                    android:textColor="@color/text_gray" />
 
                 <TextView
                     android:id="@+id/tvCollect"
                     android:layout_width="wrap_content"
-                    android:drawablePadding="6dp"
                     android:layout_height="@dimen/dp_40"
+                    android:drawableRight="@drawable/ic_collect"
+                    android:drawablePadding="6dp"
                     android:focusable="true"
                     android:gravity="center"
+                    android:paddingHorizontal="10dp"
                     android:text="收藏"
-                    android:textColor="@color/text_gray"
-                    android:drawableRight="@drawable/ic_collect"
-                    android:textSize="16sp"
-                    android:paddingHorizontal="10dp"/>
+                    android:textColor="@color/text_gray" />
 
                 <TextView
                     android:id="@+id/tvDownload"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_40"
+                    android:layout_marginRight="10dp"
+                    android:drawableRight="@drawable/ic_download"
+                    android:drawablePadding="6dp"
                     android:focusable="true"
                     android:gravity="center"
-                    android:text="下载"
-                    android:textColor="@color/text_gray"
-                    android:drawablePadding="6dp"
-                    android:drawableRight="@drawable/ic_download"
-                    android:textSize="16sp"
                     android:paddingHorizontal="10dp"
-                    android:layout_marginRight="10dp"/>
+                    android:text="下载"
+                    android:textColor="@color/text_gray" />
             </LinearLayout>
         </LinearLayout>
 
@@ -221,10 +166,10 @@
                 android:gravity="center"
                 android:text="暂无播放数据"
 
-                 />
+                />
         </LinearLayout>
 
-<!--        线路列表-->
+        <!--        线路列表-->
         <com.owen.tvrecyclerview.widget.TvRecyclerView
             android:id="@+id/mGridViewFlag"
             android:layout_width="match_parent"
@@ -234,10 +179,9 @@
             android:clipToPadding="false"
             app:tv_horizontalSpacingWithMargins="@dimen/dp_10"
             app:tv_selectedItemIsCentered="true"
-            tools:listitem="@layout/item_series_flag"
-            />
+            tools:listitem="@layout/item_series_flag" />
 
-<!--        集数分组-->
+        <!--        集数分组-->
         <com.owen.tvrecyclerview.widget.TvRecyclerView
             android:id="@+id/mSeriesGroupView"
             android:layout_width="match_parent"
@@ -248,7 +192,7 @@
             app:tv_horizontalSpacingWithMargins="@dimen/dp_10"
             app:tv_selectedItemIsCentered="true" />
 
-<!--        集数列表-->
+        <!--        集数列表-->
         <com.owen.tvrecyclerview.widget.TvRecyclerView
             android:id="@+id/mGridView"
             android:layout_width="match_parent"
@@ -264,6 +208,6 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/previewPlayer"
         android:layout_width="match_parent"
-        android:layout_height="260dp"/>
+        android:layout_height="250dp" />
 
 </FrameLayout>

@@ -50,9 +50,10 @@ public class App extends MultiDexApplication {
                 .addCallback(new EmptyCallback())
                 .addCallback(new LoadingCallback())
                 .commit();
-        AutoSizeConfig.getInstance().setCustomFragment(true).getUnitsManager()
-                .setSupportDP(false)
-                .setSupportSP(false)
+        AutoSizeConfig.getInstance()
+                .setExcludeFontScale(true)
+                .setCustomFragment(true)
+                .getUnitsManager()
                 .setSupportSubunits(Subunits.MM);
         PlayerHelper.init();
         JSEngine.getInstance().create();

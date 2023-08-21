@@ -1,0 +1,82 @@
+package com.github.tvbox.osc.ui.dialog;
+
+import android.content.Context;
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+
+import com.blankj.utilcode.util.ScreenUtils;
+import com.github.tvbox.osc.R;
+import com.github.tvbox.osc.bean.VodInfo;
+import com.github.tvbox.osc.databinding.DialogVideoDetailBinding;
+import com.github.tvbox.osc.picasso.RoundTransformation;
+import com.github.tvbox.osc.util.DefaultConfig;
+import com.github.tvbox.osc.util.MD5;
+import com.lxj.xpopup.core.BottomPopupView;
+import com.squareup.picasso.Picasso;
+
+import me.jessyan.autosize.utils.AutoSizeUtils;
+
+/**
+ * @Author : Liu XiaoRan
+ * @Email : 592923276@qq.com
+ * @Date : on 2023/8/17 09:28.
+ * @Description :
+ */
+public class VideoDetailDialog extends BottomPopupView {
+
+
+    private VodInfo mVideo;
+
+    public VideoDetailDialog(@NonNull Context context, VodInfo vodInfo) {
+        super(context);
+        mVideo = vodInfo;
+    }
+
+    @Override
+    protected int getImplLayoutId() {
+        return R.layout.dialog_video_detail;
+    }
+
+    @Override
+    protected int getMaxHeight() {
+        return ScreenUtils.getScreenHeight()-ScreenUtils.getScreenHeight()/4;
+    }
+
+    @Override
+    protected void onCreate() {
+        super.onCreate();
+        DialogVideoDetailBinding binding = DialogVideoDetailBinding.bind(getPopupImplView());
+
+        binding.tvName.setText(mVideo.name);
+        binding.tvYear.setText("年份："+(mVideo.year == 0 ? "" : String.valueOf(mVideo.year)));
+        binding.tvArea.setText("地区："+getText(mVideo.area));
+        binding.tvLang.setText("语言："+getText(mVideo.lang));
+        binding.tvType.setText("类型："+getText(mVideo.type));
+        binding.tvActor.setText("演员："+getText(mVideo.actor));
+        binding.tvDirector.setText("导演："+getText(mVideo.director));
+        binding.tvDes.setContent("简介："+removeHtmlTag(mVideo.des));
+
+
+        Picasso.get()
+                .load(DefaultConfig.checkReplaceProxy(mVideo.pic))
+                .placeholder(R.drawable.img_loading_placeholder)
+                .error(R.drawable.img_loading_placeholder)
+                .into(binding.ivThum);
+    }
+
+    private String getText(String str){
+        if (TextUtils.isEmpty(str)){
+            return "未知";
+        }else {
+            return str;
+        }
+    }
+
+    private String removeHtmlTag(String info) {
+        if (info == null)
+            return "";
+        return info.replaceAll("\\<.*?\\>", "").replaceAll("\\s", "");
+    }
+
+}

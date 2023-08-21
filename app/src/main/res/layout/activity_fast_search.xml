@@ -88,7 +88,7 @@
             android:layout_width="120dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingLeft="20mm">
+            android:paddingLeft="10dp">
 
             <com.owen.tvrecyclerview.widget.TvRecyclerView
                 android:id="@+id/mGridViewWord"
@@ -120,8 +120,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingLeft="20mm"
-            android:paddingRight="20mm">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
 
             <com.owen.tvrecyclerview.widget.TvRecyclerView

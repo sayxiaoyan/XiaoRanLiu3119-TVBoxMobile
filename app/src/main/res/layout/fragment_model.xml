@@ -38,8 +38,7 @@
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20"
+                android:paddingHorizontal="20dp"
                 android:visibility="gone">
 
                 <TextView
@@ -77,13 +76,12 @@
                 android:id="@+id/llHomeRec"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_60"
-                android:layout_marginBottom="@dimen/dp_10"
                 android:layout_weight="1"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingHorizontal="20dp"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -122,8 +120,7 @@
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20"
+                android:paddingHorizontal="20dp"
                 android:visibility="gone">
 
                 <TextView
@@ -159,13 +156,11 @@
                 android:id="@+id/llPlay"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_60"
-                android:layout_marginBottom="@dimen/dp_10"
                 android:layout_weight="1"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingHorizontal="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -204,8 +199,7 @@
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20"
+                android:paddingHorizontal="20dp"
                 android:visibility="gone">
 
                 <TextView
@@ -245,8 +239,7 @@
                 android:layout_marginBottom="@dimen/dp_10"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20"
+                android:paddingHorizontal="20dp"
                 android:visibility="gone">
 
                 <TextView
@@ -282,12 +275,10 @@
                 android:id="@+id/llDns"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_60"
-                android:layout_marginBottom="@dimen/dp_10"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingHorizontal="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -326,8 +317,7 @@
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20"
+                android:paddingHorizontal="20dp"
                 android:visibility="gone">
 
                 <TextView
@@ -364,12 +354,10 @@
                 android:id="@+id/llSearchTv"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_60"
-                android:layout_marginBottom="@dimen/dp_10"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20"
+                android:paddingHorizontal="20dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -406,12 +394,10 @@
                 android:id="@+id/llHistoryNum"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_60"
-                android:layout_marginBottom="@dimen/dp_10"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20"
+                android:paddingHorizontal="20dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -448,11 +434,9 @@
                 android:id="@+id/llScale"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_60"
-                android:layout_marginBottom="@dimen/dp_10"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingHorizontal="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -487,12 +471,10 @@
                 android:id="@+id/llIjkCachePlay"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginBottom="10dp"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20"
+                android:paddingHorizontal="20dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -528,12 +510,10 @@
                 android:id="@+id/llClearCache"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_60"
-                android:layout_marginBottom="@dimen/dp_10"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingHorizontal="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -561,12 +541,10 @@
                 android:id="@+id/llBackup"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_60"
-                android:layout_marginBottom="@dimen/dp_10"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+                android:paddingHorizontal="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"

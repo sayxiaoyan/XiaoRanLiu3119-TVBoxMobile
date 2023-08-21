@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.bean.VodInfo;
+import com.lihang.ShadowLayout;
 
 import java.util.ArrayList;
 
@@ -22,12 +23,8 @@ public class SeriesAdapter extends BaseQuickAdapter<VodInfo.VodSeries, BaseViewH
 
     @Override
     protected void convert(BaseViewHolder helper, VodInfo.VodSeries item) {
-        TextView tvSeries = helper.getView(R.id.tvSeries);
-        if (item.selected) {
-            tvSeries.setTextColor(mContext.getResources().getColor(R.color.color_02F8E1));
-        } else {
-            tvSeries.setTextColor(Color.WHITE);
-        }
+        ShadowLayout sl = helper.getView(R.id.sl);
+        sl.setSelected(item.selected);
         helper.setText(R.id.tvSeries, item.name);
     }
 }

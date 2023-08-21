@@ -10,7 +10,8 @@
     <color name="windowBackground">#fff</color>
 
     <color name="bg_gray">#f7f7f7</color>
-    |
+    <color name="gray_darker">#7f7b79</color>
+
     <!--    通用颜色-->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>

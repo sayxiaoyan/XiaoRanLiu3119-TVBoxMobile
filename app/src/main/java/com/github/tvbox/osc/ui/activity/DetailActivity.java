@@ -30,6 +30,7 @@ import com.blankj.utilcode.util.SpanUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.ctetin.expandabletextviewlibrary.ExpandableTextView;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.App;
@@ -42,6 +43,7 @@ import com.github.tvbox.osc.cache.RoomDataManger;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.ui.adapter.SeriesAdapter;
 import com.github.tvbox.osc.ui.adapter.SeriesFlagAdapter;
+import com.github.tvbox.osc.ui.dialog.VideoDetailDialog;
 import com.github.tvbox.osc.ui.fragment.PlayFragment;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
@@ -53,6 +55,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
+import com.lxj.xpopup.XPopup;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
@@ -93,15 +96,7 @@ public class DetailActivity extends BaseActivity {
     private PlayFragment playFragment = null;
 
     private TextView tvName;
-    private TextView tvYear;
     private TextView tvSite;
-    private TextView tvArea;
-    private TextView tvLang;
-    private TextView tvType;
-    private TextView tvActor;
-    private TextView tvDirector;
-    private TextView tvPlayUrl;
-    private TextView tvDes;
     private TextView tvSort;
     private TextView tvCollect;
     private TvRecyclerView mGridViewFlag;
@@ -159,15 +154,7 @@ public class DetailActivity extends BaseActivity {
         });
         llPlayerPlace.setVisibility(showPreview ? View.VISIBLE : View.GONE);
         tvName = findViewById(R.id.tvName);
-        tvYear = findViewById(R.id.tvYear);
         tvSite = findViewById(R.id.tvSite);
-        tvArea = findViewById(R.id.tvArea);
-        tvLang = findViewById(R.id.tvLang);
-        tvType = findViewById(R.id.tvType);
-        tvActor = findViewById(R.id.tvActor);
-        tvDirector = findViewById(R.id.tvDirector);
-        tvPlayUrl = findViewById(R.id.tvPlayUrl);
-        tvDes = findViewById(R.id.tvDes);
         tvSort = findViewById(R.id.tvSort);
         tvCollect = findViewById(R.id.tvCollect);
         mEmptyPlayList = findViewById(R.id.mEmptyPlaylist);
@@ -205,9 +192,11 @@ public class DetailActivity extends BaseActivity {
         };
         mSeriesGroupView.setAdapter(seriesGroupAdapter);
 
-        //禁用播放地址焦点
-        tvPlayUrl.setFocusable(false);
-
+        findViewById(R.id.ll_title).setOnClickListener(view -> {
+            new XPopup.Builder(this)
+                    .asCustom(new VideoDetailDialog(this, vodInfo))
+                    .show();
+        });
         findViewById(R.id.tvDownload).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -260,16 +249,6 @@ public class DetailActivity extends BaseActivity {
                     Toast.makeText(DetailActivity.this, "已移除收藏夹", Toast.LENGTH_SHORT).show();
                     tvCollect.setText("加入收藏");
                 }
-            }
-        });
-        tvPlayUrl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //获取剪切板管理器
-                ClipboardManager cm = (ClipboardManager)getSystemService(mContext.CLIPBOARD_SERVICE);
-                //设置内容到剪切板
-                cm.setPrimaryClip(ClipData.newPlainText(null, tvPlayUrl.getText().toString().replace("播放地址：","")));
-                Toast.makeText(DetailActivity.this, "已复制", Toast.LENGTH_SHORT).show();
             }
         });
         mGridView.setOnItemListener(new TvRecyclerView.OnItemListener() {
@@ -375,7 +354,7 @@ public class DetailActivity extends BaseActivity {
             @Override
             public void onItemSelected(TvRecyclerView parent, View itemView, int position) {
                 TextView txtView = itemView.findViewById(R.id.tvSeriesGroup);
-                txtView.setTextColor(mContext.getResources().getColor(R.color.color_02F8E1));
+                txtView.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                 if (vodInfo != null && vodInfo.seriesMap.get(vodInfo.playFlag).size() > 0) {
                     int targetPos = position * GroupCount+1;
                     mGridView.smoothScrollToPosition(targetPos);
@@ -420,7 +399,6 @@ public class DetailActivity extends BaseActivity {
         if (vodInfo != null && vodInfo.seriesMap.get(vodInfo.playFlag).size() > 0) {
             preFlag = vodInfo.playFlag;
             //更新播放地址
-            setTextShow(tvPlayUrl, "播放地址：", vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex).url);
             Bundle bundle = new Bundle();
             //保存历史
             insertVod(sourceKey, vodInfo);
@@ -556,11 +534,7 @@ public class DetailActivity extends BaseActivity {
                 .create();
     }
 
-    private String removeHtmlTag(String info) {
-        if (info == null)
-            return "";
-        return info.replaceAll("\\<.*?\\>", "").replaceAll("\\s", "");
-    }
+
 
     private void initViewModel() {
         sourceViewModel = new ViewModelProvider(this).get(SourceViewModel.class);
@@ -577,26 +551,6 @@ public class DetailActivity extends BaseActivity {
 
                     tvName.setText(mVideo.name);
                     setTextShow(tvSite, "来源：", ApiConfig.get().getSource(mVideo.sourceKey).getName());
-                    setTextShow(tvYear, "年份：", mVideo.year == 0 ? "" : String.valueOf(mVideo.year));
-                    setTextShow(tvArea, "地区：", mVideo.area);
-                    setTextShow(tvLang, "语言：", mVideo.lang);
-                    setTextShow(tvType, "类型：", mVideo.type);
-                    setTextShow(tvActor, "演员：", mVideo.actor);
-                    setTextShow(tvDirector, "导演：", mVideo.director);
-                    setTextShow(tvDes, "内容简介：", removeHtmlTag(mVideo.des));
-//                    if (!TextUtils.isEmpty(mVideo.pic)) {
-//                        Picasso.get()
-//                                .load(DefaultConfig.checkReplaceProxy(mVideo.pic))
-//                                .transform(new RoundTransformation(MD5.string2MD5(mVideo.pic + mVideo.name))
-//                                        .centerCorp(true)
-//                                        .override(AutoSizeUtils.mm2px(mContext, 300), AutoSizeUtils.mm2px(mContext, 400))
-//                                        .roundRadius(AutoSizeUtils.mm2px(mContext, 10), RoundTransformation.RoundType.ALL))
-//                                .placeholder(R.drawable.img_loading_placeholder)
-//                                .error(R.drawable.img_loading_placeholder)
-//                                .into(ivThumb);
-//                    } else {
-//                        ivThumb.setImageResource(R.drawable.img_loading_placeholder);
-//                    }
 
                     if (vodInfo.seriesMap != null && vodInfo.seriesMap.size() > 0) {//线路
                         mGridViewFlag.setVisibility(View.VISIBLE);
@@ -633,8 +587,7 @@ public class DetailActivity extends BaseActivity {
                             } else
                                 flag.selected = false;
                         }
-                        //设置播放地址
-                        setTextShow(tvPlayUrl, "播放地址：", vodInfo.seriesMap.get(vodInfo.playFlag).get(0).url);
+//                        setTextShow(tvPlayUrl, "播放地址：", vodInfo.seriesMap.get(vodInfo.playFlag).get(0).url);
                         //设置线路数据
                         seriesFlagAdapter.setNewData(vodInfo.seriesFlags);
                         mGridViewFlag.scrollToPosition(flagScrollTo);

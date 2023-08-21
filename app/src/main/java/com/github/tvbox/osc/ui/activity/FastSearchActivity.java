@@ -497,9 +497,9 @@ public class FastSearchActivity extends BaseActivity {
         textView.setText(text);
         textView.setGravity(Gravity.CENTER);
         DslTabLayout.LayoutParams params = new DslTabLayout.LayoutParams(-2, -2);
-        params.topMargin = 10;
-        params.bottomMargin = 10;
-        textView.setPadding(20, 8, 20, 8);
+        params.topMargin = 20;
+        params.bottomMargin = 20;
+        textView.setPadding(20, 10, 20, 10);
         textView.setLayoutParams(params);
         return textView;
     }
