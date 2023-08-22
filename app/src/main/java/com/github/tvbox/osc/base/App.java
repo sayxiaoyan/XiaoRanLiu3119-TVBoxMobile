@@ -54,6 +54,8 @@ public class App extends MultiDexApplication {
                 .setExcludeFontScale(true)
                 .setCustomFragment(true)
                 .getUnitsManager()
+                .setSupportDP(false)
+                .setSupportSP(false)
                 .setSupportSubunits(Subunits.MM);
         PlayerHelper.init();
         JSEngine.getInstance().create();

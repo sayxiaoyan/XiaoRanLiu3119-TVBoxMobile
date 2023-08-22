@@ -565,4 +565,34 @@
         android:textColor="@color/color_FFFFFF"
          />
 
+    <LinearLayout
+        android:id="@+id/ll_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="80dp"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lt_speed"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:scaleX="3"
+            android:scaleY="2"
+            app:lottie_autoPlay="true"
+            android:scaleType="centerCrop"
+            app:lottie_fileName="forward_speed.json"
+            app:lottie_loop="true"
+            app:lottie_colorFilter="@color/white"
+            app:lottie_repeatMode="restart"/>
+        <TextView
+            android:id="@+id/tv_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="2.0"/>
+    </LinearLayout>
 </FrameLayout>

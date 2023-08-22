@@ -2,10 +2,13 @@ package com.github.tvbox.osc.ui.activity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+
 import com.blankj.utilcode.util.GsonUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
@@ -13,25 +16,38 @@ import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.bean.ParseBean;
 import com.github.tvbox.osc.bean.VideoInfo;
 import com.github.tvbox.osc.constant.CacheConst;
+import com.github.tvbox.osc.event.RefreshEvent;
+import com.github.tvbox.osc.player.IjkMediaPlayer;
+import com.github.tvbox.osc.player.MyVideoView;
+import com.github.tvbox.osc.player.TrackInfo;
+import com.github.tvbox.osc.player.TrackInfoBean;
+import com.github.tvbox.osc.player.controller.LocalVideoController;
 import com.github.tvbox.osc.player.controller.VodController;
+import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
+import com.github.tvbox.osc.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.util.HawkConfig;
+import com.github.tvbox.osc.util.LOG;
+import com.github.tvbox.osc.util.PlayerHelper;
 import com.google.common.reflect.TypeToken;
 import com.orhanobut.hawk.Hawk;
 
+import org.greenrobot.eventbus.EventBus;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import xyz.doikki.videoplayer.player.AbstractPlayer;
 import xyz.doikki.videoplayer.player.ProgressManager;
 import xyz.doikki.videoplayer.player.VideoView;
 
 public class LocalPlayActivity extends BaseActivity {
 
 
-    private VideoView mVideoView;
-    VodController mController;
+    private MyVideoView mVideoView;
+    LocalVideoController mController;
     JSONObject mVodPlayerCfg;
     private List<VideoInfo> mVideoList = new ArrayList<>();
     private int mPosition;
@@ -54,6 +70,17 @@ public class LocalPlayActivity extends BaseActivity {
         initPlayerCfg();
         mVideoView.setVideoController(mController); //设置控制器
         play(false);
+
+        new Handler()
+                .postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mVideoView.getCurrentPlayState() == VideoView.STATE_PREPARED){//不知道为啥部分长视频(不确定是不是因为时长/大小)会卡在准备完成状态,所以延迟重置下状态
+                            mVideoView.pause();
+                            mVideoView.resume();
+                        }
+                    }
+                },500);
     }
 
     /**
@@ -86,6 +113,8 @@ public class LocalPlayActivity extends BaseActivity {
             }
         });
 
+        PlayerHelper.updateCfg(mVideoView, mVodPlayerCfg);
+
         if (fromSkip){
             mVideoView.replay(false);
         }else {
@@ -94,9 +123,8 @@ public class LocalPlayActivity extends BaseActivity {
     }
 
     private void initController() {
-        mController = new VodController(this);
-        mController.showParse(false);
-        mController.setListener(new VodController.VodControlListener() {
+        mController = new LocalVideoController(this);
+        mController.setListener(new LocalVideoController.VodControlListener() {
             @Override
             public void playNext(boolean rmProgress) {
 //                String preProgressKey = progressKey;
@@ -182,7 +210,7 @@ public class LocalPlayActivity extends BaseActivity {
                 mVodPlayerCfg.put("pr", Hawk.get(HawkConfig.PLAY_RENDER, 0));
             }
             if (!mVodPlayerCfg.has("ijk")) {
-                mVodPlayerCfg.put("ijk", Hawk.get(HawkConfig.IJK_CODEC, ""));
+                mVodPlayerCfg.put("ijk", Hawk.get(HawkConfig.IJK_CODEC, "软解码"));
             }
             if (!mVodPlayerCfg.has("sc")) {
                 mVodPlayerCfg.put("sc", Hawk.get(HawkConfig.PLAY_SCALE, 0));
@@ -231,4 +259,9 @@ public class LocalPlayActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_REFRESH, ""));
+    }
 }

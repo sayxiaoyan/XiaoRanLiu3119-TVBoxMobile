@@ -41,7 +41,6 @@ public class FolderAdapter extends BaseQuickAdapter<VideoFolder, BaseViewHolder>
         helper.setText(R.id.tv_name,item.getName());
         helper.setText(R.id.tv_count,videoList.size()+"个视频");
 
-        LogUtils.d(videoList.get(0).getPath());
         Glide.with(mContext)
                 .load(videoList.get(0).getPath()) // 第一个视频做封面
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)

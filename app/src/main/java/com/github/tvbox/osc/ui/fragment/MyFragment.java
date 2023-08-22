@@ -71,10 +71,11 @@ public class MyFragment extends BaseLazyFragment {
                 .request(new OnPermissionCallback() {
                     @Override
                     public void onGranted(List<String> permissions, boolean all) {
-                        if (!all) {
+                        if (all) {
+                            jumpActivity(MovieFoldersActivity.class);
+                        }else {
                             ToastUtils.showLong("部分权限未正常授予,请授权");
                         }
-                        jumpActivity(MovieFoldersActivity.class);
                     }
 
                     @Override

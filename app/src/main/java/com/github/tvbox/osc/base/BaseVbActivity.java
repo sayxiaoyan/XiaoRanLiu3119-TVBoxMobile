@@ -1,8 +1,17 @@
 package com.github.tvbox.osc.base;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 
 import androidx.viewbinding.ViewBinding;
+
+import com.github.tvbox.osc.api.ApiConfig;
+import com.github.tvbox.osc.event.RefreshEvent;
+import com.github.tvbox.osc.ui.activity.DetailActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -37,5 +46,18 @@ public abstract class BaseVbActivity<T extends ViewBinding> extends BaseActivity
         } catch (NoSuchMethodException | IllegalAccessException| InvocationTargetException e) {
             e.printStackTrace();
         }
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RefreshEvent event) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 }

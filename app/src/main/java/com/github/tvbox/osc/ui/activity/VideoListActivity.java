@@ -2,6 +2,7 @@ package com.github.tvbox.osc.ui.activity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 import com.blankj.utilcode.util.GsonUtils;
@@ -11,6 +12,7 @@ import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.VideoFolder;
 import com.github.tvbox.osc.bean.VideoInfo;
 import com.github.tvbox.osc.databinding.ActivityMovieFoldersBinding;
+import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.ui.adapter.FolderAdapter;
 import com.github.tvbox.osc.ui.adapter.LocalVideoAdapter;
 import com.github.tvbox.osc.util.Utils;
@@ -46,6 +48,11 @@ public class VideoListActivity extends BaseVbActivity<ActivityMovieFoldersBindin
                 }
             }
         });
+    }
+
+    @Override
+    public void onEvent(RefreshEvent event) {
+        new Handler().postDelayed(this::groupVideos,1000);
     }
 
     @Override

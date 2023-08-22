@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.BaseActivity;
@@ -42,6 +43,7 @@ import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.model.Progress;
@@ -53,6 +55,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.HttpUrl;
@@ -125,6 +128,21 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 tvDebugOpen.setText(Hawk.get(HawkConfig.DEBUG_OPEN, false) ? "已打开" : "已关闭");
             }
         });
+
+        findViewById(R.id.llPressSpeed).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] items = {"2.0", "3.0"};
+                float beforeSpeed = SPUtils.getInstance().getFloat(CacheConst.VIDEO_SPEED, 2.0f);
+                int defaultIndex = Arrays.asList(items).indexOf(String.valueOf(beforeSpeed));
+                new XPopup.Builder(mActivity)
+                        .asCenterList(null, items,null,defaultIndex, (position, text) -> {
+                            SPUtils.getInstance().put(CacheConst.VIDEO_SPEED, Float.parseFloat(text));
+                            ToastUtils.showShort("设置成功");
+                        }).show();
+            }
+        });
+
         findViewById(R.id.llParseWebVew).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
