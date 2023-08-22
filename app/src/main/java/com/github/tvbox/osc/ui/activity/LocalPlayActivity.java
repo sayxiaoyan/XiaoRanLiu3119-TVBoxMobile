@@ -101,7 +101,7 @@ public class LocalPlayActivity extends BaseActivity {
 
         mVideoView.setProgressManager(new ProgressManager() {
             @Override
-            public void saveProgress(String url, long progress) {
+            public void saveProgress(String url, long progress) {// 就本地视频页面用sp,其余用Hawk
                 //有点本地文件确实总时长,设置下总时长,为什么用path,因为电影列表要通过媒体文件的path获取缓存的时长/进度,存取报纸缓存的key一直
                 SPUtils.getInstance(CacheConst.VIDEO_DURATION_SP).put(path, mVideoView.getDuration());
                 SPUtils.getInstance(CacheConst.VIDEO_PROGRESS_SP).put(path, progress);

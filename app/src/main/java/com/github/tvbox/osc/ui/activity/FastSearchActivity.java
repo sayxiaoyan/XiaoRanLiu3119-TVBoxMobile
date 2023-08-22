@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import com.angcyo.tablayout.DslTabLayout;
 import com.angcyo.tablayout.DslTabLayoutConfig;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
@@ -31,12 +33,14 @@ import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.bean.AbsXml;
 import com.github.tvbox.osc.bean.Movie;
 import com.github.tvbox.osc.bean.SourceBean;
+import com.github.tvbox.osc.constant.CacheConst;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.event.ServerEvent;
 import com.github.tvbox.osc.ui.adapter.FastListAdapter;
 import com.github.tvbox.osc.ui.adapter.FastSearchAdapter;
 import com.github.tvbox.osc.ui.adapter.PinyinAdapter;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
+import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.SearchHelper;
 import com.github.tvbox.osc.util.js.JSEngine;
 import com.github.tvbox.osc.viewmodel.SourceViewModel;
@@ -48,9 +52,13 @@ import com.google.gson.JsonParser;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -125,6 +133,9 @@ public class FastSearchActivity extends BaseActivity {
     };
     private EditText mEtSearch;
     private DslTabLayout mSiteTabs;
+    private TagFlowLayout mFlHistory;
+    private LinearLayout mLlHistory;
+    private List<String> mSearchHistory = new ArrayList<>();
 
     @Override
     protected int getLayoutResID() {
@@ -144,10 +155,8 @@ public class FastSearchActivity extends BaseActivity {
     private void hideHotAndHistorySearch(boolean isHide){
         if(isHide){
             mllHotSearch.setVisibility(View.GONE);
-            mRvHotSearch.setVisibility(View.GONE);
         }else{
             mllHotSearch.setVisibility(View.VISIBLE);
-            mRvHotSearch.setVisibility(View.VISIBLE);
         }
     }
 
@@ -216,6 +225,8 @@ public class FastSearchActivity extends BaseActivity {
         //搜索建议模块(热门/历史)
         mllHotSearch = findViewById(R.id.llHotSearch);
         mRvHotSearch = findViewById(R.id.rvHotSearch);
+        mLlHistory = findViewById(R.id.ll_history);
+        mFlHistory = findViewById(R.id.fl_history);
         //左侧的聚合站点tab
         mSiteTabs = findViewById(R.id.tab_layout);
 
@@ -437,6 +448,43 @@ public class FastSearchActivity extends BaseActivity {
             showLoading();
             search(title);
         }
+
+        mSearchHistory = Hawk.get(CacheConst.HISTORY_SEARCH, new ArrayList<>());
+        if (mSearchHistory.size() > 0){
+            mLlHistory.setVisibility(View.VISIBLE);
+        }
+        mFlHistory.setAdapter(new TagAdapter<String>(mSearchHistory)
+        {
+            @Override
+            public View getView(FlowLayout parent, int position, String s)
+            {
+                TextView tv = (TextView) LayoutInflater.from(FastSearchActivity.this).inflate(R.layout.item_search_word_hot,
+                        mFlHistory, false);
+                tv.setText(s);
+                return tv;
+            }
+        });
+
+        mFlHistory.setOnTagClickListener((view, position, parent) -> {
+            search(mSearchHistory.get(position));
+            return true;
+        });
+    }
+
+    private void saveSearchHistory(String searchWord){
+        if (!searchWord.isEmpty()) {
+            ArrayList<String> history = Hawk.get(CacheConst.HISTORY_SEARCH, new ArrayList<>());
+            if (!history.contains(searchWord)){
+                history.add(0, searchWord);
+            }else {
+                history.remove(searchWord);
+                history.add(0, searchWord);
+            }
+            if (history.size() > 30){
+                history.remove(30);
+            }
+            Hawk.put(CacheConst.HISTORY_SEARCH, history);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -468,6 +516,8 @@ public class FastSearchActivity extends BaseActivity {
             ToastUtils.showShort("请输入搜索内容");
             return;
         }
+        saveSearchHistory(title);
+
         hideHotAndHistorySearch(true);
         KeyboardUtils.hideSoftInput(this);
         cancel();
