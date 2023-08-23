@@ -2,11 +2,8 @@ package com.github.tvbox.osc.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -24,7 +21,6 @@ import com.angcyo.tablayout.DslTabLayout;
 import com.angcyo.tablayout.DslTabLayoutConfig;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
@@ -38,9 +34,7 @@ import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.event.ServerEvent;
 import com.github.tvbox.osc.ui.adapter.FastListAdapter;
 import com.github.tvbox.osc.ui.adapter.FastSearchAdapter;
-import com.github.tvbox.osc.ui.adapter.PinyinAdapter;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
-import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.SearchHelper;
 import com.github.tvbox.osc.util.js.JSEngine;
 import com.github.tvbox.osc.viewmodel.SourceViewModel;
@@ -54,7 +48,6 @@ import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
-import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -90,7 +83,7 @@ public class FastSearchActivity extends BaseActivity {
 
     SourceViewModel sourceViewModel;
     private View mllHotSearch;
-    private RecyclerView mRvHotSearch;
+    private View mLlSearchResult;
 
     //    private EditText etSearch;
 //    private TextView tvSearch;
@@ -110,7 +103,6 @@ public class FastSearchActivity extends BaseActivity {
     private List<String> quickSearchWord = new ArrayList<>();
     private HashMap<String, String> mCheckSources = null;
     private List<Runnable> pauseRunnable = null;
-    private PinyinAdapter mHotAdapter;
 
     private View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
         @Override
@@ -134,6 +126,7 @@ public class FastSearchActivity extends BaseActivity {
     private EditText mEtSearch;
     private DslTabLayout mSiteTabs;
     private TagFlowLayout mFlHistory;
+    private TagFlowLayout mFlHot;
     private LinearLayout mLlHistory;
     private List<String> mSearchHistory = new ArrayList<>();
 
@@ -155,25 +148,44 @@ public class FastSearchActivity extends BaseActivity {
     private void hideHotAndHistorySearch(boolean isHide){
         if(isHide){
             mllHotSearch.setVisibility(View.GONE);
+            mLlSearchResult.setVisibility(View.VISIBLE);
         }else{
             mllHotSearch.setVisibility(View.VISIBLE);
+            mLlSearchResult.setVisibility(View.GONE);
         }
     }
 
     private void initHotAndHistorySearch(){
-        mRvHotSearch.setHasFixedSize(true);
-        mRvHotSearch.setLayoutManager(new V7GridLayoutManager(this.mContext, 4));
-        mHotAdapter = new PinyinAdapter();
-        mRvHotSearch.setAdapter(mHotAdapter);
-        mHotAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+
+        // 历史搜索
+        mSearchHistory = Hawk.get(CacheConst.HISTORY_SEARCH, new ArrayList<>());
+        if (mSearchHistory.size() > 0){
+            mLlHistory.setVisibility(View.VISIBLE);
+        }
+        mFlHistory.setAdapter(new TagAdapter<String>(mSearchHistory)
+        {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                search(mHotAdapter.getItem(position));
+            public View getView(FlowLayout parent, int position, String s)
+            {
+                TextView tv = (TextView) LayoutInflater.from(FastSearchActivity.this).inflate(R.layout.item_search_word_hot,
+                        mFlHistory, false);
+                tv.setText(s);
+                return tv;
             }
         });
+
+        mFlHistory.setOnTagClickListener((view, position, parent) -> {
+            search(mSearchHistory.get(position));
+            return true;
+        });
+
+        // 热门搜索
         getHotWords();
     }
 
+    /**
+     * 热门搜索
+     */
     private void getHotWords(){
         // 加载热词
         OkGo.<String>get("https://node.video.qq.com/x/api/hot_search")
@@ -192,7 +204,22 @@ public class FastSearchActivity extends BaseActivity {
                                 JsonObject obj = (JsonObject) ele;
                                 hots.add(obj.get("title").getAsString().trim().replaceAll("<|>|《|》|-", "").split(" ")[0]);
                             }
-                            mHotAdapter.setNewData(hots);
+                            mFlHot.setAdapter(new TagAdapter<String>(hots)
+                            {
+                                @Override
+                                public View getView(FlowLayout parent, int position, String s)
+                                {
+                                    TextView tv = (TextView) LayoutInflater.from(FastSearchActivity.this).inflate(R.layout.item_search_word_hot,
+                                            mFlHot, false);
+                                    tv.setText(s);
+                                    return tv;
+                                }
+                            });
+
+                            mFlHot.setOnTagClickListener((view, position, parent) -> {
+                                search(hots.get(position));
+                                return true;
+                            });
                         } catch (Throwable th) {
                             th.printStackTrace();
                         }
@@ -223,10 +250,11 @@ public class FastSearchActivity extends BaseActivity {
     private void initView() {
         EventBus.getDefault().register(this);
         //搜索建议模块(热门/历史)
-        mllHotSearch = findViewById(R.id.llHotSearch);
-        mRvHotSearch = findViewById(R.id.rvHotSearch);
+        mllHotSearch = findViewById(R.id.llSearchSuggest);
+        mLlSearchResult = findViewById(R.id.llSearchResult);
         mLlHistory = findViewById(R.id.ll_history);
         mFlHistory = findViewById(R.id.fl_history);
+        mFlHot = findViewById(R.id.fl_hot);
         //左侧的聚合站点tab
         mSiteTabs = findViewById(R.id.tab_layout);
 
@@ -448,27 +476,6 @@ public class FastSearchActivity extends BaseActivity {
             showLoading();
             search(title);
         }
-
-        mSearchHistory = Hawk.get(CacheConst.HISTORY_SEARCH, new ArrayList<>());
-        if (mSearchHistory.size() > 0){
-            mLlHistory.setVisibility(View.VISIBLE);
-        }
-        mFlHistory.setAdapter(new TagAdapter<String>(mSearchHistory)
-        {
-            @Override
-            public View getView(FlowLayout parent, int position, String s)
-            {
-                TextView tv = (TextView) LayoutInflater.from(FastSearchActivity.this).inflate(R.layout.item_search_word_hot,
-                        mFlHistory, false);
-                tv.setText(s);
-                return tv;
-            }
-        });
-
-        mFlHistory.setOnTagClickListener((view, position, parent) -> {
-            search(mSearchHistory.get(position));
-            return true;
-        });
     }
 
     private void saveSearchHistory(String searchWord){

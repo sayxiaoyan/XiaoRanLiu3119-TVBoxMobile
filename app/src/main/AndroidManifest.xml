@@ -96,7 +96,8 @@
         <activity
             android:name=".ui.activity.FastSearchActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".ui.activity.SettingActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

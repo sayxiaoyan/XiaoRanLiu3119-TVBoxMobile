@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:background="@drawable/bg_large_round_gray"
+        android:scrollbars="none"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,7 +49,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_source_data" />
+                    android:src="@drawable/ic_data_source_48" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -175,7 +176,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_local_video" />
+                    android:src="@drawable/ic_local_video_48" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -217,7 +218,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_collect" />
+                    android:src="@drawable/ic_collect_48" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -259,7 +260,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_about" />
+                    android:src="@drawable/ic_about_48" />
 
                 <TextView
                     android:layout_width="wrap_content"

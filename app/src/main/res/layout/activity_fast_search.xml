@@ -58,7 +58,7 @@
             app:tint="@color/text_gray"/>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/llHotSearch"
+        android:id="@+id/llSearchSuggest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -94,21 +94,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginTop="30dp"
             android:text="热门搜索"
             android:textAlignment="center"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvHotSearch"
+        <com.zhy.view.flowlayout.TagFlowLayout
+            android:id="@+id/fl_hot"
+            zhy:max_select="1"
             android:layout_width="match_parent"
-            android:layout_height="110dp"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+        </com.zhy.view.flowlayout.TagFlowLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llSearchResult"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <LinearLayout
             android:id="@+id/llWord"
