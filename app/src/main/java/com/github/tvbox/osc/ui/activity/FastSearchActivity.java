@@ -2,6 +2,7 @@ package com.github.tvbox.osc.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -128,7 +129,6 @@ public class FastSearchActivity extends BaseActivity {
     private TagFlowLayout mFlHistory;
     private TagFlowLayout mFlHot;
     private LinearLayout mLlHistory;
-    private List<String> mSearchHistory = new ArrayList<>();
 
     @Override
     protected int getLayoutResID() {
@@ -142,7 +142,10 @@ public class FastSearchActivity extends BaseActivity {
         initView();
         initViewModel();
         initData();
-        initHotAndHistorySearch();
+        //历史搜索
+        initHistorySearch();
+        // 热门搜索
+        getHotWords();
     }
 
     private void hideHotAndHistorySearch(boolean isHide){
@@ -155,13 +158,11 @@ public class FastSearchActivity extends BaseActivity {
         }
     }
 
-    private void initHotAndHistorySearch(){
+    private void initHistorySearch(){
 
-        // 历史搜索
-        mSearchHistory = Hawk.get(CacheConst.HISTORY_SEARCH, new ArrayList<>());
-        if (mSearchHistory.size() > 0){
-            mLlHistory.setVisibility(View.VISIBLE);
-        }
+        List<String> mSearchHistory = Hawk.get(CacheConst.HISTORY_SEARCH, new ArrayList<>());
+
+        mLlHistory.setVisibility(mSearchHistory.size() > 0 ? View.VISIBLE : View.GONE);
         mFlHistory.setAdapter(new TagAdapter<String>(mSearchHistory)
         {
             @Override
@@ -179,8 +180,11 @@ public class FastSearchActivity extends BaseActivity {
             return true;
         });
 
-        // 热门搜索
-        getHotWords();
+        findViewById(R.id.iv_clear_history).setOnClickListener(view -> {
+            Hawk.put(CacheConst.HISTORY_SEARCH, new ArrayList<>());
+            //FlowLayout及其adapter貌似没有清空数据的api,简单粗暴重置
+            view.postDelayed(this::initHistorySearch,300);
+        });
     }
 
     /**
