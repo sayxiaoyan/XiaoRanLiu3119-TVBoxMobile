@@ -10,6 +10,18 @@
     android:orientation="horizontal"
     android:paddingHorizontal="10dp">
 
+
+    <CheckBox
+        android:id="@+id/cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/item"
+        app:layout_constraintLeft_toLeftOf="@id/item"
+        app:layout_constraintTop_toTopOf="@id/item" />
+
     <!-- 定义一个用于显示图像的 ImageView -->
     <com.lihang.ShadowLayout
         android:id="@+id/iv_container"
@@ -21,7 +33,7 @@
         app:hl_cornerRadius="@dimen/common_corners"
         app:hl_layoutBackground="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cb"
         app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
@@ -96,16 +108,5 @@
         app:layout_constraintTop_toTopOf="@+id/tv_video_size"
         tools:text="720x1080" />
 
-    <CheckBox
-        android:id="@+id/cb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|right"
-        android:clickable="false"
-        android:visibility="gone"
-        tools:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@id/item"
-        app:layout_constraintRight_toRightOf="@id/item"
-        app:layout_constraintTop_toTopOf="@id/item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

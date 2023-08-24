@@ -1,6 +1,7 @@
 package com.github.tvbox.osc.ui.adapter;
 
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,6 +22,14 @@ import com.github.tvbox.osc.util.Utils;
 import java.util.List;
 
 public class LocalVideoAdapter extends BaseQuickAdapter<VideoInfo, BaseViewHolder> {
+
+    public interface OnSelectedCountListener{
+        void onSelectedCount(int count);
+    }
+
+    OnSelectedCountListener mOnSelectedCountListener;
+    private boolean selectMode = false;
+
     public LocalVideoAdapter() {
         super(R.layout.item_local_video);
     }
@@ -35,21 +44,9 @@ public class LocalVideoAdapter extends BaseQuickAdapter<VideoInfo, BaseViewHolde
                 .centerCrop()
                 .into((ImageView) helper.getView(R.id.iv));
 
-//
-//        String progress = "";
-//        String spacer = " / ";
-//        long cacheProgress = SPUtils.getInstance(CacheConst.VIDEO_PROGRESS_SP).getLong(item.getPath(), -1);
-//        if (cacheProgress != -1) {
-//            progress = Utils.stringForTime(cacheProgress);
-//        }
-//        //总时长,缺失时长的,从缓存取(如果有)
-//        String duration = Utils.stringForTime((int)item.getDuration()==0?SPUtils.getInstance(CacheConst.VIDEO_DURATION_SP).getLong(item.getPath(), 0):item.getDuration());
-
         helper.setText(R.id.tv_name,item.getDisplayName())
                 .setText(R.id.tv_video_size, ConvertUtils.byte2FitMemorySize(item.getSize()))
                 .setText(R.id.tv_video_resolution,item.getResolution());
-
-
 
         ProgressBar progressBar = helper.getView(R.id.progressBar);
         TextView tvDuration = helper.getView(R.id.tv_duration);
@@ -74,6 +71,34 @@ public class LocalVideoAdapter extends BaseQuickAdapter<VideoInfo, BaseViewHolde
             progressBar.setProgress((int) progressPlayed);
         } else { // 没有进度(也包括没时长,此时是空串,不耽误)
             tvDuration.setText(duration);
+            progressBar.setProgress(0);
         }
+
+        CheckBox cb = helper.getView(R.id.cb);
+        cb.setVisibility(selectMode ? View.VISIBLE : View.GONE);
+        cb.setChecked(item.isChecked());
+
+        if (mOnSelectedCountListener != null) {
+            int count = 0;
+            for (VideoInfo videoInfo : getData()) {
+                if (videoInfo.isChecked()) {
+                    count++;
+                }
+            }
+            mOnSelectedCountListener.onSelectedCount(count);
+        }
+    }
+
+    public void setSelectMode(boolean selectMode) {
+        this.selectMode = selectMode;
+        notifyDataSetChanged();
+    }
+
+    public boolean isSelectMode() {
+        return selectMode;
+    }
+
+    public void setOnSelectCountListener(OnSelectedCountListener listener){
+        mOnSelectedCountListener = listener;
     }
 }
