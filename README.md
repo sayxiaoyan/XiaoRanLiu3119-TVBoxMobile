@@ -1,6 +1,9 @@
-# TVBox
+# TVBoxMobile
 
-发现在用的几个竖屏版并未开源,无法添加一些个性化功能,故fork下来逐步修改,修改成移动端常见的UI/交互/代码(借鉴于多个APP)
+发现在用的几个竖屏版并未开源,无法添加一些个性化功能,故fork下来逐步修改,修改成移动端常见的UI/交互/代码(借鉴于多个APP)   
+自用体验有限,欢迎issue   
+体验包在release,截图在最后
+
 
 基于
 
@@ -22,4 +25,9 @@
 
 - [ ] 替换部分框架
 
-- [ ] 基本代码逐步(尽量)修改为Kotlin(待定)
+- [ ] 基本代码逐步(尽量)修改为Kotlin(待定)   
+
+## 部分截图
+
+![主页面](https://github.com/XiaoRanLiu3119/TVBoxOS/blob/main/screenshot/home.png)
+![我的](https://github.com/XiaoRanLiu3119/TVBoxOS/blob/main/screenshot/my.png)
