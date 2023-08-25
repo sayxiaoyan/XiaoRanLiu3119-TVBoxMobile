@@ -29,9 +29,11 @@ import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.base.BaseLazyFragment;
+import com.github.tvbox.osc.base.BaseVbFragment;
 import com.github.tvbox.osc.bean.AbsSortXml;
 import com.github.tvbox.osc.bean.MovieSort;
 import com.github.tvbox.osc.bean.SourceBean;
+import com.github.tvbox.osc.databinding.FragmentHomeBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.server.ControlManager;
 import com.github.tvbox.osc.ui.activity.DetailActivity;
@@ -69,11 +71,7 @@ import java.util.List;
 
 import me.jessyan.autosize.utils.AutoSizeUtils;
 
-public class HomeFragment extends BaseLazyFragment {
-    private LinearLayout contentLayout;
-    private TextView tvName;
-    private TvRecyclerView mGridView;
-    private NoScrollViewPager mViewPager;
+public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
     private SourceViewModel sourceViewModel;
     private SortAdapter sortAdapter;
     private HomePageAdapter pageAdapter;
@@ -87,14 +85,10 @@ public class HomeFragment extends BaseLazyFragment {
     private Handler mHandler = new Handler();
     private long mExitTime = 0;
 
-    @Override
-    protected int getLayoutResID() {
-        return R.layout.fragment_home;
-    }
 
     @Override
     protected void init() {
-        EventBus.getDefault().register(this);
+
         ControlManager.get().startServer();
         initView();
         initViewModel();
@@ -103,16 +97,12 @@ public class HomeFragment extends BaseLazyFragment {
     }
 
     private void initView() {
-        tvName = findViewById(R.id.tvName);
-        contentLayout = findViewById(R.id.contentLayout);
-        mGridView = findViewById(R.id.mGridView);
-        mViewPager = findViewById(R.id.mViewPager);
 
         sortAdapter = new SortAdapter();
-        mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));
-        mGridView.setSpacingWithMargins(0, AutoSizeUtils.dp2px(this.mContext, 10.0f));
-        mGridView.setAdapter(this.sortAdapter);
-        mGridView.setOnItemListener(new TvRecyclerView.OnItemListener() {
+        mBinding.mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));
+        mBinding.mGridView.setSpacingWithMargins(0, AutoSizeUtils.dp2px(this.mContext, 10.0f));
+        mBinding.mGridView.setAdapter(this.sortAdapter);
+        mBinding.mGridView.setOnItemListener(new TvRecyclerView.OnItemListener() {
             public void onItemPreSelected(TvRecyclerView tvRecyclerView, View view, int position) {
                 if (view != null) {
                     mHandler.postDelayed(new Runnable() {
@@ -172,7 +162,7 @@ public class HomeFragment extends BaseLazyFragment {
             }
         });
 
-        this.mGridView.setOnInBorderKeyEventListener(new TvRecyclerView.OnInBorderKeyEventListener() {
+        mBinding.mGridView.setOnInBorderKeyEventListener(new TvRecyclerView.OnInBorderKeyEventListener() {
             public final boolean onInBorderKeyEvent(int direction, View view) {
                 if (direction != View.FOCUS_DOWN) {
                     return false;
@@ -188,7 +178,7 @@ public class HomeFragment extends BaseLazyFragment {
                 return false;
             }
         });
-        tvName.setOnClickListener(new View.OnClickListener() {
+        mBinding.tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dataInitOk = false;
@@ -197,9 +187,9 @@ public class HomeFragment extends BaseLazyFragment {
             }
         });
 
-        findViewById(R.id.iv_search).setOnClickListener(view -> jumpActivity(FastSearchActivity.class));
-        findViewById(R.id.iv_history).setOnClickListener(view -> jumpActivity(HistoryActivity.class));
-        setLoadSir(this.contentLayout);
+        mBinding.ivSearch.setOnClickListener(view -> jumpActivity(FastSearchActivity.class));
+        mBinding.ivHistory.setOnClickListener(view -> jumpActivity(HistoryActivity.class));
+        setLoadSir(mBinding.contentLayout);
         //mHandler.postDelayed(mFindFocus, 500);
     }
 
@@ -228,7 +218,7 @@ public class HomeFragment extends BaseLazyFragment {
 
         SourceBean home = ApiConfig.get().getHomeSourceBean();
         if (home != null && home.getName() != null && !home.getName().isEmpty())
-            tvName.setText(home.getName());
+            mBinding.tvName.setText(home.getName());
         if (dataInitOk && jarInitOk) {
             showLoading();
             sourceViewModel.getSort(ApiConfig.get().getHomeSourceBean().getKey());
@@ -384,13 +374,13 @@ public class HomeFragment extends BaseLazyFragment {
                 Field field = ViewPager.class.getDeclaredField("mScroller");
                 field.setAccessible(true);
                 FixedSpeedScroller scroller = new FixedSpeedScroller(mContext, new AccelerateInterpolator());
-                field.set(mViewPager, scroller);
+                field.set(mBinding.mViewPager, scroller);
                 scroller.setmDuration(300);
             } catch (Exception e) {
             }
-            mViewPager.setPageTransformer(true, new DefaultTransformer());
-            mViewPager.setAdapter(pageAdapter);
-            mViewPager.setCurrentItem(currentSelected, false);
+            mBinding.mViewPager.setPageTransformer(true, new DefaultTransformer());
+            mBinding.mViewPager.setAdapter(pageAdapter);
+            mBinding.mViewPager.setCurrentItem(currentSelected, false);
         }
     }
 
@@ -430,7 +420,7 @@ public class HomeFragment extends BaseLazyFragment {
                 sortChange = false;
                 if (sortFocused != currentSelected) {
                     currentSelected = sortFocused;
-                    mViewPager.setCurrentItem(sortFocused, false);
+                    mBinding.mViewPager.setCurrentItem(sortFocused, false);
                 }
             }
         }
@@ -439,7 +429,6 @@ public class HomeFragment extends BaseLazyFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
         ControlManager.get().stopServer();
     }
 
