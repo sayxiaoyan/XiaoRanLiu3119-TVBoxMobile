@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.angcyo.tablayout.DslTabLayout;
+import com.angcyo.tablayout.DslTabLayoutConfig;
+import com.angcyo.tablayout.delegate.ViewPager1Delegate;
+import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
@@ -69,6 +75,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.functions.Function4;
 import me.jessyan.autosize.utils.AutoSizeUtils;
 
 public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
@@ -116,8 +125,6 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
                             } else {
                                 view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).start();
                                 textView.setTextColor(getResources().getColor(R.color.text_gray));
-                                view.findViewById(R.id.tvFilter).setVisibility(View.GONE);
-                                view.findViewById(R.id.tvFilterColor).setVisibility(View.GONE);
                             }
                             textView.invalidate();
                         }
@@ -138,10 +145,7 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
                     textView.getPaint().setFakeBoldText(true);
                     textView.setTextColor(getResources().getColor(R.color.color_FFFFFF));
                     textView.invalidate();
-                    MovieSort.SortData sortData = sortAdapter.getItem(position);
-                    if (!sortData.filters.isEmpty()) {
-                        showFilterIcon(sortData.filterSelectCount());
-                    }
+
                     sortFocusView = view;
                     sortFocused = position;
                     mHandler.removeCallbacks(mDataRunnable);
@@ -162,22 +166,22 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
             }
         });
 
-        mBinding.mGridView.setOnInBorderKeyEventListener(new TvRecyclerView.OnInBorderKeyEventListener() {
-            public final boolean onInBorderKeyEvent(int direction, View view) {
-                if (direction != View.FOCUS_DOWN) {
-                    return false;
-                }
-                isDownOrUp = true;
-                BaseLazyFragment baseLazyFragment = fragments.get(sortFocused);
-                if (!(baseLazyFragment instanceof GridFragment)) {
-                    return false;
-                }
-                if (!((GridFragment) baseLazyFragment).isLoad()) {
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mBinding.mGridView.setOnInBorderKeyEventListener(new TvRecyclerView.OnInBorderKeyEventListener() {
+//            public final boolean onInBorderKeyEvent(int direction, View view) {
+//                if (direction != View.FOCUS_DOWN) {
+//                    return false;
+//                }
+//                isDownOrUp = true;
+//                BaseLazyFragment baseLazyFragment = fragments.get(sortFocused);
+//                if (!(baseLazyFragment instanceof GridFragment)) {
+//                    return false;
+//                }
+//                if (!((GridFragment) baseLazyFragment).isLoad()) {
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
         mBinding.tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,11 +203,14 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
             @Override
             public void onChanged(AbsSortXml absXml) {
                 showSuccess();
+                List<MovieSort.SortData> sortDataList = new ArrayList<>();
                 if (absXml != null && absXml.classes != null && absXml.classes.sortList != null) {
+                    sortDataList = DefaultConfig.adjustSort(ApiConfig.get().getHomeSourceBean().getKey(), absXml.classes.sortList, true);
                     sortAdapter.setNewData(DefaultConfig.adjustSort(ApiConfig.get().getHomeSourceBean().getKey(), absXml.classes.sortList, true));
                 } else {
-                    sortAdapter.setNewData(DefaultConfig.adjustSort(ApiConfig.get().getHomeSourceBean().getKey(), new ArrayList<>(), true));
+                    sortDataList = DefaultConfig.adjustSort(ApiConfig.get().getHomeSourceBean().getKey(), new ArrayList<>(), true);
                 }
+                sortAdapter.setNewData(sortDataList);
                 initViewPager(absXml);
             }
         });
@@ -356,9 +363,22 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
         }, getActivity());
     }
 
+    private TextView getTabTextView(String text){
+        TextView textView = new TextView(mContext);
+        textView.setText(text);
+        textView.setGravity(Gravity.CENTER);
+        textView.setPadding(ConvertUtils.dp2px(10), ConvertUtils.dp2px(10), ConvertUtils.dp2px(10), ConvertUtils.dp2px(10));
+        return textView;
+    }
+
     private void initViewPager(AbsSortXml absXml) {
+
+        mBinding.tabLayout.removeAllViews();
+
         if (sortAdapter.getData().size() > 0) {
             for (MovieSort.SortData data : sortAdapter.getData()) {
+                mBinding.tabLayout.addView(getTabTextView(data.name));
+
                 if (data.id.equals("my0")) {//tab是主页,添加主页fragment 根据设置项显示豆瓣热门/站点推荐(每个源不一样)/历史记录
                     if (Hawk.get(HawkConfig.HOME_REC, 0) == 1 && absXml != null && absXml.videoList != null && absXml.videoList.size() > 0) {//站点推荐
                         fragments.add(UserFragment.newInstance(absXml.videoList));
@@ -370,17 +390,10 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
                 }
             }
             pageAdapter = new HomePageAdapter(getChildFragmentManager(), fragments);
-            try {
-                Field field = ViewPager.class.getDeclaredField("mScroller");
-                field.setAccessible(true);
-                FixedSpeedScroller scroller = new FixedSpeedScroller(mContext, new AccelerateInterpolator());
-                field.set(mBinding.mViewPager, scroller);
-                scroller.setmDuration(300);
-            } catch (Exception e) {
-            }
-            mBinding.mViewPager.setPageTransformer(true, new DefaultTransformer());
             mBinding.mViewPager.setAdapter(pageAdapter);
-            mBinding.mViewPager.setCurrentItem(currentSelected, false);
+//            mBinding.mViewPager.setCurrentItem(currentSelected, false);
+
+            ViewPager1Delegate.Companion.install(mBinding.mViewPager, mBinding.tabLayout,true);
         }
     }
 
@@ -400,17 +413,7 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
                 newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(newIntent);
             }
-        } else if (event.type == RefreshEvent.TYPE_FILTER_CHANGE) {
-            if (currentView != null) {
-                showFilterIcon((int) event.obj);
-            }
         }
-    }
-
-    private void showFilterIcon(int count) {
-        boolean visible = count > 0;
-        currentView.findViewById(R.id.tvFilterColor).setVisibility(visible ? View.VISIBLE : View.GONE);
-        currentView.findViewById(R.id.tvFilter).setVisibility(visible ? View.GONE : View.VISIBLE);
     }
 
     private Runnable mDataRunnable = new Runnable() {

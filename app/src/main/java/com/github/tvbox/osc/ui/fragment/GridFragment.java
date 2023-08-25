@@ -264,15 +264,7 @@ public class GridFragment extends BaseLazyFragment {
         showLoading();
         isLoad = false;
         scrollTop();
-        toggleFilterColor();
         sourceViewModel.getList(sortData, page);
-    }
-
-    private void toggleFilterColor() {
-        if (sortData.filters != null && !sortData.filters.isEmpty()) {
-            int count = sortData.filterSelectCount();
-            EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_FILTER_CHANGE, count));
-        }
     }
 
     public boolean isTop() {

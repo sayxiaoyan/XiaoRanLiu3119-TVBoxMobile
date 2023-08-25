@@ -42,17 +42,16 @@ public abstract class BaseVbFragment<T extends ViewBinding> extends Fragment imp
     protected T mBinding;
     private LoadService mLoadService;
 
+
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mContext = context;
-        mActivity = (Activity) context;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
         AutoSize.autoConvertDensity(getActivity(), getSizeInDp(), isBaseOnWidth());
         return initBindingViewRoot(container);
     }
@@ -61,6 +60,14 @@ public abstract class BaseVbFragment<T extends ViewBinding> extends Fragment imp
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init();
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+        mActivity = (Activity) context;
     }
 
     /**

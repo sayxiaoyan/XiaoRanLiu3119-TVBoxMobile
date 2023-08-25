@@ -143,6 +143,7 @@ dependencies {
 
     //tab标题栏
     implementation project(":TabLayout")
+    implementation project(':ViewPager1Delegate')
     //TabLayout的非kt项目需要依赖这个包实现点击事件等
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     //展开收缩tv
