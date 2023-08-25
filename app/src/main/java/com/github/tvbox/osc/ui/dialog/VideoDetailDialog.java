@@ -40,7 +40,7 @@ public class VideoDetailDialog extends BottomPopupView {
 
     @Override
     protected int getMaxHeight() {
-        return ScreenUtils.getScreenHeight()-ScreenUtils.getScreenHeight()/4;
+        return ScreenUtils.getScreenHeight()-ScreenUtils.getScreenHeight()/10;
     }
 
     @Override

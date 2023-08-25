@@ -15,6 +15,8 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.BaseActivity;
+import com.github.tvbox.osc.base.BaseVbActivity;
+import com.github.tvbox.osc.databinding.ActivityMainBinding;
 import com.github.tvbox.osc.ui.fragment.HomeFragment;
 import com.github.tvbox.osc.ui.fragment.MyFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,15 +26,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseVbActivity<ActivityMainBinding> {
 
-    private BottomNavigationView mBottomNav;
-    private ViewPager mVp;
     List<Fragment> fragments = new ArrayList<>();
-    @Override
-    protected int getLayoutResID() {
-        return R.layout.activity_main;
-    }
 
     public boolean useCacheConfig = false;
 
@@ -45,18 +41,15 @@ public class MainActivity extends BaseActivity {
             useCacheConfig = bundle.getBoolean("useCache", false);
         }
 
-        mBottomNav = findViewById(R.id.bottom_nav);
-        mVp = findViewById(R.id.vp);
-
         initVp();
-        mBottomNav.setOnNavigationItemSelectedListener(menuItem -> {
-            mVp.setCurrentItem(menuItem.getOrder(), false);
+        mBinding.bottomNav.setOnNavigationItemSelectedListener(menuItem -> {
+            mBinding.vp.setCurrentItem(menuItem.getOrder(), false);
             return true;
         });
-        mVp.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        mBinding.vp.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                mBottomNav.getMenu().getItem(position).setChecked(true);
+                mBinding.bottomNav.getMenu().getItem(position).setChecked(true);
             }
         });
     }
@@ -64,7 +57,7 @@ public class MainActivity extends BaseActivity {
     private void initVp() {
         fragments.add(new HomeFragment());
         fragments.add(new MyFragment());
-        mVp.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+        mBinding.vp.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @NonNull
             @Override
             public Fragment getItem(int position) {
@@ -76,7 +69,7 @@ public class MainActivity extends BaseActivity {
                 return fragments.size();
             }
         });
-        mVp.setOffscreenPageLimit(fragments.size());
+        mBinding.vp.setOffscreenPageLimit(fragments.size());
     }
 
     private long exitTime = 0L;

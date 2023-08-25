@@ -35,11 +35,13 @@ import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.base.BaseActivity;
+import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.AbsXml;
 import com.github.tvbox.osc.bean.Movie;
 import com.github.tvbox.osc.bean.SourceBean;
 import com.github.tvbox.osc.bean.VodInfo;
 import com.github.tvbox.osc.cache.RoomDataManger;
+import com.github.tvbox.osc.databinding.ActivityDetailBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.ui.adapter.SeriesAdapter;
 import com.github.tvbox.osc.ui.adapter.SeriesFlagAdapter;
@@ -89,23 +91,10 @@ import android.graphics.Paint;
  * @description:
  */
 
-public class DetailActivity extends BaseActivity {
-    private LinearLayout llLayout;
+public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     private FragmentContainerView llPlayerFragmentContainer;
     private View llPlayerPlace;
     private PlayFragment playFragment = null;
-
-    private TextView tvName;
-    private TextView tvSite;
-    private TextView tvSort;
-    private TextView tvCollect;
-    private TvRecyclerView mGridViewFlag;
-    private TvRecyclerView mGridView;
-    /**
-     * 集数的分组
-     */
-    private TvRecyclerView mSeriesGroupView;
-    private LinearLayout mEmptyPlayList;
     private SourceViewModel sourceViewModel;
     private Movie.Video mVideo;
     private VodInfo vodInfo;
@@ -126,13 +115,7 @@ public class DetailActivity extends BaseActivity {
     private int GroupCount;
 
     @Override
-    protected int getLayoutResID() {
-        return R.layout.activity_detail;
-    }
-
-    @Override
     protected void init() {
-        EventBus.getDefault().register(this);
         initView();
         initViewModel();
         initData();
@@ -143,7 +126,6 @@ public class DetailActivity extends BaseActivity {
     }
 
     private void initView() {
-        llLayout = findViewById(R.id.llLayout);
         llPlayerPlace = findViewById(R.id.previewPlayerPlace);
         llPlayerFragmentContainer = findViewById(R.id.previewPlayer);
         llPlayerFragmentContainer.setOnClickListener(new View.OnClickListener() {
@@ -153,24 +135,17 @@ public class DetailActivity extends BaseActivity {
             }
         });
         llPlayerPlace.setVisibility(showPreview ? View.VISIBLE : View.GONE);
-        tvName = findViewById(R.id.tvName);
-        tvSite = findViewById(R.id.tvSite);
-        tvSort = findViewById(R.id.tvSort);
-        tvCollect = findViewById(R.id.tvCollect);
-        mEmptyPlayList = findViewById(R.id.mEmptyPlaylist);
-        mGridView = findViewById(R.id.mGridView);
-        mGridView.setHasFixedSize(true);
-        mGridView.setHasFixedSize(false);
+        mBinding.mGridView.setHasFixedSize(true);
+        mBinding.mGridView.setHasFixedSize(false);
         this.mGridViewLayoutMgr = new V7GridLayoutManager(this.mContext, 4);
-        mGridView.setLayoutManager(this.mGridViewLayoutMgr);
+        mBinding.mGridView.setLayoutManager(this.mGridViewLayoutMgr);
 //        mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));
         seriesAdapter = new SeriesAdapter();
-        mGridView.setAdapter(seriesAdapter);
-        mGridViewFlag = findViewById(R.id.mGridViewFlag);
-        mGridViewFlag.setHasFixedSize(true);
-        mGridViewFlag.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));
+        mBinding.mGridView.setAdapter(seriesAdapter);
+        mBinding.mGridViewFlag.setHasFixedSize(true);
+        mBinding.mGridViewFlag.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));
         seriesFlagAdapter = new SeriesFlagAdapter();
-        mGridViewFlag.setAdapter(seriesFlagAdapter);
+        mBinding.mGridViewFlag.setAdapter(seriesFlagAdapter);
         isReverse = false;
         firstReverse = false;
         preFlag = "";
@@ -180,9 +155,8 @@ public class DetailActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction().show(playFragment).commitAllowingStateLoss();
         }
 
-        mSeriesGroupView = findViewById(R.id.mSeriesGroupView);
-        mSeriesGroupView.setHasFixedSize(true);
-        mSeriesGroupView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));
+        mBinding.mSeriesGroupView.setHasFixedSize(true);
+        mBinding.mSeriesGroupView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));
         seriesGroupAdapter = new BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_series_group, seriesGroupOptions) {
             @Override
             protected void convert(BaseViewHolder helper, String item) {
@@ -190,7 +164,7 @@ public class DetailActivity extends BaseActivity {
                 tvSeries.setText(item);
             }
         };
-        mSeriesGroupView.setAdapter(seriesGroupAdapter);
+        mBinding.mSeriesGroupView.setAdapter(seriesGroupAdapter);
 
         findViewById(R.id.ll_title).setOnClickListener(view -> {
             new XPopup.Builder(this)
@@ -203,7 +177,7 @@ public class DetailActivity extends BaseActivity {
                 use1DMDownload();
             }
         });
-        tvSort.setOnClickListener(new View.OnClickListener() {
+        mBinding.tvSort.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
@@ -236,22 +210,22 @@ public class DetailActivity extends BaseActivity {
 //            }
 //        });
 
-        tvCollect.setOnClickListener(new View.OnClickListener() {
+        mBinding.tvCollect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = tvCollect.getText().toString();
+                String text = mBinding.tvCollect.getText().toString();
                 if ("加入收藏".equals(text)) {
                     RoomDataManger.insertVodCollect(sourceKey, vodInfo);
                     Toast.makeText(DetailActivity.this, "已加入收藏夹", Toast.LENGTH_SHORT).show();
-                    tvCollect.setText("取消收藏");
+                    mBinding.tvCollect.setText("取消收藏");
                 } else {
                     RoomDataManger.deleteVodCollect(sourceKey, vodInfo);
                     Toast.makeText(DetailActivity.this, "已移除收藏夹", Toast.LENGTH_SHORT).show();
-                    tvCollect.setText("加入收藏");
+                    mBinding.tvCollect.setText("加入收藏");
                 }
             }
         });
-        mGridView.setOnItemListener(new TvRecyclerView.OnItemListener() {
+        mBinding.mGridView.setOnItemListener(new TvRecyclerView.OnItemListener() {
             @Override
             public void onItemPreSelected(TvRecyclerView parent, View itemView, int position) {
                 seriesSelect = false;
@@ -266,7 +240,7 @@ public class DetailActivity extends BaseActivity {
             public void onItemClick(TvRecyclerView parent, View itemView, int position) {
             }
         });
-        mGridViewFlag.setOnItemListener(new TvRecyclerView.OnItemListener() {
+        mBinding.mGridViewFlag.setOnItemListener(new TvRecyclerView.OnItemListener() {
             private void refresh(View itemView, int position) {
                 String newFlag = seriesFlagAdapter.getData().get(position).name;
                 if (vodInfo != null && !vodInfo.playFlag.equals(newFlag)) {
@@ -343,7 +317,7 @@ public class DetailActivity extends BaseActivity {
             }
         });
 
-        mSeriesGroupView.setOnItemListener(new TvRecyclerView.OnItemListener() {
+        mBinding.mSeriesGroupView.setOnItemListener(new TvRecyclerView.OnItemListener() {
             @Override
             public void onItemPreSelected(TvRecyclerView parent, View itemView, int position) {
                 TextView txtView = itemView.findViewById(R.id.tvSeriesGroup);
@@ -357,7 +331,7 @@ public class DetailActivity extends BaseActivity {
                 txtView.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                 if (vodInfo != null && vodInfo.seriesMap.get(vodInfo.playFlag).size() > 0) {
                     int targetPos = position * GroupCount+1;
-                    mGridView.smoothScrollToPosition(targetPos);
+                    mBinding.mGridView.smoothScrollToPosition(targetPos);
                 }
                 currentSeriesGroupView = itemView;
                 currentSeriesGroupView.isSelected();
@@ -375,7 +349,7 @@ public class DetailActivity extends BaseActivity {
                 if (vodInfo != null && vodInfo.seriesMap.get(vodInfo.playFlag).size() > 0) {
                     int targetPos =  position * GroupCount+1;
 //                    mGridView.scrollToPosition(targetPos);
-                    mGridView.smoothScrollToPosition(targetPos);
+                    mBinding.mGridView.smoothScrollToPosition(targetPos);
                 }
                 if(currentSeriesGroupView != null) {
                     TextView txtView = currentSeriesGroupView.findViewById(R.id.tvSeriesGroup);
@@ -386,7 +360,7 @@ public class DetailActivity extends BaseActivity {
             }
         });
 
-        setLoadSir(llLayout);
+        setLoadSir(mBinding.llLayout);
     }
 
     private void initCheckedSourcesForSearch() {
@@ -475,10 +449,10 @@ public class DetailActivity extends BaseActivity {
 
         setSeriesGroupOptions();
 
-        mGridView.postDelayed(new Runnable() {
+        mBinding.mGridView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mGridView.smoothScrollToPosition(vodInfo.playIndex);
+                mBinding.mGridView.smoothScrollToPosition(vodInfo.playIndex);
             }
         }, 100);
     }
@@ -493,7 +467,7 @@ public class DetailActivity extends BaseActivity {
         if(listSize>100 && listSize<=400)GroupCount=60;
         if(listSize>400)GroupCount=120;
         if(listSize > GroupCount) {
-            mSeriesGroupView.setVisibility(View.VISIBLE);
+            mBinding.mSeriesGroupView.setVisibility(View.VISIBLE);
             int remainedOptionSize = listSize % GroupCount;
             int optionSize = listSize / GroupCount;
 
@@ -515,7 +489,7 @@ public class DetailActivity extends BaseActivity {
 
             seriesGroupAdapter.notifyDataSetChanged();
         }else {
-            mSeriesGroupView.setVisibility(View.GONE);
+            mBinding.mSeriesGroupView.setVisibility(View.GONE);
         }
     }
 
@@ -549,13 +523,13 @@ public class DetailActivity extends BaseActivity {
                     vodInfo.setVideo(mVideo);
                     vodInfo.sourceKey = mVideo.sourceKey;
 
-                    tvName.setText(mVideo.name);
-                    setTextShow(tvSite, "来源：", ApiConfig.get().getSource(mVideo.sourceKey).getName());
+                    mBinding.tvName.setText(mVideo.name);
+                    setTextShow(mBinding.tvSite, "来源：", ApiConfig.get().getSource(mVideo.sourceKey).getName());
 
                     if (vodInfo.seriesMap != null && vodInfo.seriesMap.size() > 0) {//线路
-                        mGridViewFlag.setVisibility(View.VISIBLE);
-                        mGridView.setVisibility(View.VISIBLE);
-                        mEmptyPlayList.setVisibility(View.GONE);
+                        mBinding.mGridViewFlag.setVisibility(View.VISIBLE);
+                        mBinding.mGridView.setVisibility(View.VISIBLE);
+                        mBinding.mEmptyPlaylist.setVisibility(View.GONE);
 
                         VodInfo vodInfoRecord = RoomDataManger.getVodInfo(sourceKey, vodId);
                         // 读取历史记录
@@ -590,7 +564,7 @@ public class DetailActivity extends BaseActivity {
 //                        setTextShow(tvPlayUrl, "播放地址：", vodInfo.seriesMap.get(vodInfo.playFlag).get(0).url);
                         //设置线路数据
                         seriesFlagAdapter.setNewData(vodInfo.seriesFlags);
-                        mGridViewFlag.scrollToPosition(flagScrollTo);
+                        mBinding.mGridViewFlag.scrollToPosition(flagScrollTo);
 
                         refreshList();
                         if (showPreview) {
@@ -600,10 +574,10 @@ public class DetailActivity extends BaseActivity {
                         }
                         // startQuickSearch();
                     } else {//空布局
-                        mGridViewFlag.setVisibility(View.GONE);
-                        mGridView.setVisibility(View.GONE);
-                        mSeriesGroupView.setVisibility(View.GONE);
-                        mEmptyPlayList.setVisibility(View.VISIBLE);
+                        mBinding.mGridViewFlag.setVisibility(View.GONE);
+                        mBinding.mGridView.setVisibility(View.GONE);
+                        mBinding.mSeriesGroupView.setVisibility(View.GONE);
+                        mBinding.mEmptyPlaylist.setVisibility(View.VISIBLE);
                     }
                 } else {
                     showEmpty();
@@ -636,9 +610,9 @@ public class DetailActivity extends BaseActivity {
             sourceViewModel.getDetail(sourceKey, vodId);
             boolean isVodCollect = RoomDataManger.isVodCollect(sourceKey, vodId);
             if (isVodCollect) {
-                tvCollect.setText("取消收藏");
+                mBinding.tvCollect.setText("取消收藏");
             } else {
-                tvCollect.setText("加入收藏");
+                mBinding.tvCollect.setText("加入收藏");
             }
         }
     }
@@ -655,7 +629,7 @@ public class DetailActivity extends BaseActivity {
                     }
                     seriesAdapter.getData().get(index).selected = true;
                     seriesAdapter.notifyItemChanged(index);
-                    mGridView.setSelection(index);
+                    mBinding.mGridView.setSelection(index);
                     vodInfo.playIndex = index;
                     //保存历史
                     insertVod(sourceKey, vodInfo);
@@ -818,7 +792,6 @@ public class DetailActivity extends BaseActivity {
         OkGo.getInstance().cancelTag("fenci");
         OkGo.getInstance().cancelTag("detail");
         OkGo.getInstance().cancelTag("quick_search");
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -827,9 +800,9 @@ public class DetailActivity extends BaseActivity {
             if (playFragment.onBackPressed())
                 return;
             toggleFullPreview();
-            mGridView.requestFocus();
+            mBinding.mGridView.requestFocus();
             List<VodInfo.VodSeries> list = vodInfo.seriesMap.get(vodInfo.playFlag);
-            mSeriesGroupView.setVisibility(list.size()>GroupCount ? View.VISIBLE : View.GONE);
+            mBinding.mSeriesGroupView.setVisibility(list.size()>GroupCount ? View.VISIBLE : View.GONE);
             return;
         }
         if (seriesSelect) {
@@ -876,13 +849,13 @@ public class DetailActivity extends BaseActivity {
         }
 
         llPlayerFragmentContainer.setLayoutParams(fullWindows ? windowsFull : windowsPreview);
-        mGridView.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
-        mGridViewFlag.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
-        mSeriesGroupView.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
+        mBinding.mGridView.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
+        mBinding.mGridViewFlag.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
+        mBinding.mSeriesGroupView.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
 
         //全屏下禁用详情页几个按键的焦点 防止上键跑过来
-        tvSort.setFocusable(!fullWindows);
-        tvCollect.setFocusable(!fullWindows);
+        mBinding.tvSort.setFocusable(!fullWindows);
+        mBinding.tvCollect.setFocusable(!fullWindows);
         toggleSubtitleTextSize();
     }
 

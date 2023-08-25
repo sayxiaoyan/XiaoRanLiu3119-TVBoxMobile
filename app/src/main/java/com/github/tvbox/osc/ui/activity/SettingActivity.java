@@ -1,5 +1,6 @@
 package com.github.tvbox.osc.ui.activity;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,8 @@ import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.base.BaseLazyFragment;
+import com.github.tvbox.osc.base.BaseVbActivity;
+import com.github.tvbox.osc.databinding.ActivitySettingBinding;
 import com.github.tvbox.osc.ui.adapter.SettingMenuAdapter;
 import com.github.tvbox.osc.ui.adapter.SettingPageAdapter;
 import com.github.tvbox.osc.ui.fragment.ModelSettingFragment;
@@ -32,9 +35,7 @@ import java.util.List;
  * @date :2020/12/23
  * @description:
  */
-public class SettingActivity extends BaseActivity {
-    private TvRecyclerView mGridView;
-    private ViewPager mViewPager;
+public class SettingActivity extends BaseVbActivity<ActivitySettingBinding> {
     private SettingMenuAdapter sortAdapter;
     private SettingPageAdapter pageAdapter;
     private List<BaseLazyFragment> fragments = new ArrayList<>();
@@ -47,10 +48,6 @@ public class SettingActivity extends BaseActivity {
     private int homeRec;
     private int dnsOpt;
 
-    @Override
-    protected int getLayoutResID() {
-        return R.layout.activity_setting;
-    }
 
     @Override
     protected void init() {
@@ -59,11 +56,9 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void initView() {
-        mGridView = findViewById(R.id.mGridView);
-        mViewPager = findViewById(R.id.mViewPager);
         sortAdapter = new SettingMenuAdapter();
-        mGridView.setAdapter(sortAdapter);
-        mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 1, false));
+        mBinding.mGridView.setAdapter(sortAdapter);
+        mBinding.mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 1, false));
         sortAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -73,13 +68,13 @@ public class SettingActivity extends BaseActivity {
                         sortFocused = position;
                         if (sortFocused != defaultSelected) {
                             defaultSelected = sortFocused;
-                            mViewPager.setCurrentItem(sortFocused, false);
+                            mBinding.mViewPager.setCurrentItem(sortFocused, false);
                         }
                     }
                 }
             }
         });
-        mGridView.setOnItemListener(new TvRecyclerView.OnItemListener() {
+        mBinding.mGridView.setOnItemListener(new TvRecyclerView.OnItemListener() {
             @Override
             public void onItemPreSelected(TvRecyclerView parent, View itemView, int position) {
                 if (itemView != null) {
@@ -119,8 +114,8 @@ public class SettingActivity extends BaseActivity {
     private void initViewPager() {
         fragments.add(ModelSettingFragment.newInstance());
         pageAdapter = new SettingPageAdapter(getSupportFragmentManager(), fragments);
-        mViewPager.setAdapter(pageAdapter);
-        mViewPager.setCurrentItem(0);
+        mBinding.mViewPager.setAdapter(pageAdapter);
+        mBinding.mViewPager.setCurrentItem(0);
     }
 
     private Runnable mDataRunnable = new Runnable() {
@@ -130,7 +125,7 @@ public class SettingActivity extends BaseActivity {
                 sortChange = false;
                 if (sortFocused != defaultSelected) {
                     defaultSelected = sortFocused;
-                    mViewPager.setCurrentItem(sortFocused, false);
+                    mBinding.mViewPager.setCurrentItem(sortFocused, false);
                 }
             }
         }

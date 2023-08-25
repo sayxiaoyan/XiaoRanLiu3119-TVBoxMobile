@@ -44,11 +44,13 @@ import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.base.BaseActivity;
+import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.ParseBean;
 import com.github.tvbox.osc.bean.SourceBean;
 import com.github.tvbox.osc.bean.Subtitle;
 import com.github.tvbox.osc.bean.VodInfo;
 import com.github.tvbox.osc.cache.CacheManager;
+import com.github.tvbox.osc.databinding.ActivityPlayBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.player.IjkMediaPlayer;
 import com.github.tvbox.osc.player.MyVideoView;
@@ -108,21 +110,13 @@ import tv.danmaku.ijk.media.player.IjkTimedText;
 import xyz.doikki.videoplayer.player.AbstractPlayer;
 import xyz.doikki.videoplayer.player.ProgressManager;
 
-public class PlayActivity extends BaseActivity {
-    private MyVideoView mVideoView;
-    private TextView mPlayLoadTip;
-    private ImageView mPlayLoadErr;
-    private ProgressBar mPlayLoading;
+public class PlayActivity extends BaseVbActivity<ActivityPlayBinding> {
+
     private VodController mController;
     private SourceViewModel sourceViewModel;
     private Handler mHandler;
 
     private long videoDuration = -1;
-
-    @Override
-    protected int getLayoutResID() {
-        return R.layout.activity_play;
-    }
 
     @Override
     protected void init() {
@@ -161,10 +155,6 @@ public class PlayActivity extends BaseActivity {
                 return false;
             }
         });
-        mVideoView = findViewById(R.id.mVideoView);
-        mPlayLoadTip = findViewById(R.id.play_load_tip);
-        mPlayLoading = findViewById(R.id.play_loading);
-        mPlayLoadErr = findViewById(R.id.play_load_error);
         mController = new VodController(this);
         mController.setCanChangePosition(true);
         mController.setEnableInNormal(true);
@@ -181,7 +171,7 @@ public class PlayActivity extends BaseActivity {
                 return PlayActivity.this.getSavedProgress(url);
             }
         };
-        mVideoView.setProgressManager(progressManager);
+        mBinding.mVideoView.setProgressManager(progressManager);
         mController.setListener(new VodController.VodControlListener() {
             @Override
             public void playNext(boolean rmProgress) {
@@ -248,7 +238,7 @@ public class PlayActivity extends BaseActivity {
 
             }
         });
-        mVideoView.setVideoController(mController);
+        mBinding.mVideoView.setVideoController(mController);
     }
 
     //设置字幕
@@ -344,7 +334,7 @@ public class PlayActivity extends BaseActivity {
     }
 
     void selectMyAudioTrack() {
-        AbstractPlayer mediaPlayer = mVideoView.getMediaPlayer();
+        AbstractPlayer mediaPlayer = mBinding.mVideoView.getMediaPlayer();
         if (!(mediaPlayer instanceof IjkMediaPlayer)) {
             return;
         }
@@ -407,7 +397,7 @@ public class PlayActivity extends BaseActivity {
     }
 
     void selectMyInternalSubtitle() {
-        AbstractPlayer mediaPlayer = mVideoView.getMediaPlayer();
+        AbstractPlayer mediaPlayer = mBinding.mVideoView.getMediaPlayer();
         if (!(mediaPlayer instanceof IjkMediaPlayer)) {
             return;
         }
@@ -474,18 +464,18 @@ public class PlayActivity extends BaseActivity {
         runOnUiThread(new Runnable() {//影魔 解决解析偶发闪退
             @Override
             public void run() {
-                mPlayLoadTip.setText(msg);
-                mPlayLoadTip.setVisibility(View.VISIBLE);
-                mPlayLoading.setVisibility(loading ? View.VISIBLE : View.GONE);
-                mPlayLoadErr.setVisibility(err ? View.VISIBLE : View.GONE);
+                mBinding.playLoadTip.setText(msg);
+                mBinding.playLoadTip.setVisibility(View.VISIBLE);
+                mBinding.playLoading.setVisibility(loading ? View.VISIBLE : View.GONE);
+                mBinding.playLoadError.setVisibility(err ? View.VISIBLE : View.GONE);
             }
         });
     }
 
     void hideTip() {
-        mPlayLoadTip.setVisibility(View.GONE);
-        mPlayLoading.setVisibility(View.GONE);
-        mPlayLoadErr.setVisibility(View.GONE);
+        mBinding.playLoadTip.setVisibility(View.GONE);
+        mBinding.playLoading.setVisibility(View.GONE);
+        mBinding.playLoadError.setVisibility(View.GONE);
     }
 
     void errorWithRetry(String err, boolean finish) {
@@ -514,8 +504,8 @@ public class PlayActivity extends BaseActivity {
             @Override
             public void run() {
                 stopParse();
-                if (mVideoView != null) {
-                    mVideoView.release();
+                if (mBinding.mVideoView != null) {
+                    mBinding.mVideoView.release();
 
                     if (finalUrl != null) {
                         try {
@@ -534,14 +524,14 @@ public class PlayActivity extends BaseActivity {
                             e.printStackTrace();
                         }
                         hideTip();
-                        PlayerHelper.updateCfg(mVideoView, mVodPlayerCfg);
-                        mVideoView.setProgressKey(progressKey);
+                        PlayerHelper.updateCfg(mBinding.mVideoView, mVodPlayerCfg);
+                        mBinding.mVideoView.setProgressKey(progressKey);
                         if (headers != null) {
-                            mVideoView.setUrl(finalUrl, headers);
+                            mBinding.mVideoView.setUrl(finalUrl, headers);
                         } else {
-                            mVideoView.setUrl(finalUrl);
+                            mBinding.mVideoView.setUrl(finalUrl);
                         }
-                        mVideoView.start();
+                        mBinding.mVideoView.start();
                         mController.resetSpeed();
                     }
                 }
@@ -551,12 +541,12 @@ public class PlayActivity extends BaseActivity {
 
     private void initSubtitleView() {
         TrackInfo trackInfo = null;
-        if (mVideoView.getMediaPlayer() instanceof IjkMediaPlayer) {
-            trackInfo = ((IjkMediaPlayer)(mVideoView.getMediaPlayer())).getTrackInfo();
+        if (mBinding.mVideoView.getMediaPlayer() instanceof IjkMediaPlayer) {
+            trackInfo = ((IjkMediaPlayer)(mBinding.mVideoView.getMediaPlayer())).getTrackInfo();
             if (trackInfo != null && trackInfo.getSubtitle().size() > 0) {
                 mController.mSubtitleView.hasInternal = true;
             }
-            ((IjkMediaPlayer)(mVideoView.getMediaPlayer())).setOnTimedTextListener(new IMediaPlayer.OnTimedTextListener() {
+            ((IjkMediaPlayer)(mBinding.mVideoView.getMediaPlayer())).setOnTimedTextListener(new IMediaPlayer.OnTimedTextListener() {
                 @Override
                 public void onTimedText(IMediaPlayer mp, IjkTimedText text) {
                     if (mController.mSubtitleView.isInternal) {
@@ -567,7 +557,7 @@ public class PlayActivity extends BaseActivity {
                 }
             });
         }
-        mController.mSubtitleView.bindToMediaPlayer(mVideoView.getMediaPlayer());
+        mController.mSubtitleView.bindToMediaPlayer(mBinding.mVideoView.getMediaPlayer());
         mController.mSubtitleView.setPlaySubtitleCacheKey(subtitleCacheKey);
         String subtitlePathCache = (String)CacheManager.getCache(MD5.string2MD5(subtitleCacheKey));
         if (subtitlePathCache != null && !subtitlePathCache.isEmpty()) {
@@ -585,7 +575,7 @@ public class PlayActivity extends BaseActivity {
                             String lowerLang = subtitleTrackInfoBean.language.toLowerCase();
                             if (lowerLang.startsWith("zh") || lowerLang.startsWith("ch")) {
                                 if (selectedIndex != subtitleTrackInfoBean.index) {
-                                    ((IjkMediaPlayer)(mVideoView.getMediaPlayer())).setTrack(subtitleTrackInfoBean.index);
+                                    ((IjkMediaPlayer)(mBinding.mVideoView.getMediaPlayer())).setTrack(subtitleTrackInfoBean.index);
                                     break;
                                 }
                             }
@@ -720,8 +710,8 @@ public class PlayActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mVideoView != null) {
-            mVideoView.resume();
+        if (mBinding.mVideoView != null) {
+            mBinding.mVideoView.resume();
         }
     }
 
@@ -729,18 +719,15 @@ public class PlayActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (mVideoView != null) {
-            mVideoView.pause();
+        if (mBinding.mVideoView != null) {
+            mBinding.mVideoView.pause();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mVideoView != null) {
-            mVideoView.release();
-            mVideoView = null;
-        }
+        mBinding.mVideoView.release();
         stopLoadWebView(true);
         stopParse();
         Thunder.stop(false);//停止磁力下载
@@ -826,7 +813,7 @@ public class PlayActivity extends BaseActivity {
 
         stopParse();
         initParseLoadFound();
-        if(mVideoView!=null) mVideoView.release();
+        if(mBinding.mVideoView!=null) mBinding.mVideoView.release();
         String subtitleCacheKey = mVodInfo.sourceKey + "-" + mVodInfo.id + "-" + mVodInfo.playFlag + "-" + mVodInfo.playIndex+ "-" + vs.name + "-subt";
         String progressKey = mVodInfo.sourceKey + mVodInfo.id + mVodInfo.playFlag + mVodInfo.playIndex + vs.name;
         //重新播放清除现有进度

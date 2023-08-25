@@ -27,10 +27,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.BaseActivity;
+import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.AbsXml;
 import com.github.tvbox.osc.bean.Movie;
 import com.github.tvbox.osc.bean.SourceBean;
 import com.github.tvbox.osc.constant.CacheConst;
+import com.github.tvbox.osc.databinding.ActivityFastSearchBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.event.ServerEvent;
 import com.github.tvbox.osc.ui.adapter.FastListAdapter;
@@ -67,6 +69,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import SevenZip.Compression.LZMA.Base;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import kotlin.jvm.functions.Function4;
@@ -76,22 +79,10 @@ import kotlin.jvm.functions.Function4;
  * @date :2020/12/23
  * @description:
  */
-public class FastSearchActivity extends BaseActivity {
-    private LinearLayout llLayout;
-    private TvRecyclerView mGridView;
-    private TvRecyclerView mGridViewFilter;
-    private TvRecyclerView mGridViewWord;
+public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding> {
 
     SourceViewModel sourceViewModel;
-    private View mllHotSearch;
-    private View mLlSearchResult;
 
-    //    private EditText etSearch;
-//    private TextView tvSearch;
-//    private TextView tvClear;
-//    private SearchKeyboard keyboard;
-//    private TextView tvAddress;
-//    private ImageView ivQRCode;
 
     private FastSearchAdapter searchAdapter;
     private FastSearchAdapter searchAdapterFilter;
@@ -104,36 +95,6 @@ public class FastSearchActivity extends BaseActivity {
     private List<String> quickSearchWord = new ArrayList<>();
     private HashMap<String, String> mCheckSources = null;
     private List<Runnable> pauseRunnable = null;
-
-    private View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View itemView, boolean hasFocus) {
-            try {
-                if (!hasFocus) {
-                    spListAdapter.onLostFocus(itemView);
-                } else {
-                    int ret = spListAdapter.onSetFocus(itemView);
-                    if (ret < 0) return;
-                    TextView v = (TextView) itemView;
-                    String sb = v.getText().toString();
-                    filterResult(sb);
-                }
-            } catch (Exception e) {
-                Toast.makeText(FastSearchActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    };
-    private EditText mEtSearch;
-    private DslTabLayout mSiteTabs;
-    private TagFlowLayout mFlHistory;
-    private TagFlowLayout mFlHot;
-    private LinearLayout mLlHistory;
-
-    @Override
-    protected int getLayoutResID() {
-        return R.layout.activity_fast_search;
-    }
 
     @Override
     protected void init() {
@@ -150,11 +111,11 @@ public class FastSearchActivity extends BaseActivity {
 
     private void hideHotAndHistorySearch(boolean isHide){
         if(isHide){
-            mllHotSearch.setVisibility(View.GONE);
-            mLlSearchResult.setVisibility(View.VISIBLE);
+            mBinding.llSearchSuggest.setVisibility(View.GONE);
+            mBinding.llSearchResult.setVisibility(View.VISIBLE);
         }else{
-            mllHotSearch.setVisibility(View.VISIBLE);
-            mLlSearchResult.setVisibility(View.GONE);
+            mBinding.llSearchSuggest.setVisibility(View.VISIBLE);
+            mBinding.llSearchResult.setVisibility(View.GONE);
         }
     }
 
@@ -162,20 +123,20 @@ public class FastSearchActivity extends BaseActivity {
 
         List<String> mSearchHistory = Hawk.get(CacheConst.HISTORY_SEARCH, new ArrayList<>());
 
-        mLlHistory.setVisibility(mSearchHistory.size() > 0 ? View.VISIBLE : View.GONE);
-        mFlHistory.setAdapter(new TagAdapter<String>(mSearchHistory)
+        mBinding.llHistory.setVisibility(mSearchHistory.size() > 0 ? View.VISIBLE : View.GONE);
+        mBinding.flHistory.setAdapter(new TagAdapter<String>(mSearchHistory)
         {
             @Override
             public View getView(FlowLayout parent, int position, String s)
             {
                 TextView tv = (TextView) LayoutInflater.from(FastSearchActivity.this).inflate(R.layout.item_search_word_hot,
-                        mFlHistory, false);
+                        mBinding.flHistory, false);
                 tv.setText(s);
                 return tv;
             }
         });
 
-        mFlHistory.setOnTagClickListener((view, position, parent) -> {
+        mBinding.flHistory.setOnTagClickListener((view, position, parent) -> {
             search(mSearchHistory.get(position));
             return true;
         });
@@ -208,19 +169,19 @@ public class FastSearchActivity extends BaseActivity {
                                 JsonObject obj = (JsonObject) ele;
                                 hots.add(obj.get("title").getAsString().trim().replaceAll("<|>|《|》|-", "").split(" ")[0]);
                             }
-                            mFlHot.setAdapter(new TagAdapter<String>(hots)
+                            mBinding.flHot.setAdapter(new TagAdapter<String>(hots)
                             {
                                 @Override
                                 public View getView(FlowLayout parent, int position, String s)
                                 {
                                     TextView tv = (TextView) LayoutInflater.from(FastSearchActivity.this).inflate(R.layout.item_search_word_hot,
-                                            mFlHot, false);
+                                            mBinding.flHot, false);
                                     tv.setText(s);
                                     return tv;
                                 }
                             });
 
-                            mFlHot.setOnTagClickListener((view, position, parent) -> {
+                            mBinding.flHot.setOnTagClickListener((view, position, parent) -> {
                                 search(hots.get(position));
                                 return true;
                             });
@@ -252,27 +213,11 @@ public class FastSearchActivity extends BaseActivity {
     }
 
     private void initView() {
-        EventBus.getDefault().register(this);
         //搜索建议模块(热门/历史)
-        mllHotSearch = findViewById(R.id.llSearchSuggest);
-        mLlSearchResult = findViewById(R.id.llSearchResult);
-        mLlHistory = findViewById(R.id.ll_history);
-        mFlHistory = findViewById(R.id.fl_history);
-        mFlHot = findViewById(R.id.fl_hot);
-        //左侧的聚合站点tab
-        mSiteTabs = findViewById(R.id.tab_layout);
-
-        mEtSearch = findViewById(R.id.et_search);
-
-        llLayout = findViewById(R.id.llLayout);
-        mGridView = findViewById(R.id.mGridView);
-        mGridViewWord = findViewById(R.id.mGridViewWord);
-        mGridViewFilter = findViewById(R.id.mGridViewFilter);
-
-        mGridViewWord.setHasFixedSize(true);
-        mGridViewWord.setLayoutManager(new V7LinearLayoutManager(this.mContext, 1, false));
+        mBinding.mGridViewWord.setHasFixedSize(true);
+        mBinding.mGridViewWord.setLayoutManager(new V7LinearLayoutManager(this.mContext, 1, false));
         spListAdapter = new FastListAdapter();
-        mGridViewWord.setAdapter(spListAdapter);
+        mBinding.mGridViewWord.setAdapter(spListAdapter);
 
 
 //        mGridViewWord.setFocusable(true);
@@ -281,9 +226,9 @@ public class FastSearchActivity extends BaseActivity {
 //            public void onFocusChange(View itemView, boolean hasFocus) {}
 //        });
 
-        mEtSearch.setOnEditorActionListener((v, actionId, event) -> {
+        mBinding.etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                search(mEtSearch.getText().toString());
+                search(mBinding.etSearch.getText().toString());
                 return true;
             }
             return false;
@@ -296,32 +241,11 @@ public class FastSearchActivity extends BaseActivity {
             finish();
         });
         findViewById(R.id.iv_search).setOnClickListener(view -> {
-            String s = mEtSearch.getText().toString();
+            String s =  mBinding.etSearch.getText().toString();
             if (TextUtils.isEmpty(s)) {
                 ToastUtils.showShort("请输入搜索内容");
             }else {
                 search(s);
-            }
-        });
-
-
-        mGridViewWord.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-            @Override
-            public void onChildViewAttachedToWindow(@NonNull View child) {
-                child.setFocusable(true);
-                child.setOnFocusChangeListener(focusChangeListener);
-                TextView t = (TextView) child;
-                if (t.getText() == "全部显示") {
-                    t.requestFocus();
-                }
-//                if (child.isFocusable() && null == child.getOnFocusChangeListener()) {
-//                    child.setOnFocusChangeListener(focusChangeListener);
-//                }
-            }
-
-            @Override
-            public void onChildViewDetachedFromWindow(@NonNull View view) {
-                view.setOnFocusChangeListener(null);
             }
         });
 
@@ -333,7 +257,7 @@ public class FastSearchActivity extends BaseActivity {
             }
         });
 
-        mSiteTabs.configTabLayoutConfig(new Function1<DslTabLayoutConfig, Unit>() {
+        mBinding.tabLayout.configTabLayoutConfig(new Function1<DslTabLayoutConfig, Unit>() {
             @Override
             public Unit invoke(DslTabLayoutConfig dslTabLayoutConfig) {
                 dslTabLayoutConfig.setOnSelectViewChange(new Function4<View, List<? extends View>, Boolean, Boolean, Unit>() {
@@ -352,11 +276,11 @@ public class FastSearchActivity extends BaseActivity {
 
         });
 
-        mGridView.setHasFixedSize(true);
-        mGridView.setLayoutManager(new LinearLayoutManager(this.mContext));
+        mBinding.mGridView.setHasFixedSize(true);
+        mBinding.mGridView.setLayoutManager(new LinearLayoutManager(this.mContext));
 
         searchAdapter = new FastSearchAdapter();
-        mGridView.setAdapter(searchAdapter);
+        mBinding.mGridView.setAdapter(searchAdapter);
 
         searchAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -382,9 +306,9 @@ public class FastSearchActivity extends BaseActivity {
         });
 
 
-        mGridViewFilter.setLayoutManager(new LinearLayoutManager(mContext));
+        mBinding.mGridViewFilter.setLayoutManager(new LinearLayoutManager(mContext));
         searchAdapterFilter = new FastSearchAdapter();
-        mGridViewFilter.setAdapter(searchAdapterFilter);
+        mBinding.mGridViewFilter.setAdapter(searchAdapterFilter);
         searchAdapterFilter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -408,7 +332,7 @@ public class FastSearchActivity extends BaseActivity {
             }
         });
 
-        setLoadSir(llLayout);
+        setLoadSir(mBinding.llLayout);
     }
 
     private void initViewModel() {
@@ -417,12 +341,12 @@ public class FastSearchActivity extends BaseActivity {
 
     private void filterResult(String spName) {
         if (spName == "全部显示") {
-            mGridView.setVisibility(View.VISIBLE);
-            mGridViewFilter.setVisibility(View.GONE);
+            mBinding.mGridView.setVisibility(View.VISIBLE);
+            mBinding.mGridViewFilter.setVisibility(View.GONE);
             return;
         }
-        mGridView.setVisibility(View.GONE);
-        mGridViewFilter.setVisibility(View.VISIBLE);
+        mBinding.mGridView.setVisibility(View.GONE);
+        mBinding.mGridViewFilter.setVisibility(View.VISIBLE);
         String key = spNames.get(spName);
         if (key.isEmpty()) return;
 
@@ -476,7 +400,7 @@ public class FastSearchActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("title")) {
             String title = intent.getStringExtra("title");
-            mEtSearch.setText(title);
+            mBinding.etSearch.setText(title);
             showLoading();
             search(title);
         }
@@ -535,13 +459,13 @@ public class FastSearchActivity extends BaseActivity {
         showLoading();
         this.searchTitle = title;
         fenci();
-        mGridView.setVisibility(View.INVISIBLE);
-        mGridViewFilter.setVisibility(View.GONE);
+        mBinding.mGridView.setVisibility(View.INVISIBLE);
+        mBinding.mGridViewFilter.setVisibility(View.GONE);
         searchAdapter.setNewData(new ArrayList<>());
         searchAdapterFilter.setNewData(new ArrayList<>());
 
         spListAdapter.reset();
-        mSiteTabs.removeAllViews();
+        mBinding.tabLayout.removeAllViews();
         resultVods.clear();
         searchFilterKey = "";
         isFilterMode = false;
@@ -591,8 +515,8 @@ public class FastSearchActivity extends BaseActivity {
 
         spListAdapter.setNewData(hots);
         spListAdapter.addData("全部显示");
-        mSiteTabs.addView(getSiteTextView("全部显示"));
-        mSiteTabs.setCurrentItem(0, true,false);
+        mBinding.tabLayout.addView(getSiteTextView("全部显示"));
+        mBinding.tabLayout.setCurrentItem(0, true,false);
         for (SourceBean bean : searchRequestList) {
             if (!bean.isSearchable()) {
                 continue;
@@ -639,7 +563,7 @@ public class FastSearchActivity extends BaseActivity {
             }
 
             spListAdapter.addData(name);
-            mSiteTabs.addView(getSiteTextView(name));
+            mBinding.tabLayout.addView(getSiteTextView(name));
             return key;
         } catch (Exception e) {
             return key;
@@ -679,7 +603,7 @@ public class FastSearchActivity extends BaseActivity {
             } else {
                 showSuccess();
                 if (!isFilterMode)
-                    mGridView.setVisibility(View.VISIBLE);
+                    mBinding.mGridView.setVisibility(View.VISIBLE);
                 searchAdapter.setNewData(data);
             }
         }
@@ -710,6 +634,5 @@ public class FastSearchActivity extends BaseActivity {
         } catch (Throwable th) {
             th.printStackTrace();
         }
-        EventBus.getDefault().unregister(this);
     }
 }

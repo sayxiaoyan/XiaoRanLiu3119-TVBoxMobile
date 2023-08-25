@@ -13,9 +13,11 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.BaseActivity;
+import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.ParseBean;
 import com.github.tvbox.osc.bean.VideoInfo;
 import com.github.tvbox.osc.constant.CacheConst;
+import com.github.tvbox.osc.databinding.ActivityLocalPlayBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.player.IjkMediaPlayer;
 import com.github.tvbox.osc.player.MyVideoView;
@@ -43,7 +45,7 @@ import xyz.doikki.videoplayer.player.AbstractPlayer;
 import xyz.doikki.videoplayer.player.ProgressManager;
 import xyz.doikki.videoplayer.player.VideoView;
 
-public class LocalPlayActivity extends BaseActivity {
+public class LocalPlayActivity extends BaseVbActivity<ActivityLocalPlayBinding> {
 
 
     private MyVideoView mVideoView;
@@ -53,13 +55,8 @@ public class LocalPlayActivity extends BaseActivity {
     private int mPosition;
 
     @Override
-    protected int getLayoutResID() {
-        return R.layout.activity_local_play;
-    }
-
-    @Override
     protected void init() {
-        mVideoView = findViewById(R.id.player);
+        mVideoView = mBinding.player;
         mVideoView.startFullScreen();
         Bundle bundle = getIntent().getExtras();
         String videoListJson =  bundle.getString("videoList");

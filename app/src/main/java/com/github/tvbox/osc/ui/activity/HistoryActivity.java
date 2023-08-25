@@ -12,9 +12,11 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.BaseActivity;
+import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.Movie;
 import com.github.tvbox.osc.bean.VodInfo;
 import com.github.tvbox.osc.cache.RoomDataManger;
+import com.github.tvbox.osc.databinding.ActivityHistoryBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.ui.adapter.HistoryAdapter;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
@@ -36,15 +38,8 @@ import java.util.List;
  * @date :2021/1/7
  * @description:
  */
-public class HistoryActivity extends BaseActivity {
-    private RecyclerView mGridView;
+public class HistoryActivity extends BaseVbActivity<ActivityHistoryBinding> {
     private HistoryAdapter historyAdapter;
-    private TitleBar mTitleBar;
-
-    @Override
-    protected int getLayoutResID() {
-        return R.layout.activity_history;
-    }
 
     @Override
     protected void init() {
@@ -54,12 +49,10 @@ public class HistoryActivity extends BaseActivity {
 
     private void initView() {
 
-        mTitleBar = findViewById(R.id.title_bar);
-        mGridView = findViewById(R.id.mGridView);
-        mGridView.setHasFixedSize(true);
-        mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
+        mBinding.mGridView.setHasFixedSize(true);
+        mBinding.mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
         historyAdapter = new HistoryAdapter();
-        mGridView.setAdapter(historyAdapter);
+        mBinding.mGridView.setAdapter(historyAdapter);
         historyAdapter.setOnItemLongClickListener((BaseQuickAdapter.OnItemLongClickListener) (adapter, view, position) -> {
             FastClickCheckUtil.check(view);
             VodInfo vodInfo = historyAdapter.getData().get(position);
@@ -75,7 +68,7 @@ public class HistoryActivity extends BaseActivity {
             return true;
         });
 
-        mTitleBar.getRightView().setOnClickListener(view -> {
+        mBinding.titleBar.getRightView().setOnClickListener(view -> {
             new XPopup.Builder(this)
                     .asConfirm("提示", "确定清空?", () -> {
                         for (VodInfo datum : historyAdapter.getData()) {

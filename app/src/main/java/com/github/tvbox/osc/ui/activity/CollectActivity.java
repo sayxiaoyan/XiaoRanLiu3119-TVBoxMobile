@@ -13,8 +13,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.BaseActivity;
+import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.cache.RoomDataManger;
 import com.github.tvbox.osc.cache.VodCollect;
+import com.github.tvbox.osc.databinding.ActivityCollectBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.ui.adapter.CollectAdapter;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
@@ -28,14 +30,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectActivity extends BaseActivity {
-    private RecyclerView mGridView;
+public class CollectActivity extends BaseVbActivity<ActivityCollectBinding> {
     private CollectAdapter collectAdapter;
 
-    @Override
-    protected int getLayoutResID() {
-        return R.layout.activity_collect;
-    }
 
     @Override
     protected void init() {
@@ -46,11 +43,10 @@ public class CollectActivity extends BaseActivity {
     private void initView() {
 
 
-        mGridView = findViewById(R.id.mGridView);
-        mGridView.setHasFixedSize(true);
-        mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
+        mBinding.mGridView.setHasFixedSize(true);
+        mBinding.mGridView.setLayoutManager(new V7GridLayoutManager(this.mContext, 3));
         collectAdapter = new CollectAdapter();
-        mGridView.setAdapter(collectAdapter);
+        mBinding.mGridView.setAdapter(collectAdapter);
 
         collectAdapter.setOnItemLongClickListener((adapter, view, position) -> {
             VodCollect vodInfo = collectAdapter.getData().get(position);
