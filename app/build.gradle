@@ -9,7 +9,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
-        versionName '1.0.0'
+        versionName '0.0.1'
         multiDexEnabled true
         //设置room的Schema的位置
         javaCompileOptions {
@@ -18,6 +18,21 @@ android {
             }
         }
     }
+
+
+    // 执行配置
+    applicationVariants.all { variant ->
+
+        // Apk 输出配置
+        variant.outputs.all { output ->
+            outputFileName = rootProject.getName() + '_v' + variant.versionName + '_' + variant.buildType.name
+            if (variant.buildType.name == buildTypes.release.getName()) {
+                outputFileName += '_' + new Date().format("yyyyMMdd")
+            }
+            outputFileName += '.apk'
+        }
+    }
+
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
