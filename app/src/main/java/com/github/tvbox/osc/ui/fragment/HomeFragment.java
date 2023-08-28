@@ -82,142 +82,48 @@ import me.jessyan.autosize.utils.AutoSizeUtils;
 
 public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
     private SourceViewModel sourceViewModel;
-    private SortAdapter sortAdapter;
-    private HomePageAdapter pageAdapter;
-    private View currentView;
     private List<BaseLazyFragment> fragments = new ArrayList<>();
-    private boolean isDownOrUp = false;
-    private boolean sortChange = false;
-    private int currentSelected = 0;
-    private int sortFocused = 0;
-    public View sortFocusView = null;
     private Handler mHandler = new Handler();
-    private long mExitTime = 0;
+
+    /**
+     * 顶部tabs分类集合,用于渲染tab页,每个tab对应fragment内的数据
+     */
+    private List<MovieSort.SortData> mSortDataList = new ArrayList<>();
+    private boolean dataInitOk = false;
+    private boolean jarInitOk = false;
 
 
     @Override
     protected void init() {
 
-        ControlManager.get().startServer();
-        initView();
-        initViewModel();
-
-        initData();
-    }
-
-    private void initView() {
-
-        sortAdapter = new SortAdapter();
-        mBinding.mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));
-        mBinding.mGridView.setSpacingWithMargins(0, AutoSizeUtils.dp2px(this.mContext, 10.0f));
-        mBinding.mGridView.setAdapter(this.sortAdapter);
-        mBinding.mGridView.setOnItemListener(new TvRecyclerView.OnItemListener() {
-            public void onItemPreSelected(TvRecyclerView tvRecyclerView, View view, int position) {
-                if (view != null) {
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            TextView textView = view.findViewById(R.id.tvTitle);
-                            textView.getPaint().setFakeBoldText(false);
-                            if (sortFocused == p) {
-                                view.animate().scaleX(1.1f).scaleY(1.1f).setInterpolator(new BounceInterpolator()).setDuration(300).start();
-                                textView.setTextColor(getResources().getColor(R.color.text_gray));
-                            } else {
-                                view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).start();
-                                textView.setTextColor(getResources().getColor(R.color.text_gray));
-                            }
-                            textView.invalidate();
-                        }
-
-                        public View v = view;
-                        public int p = position;
-                    }, 10);
-                }
-            }
-
-            public void onItemSelected(TvRecyclerView tvRecyclerView, View view, int position) {
-                if (view != null) {
-                    currentView = view;
-                    isDownOrUp = false;
-                    sortChange = true;
-                    view.animate().scaleX(1.1f).scaleY(1.1f).setInterpolator(new BounceInterpolator()).setDuration(300).start();
-                    TextView textView = view.findViewById(R.id.tvTitle);
-                    textView.getPaint().setFakeBoldText(true);
-                    textView.setTextColor(getResources().getColor(R.color.color_FFFFFF));
-                    textView.invalidate();
-
-                    sortFocusView = view;
-                    sortFocused = position;
-                    mHandler.removeCallbacks(mDataRunnable);
-                    mHandler.postDelayed(mDataRunnable, 200);
-                }
-            }
-
-            @Override
-            public void onItemClick(TvRecyclerView parent, View itemView, int position) {
-                if (itemView != null && currentSelected == position) {
-                    BaseLazyFragment baseLazyFragment = fragments.get(currentSelected);
-                    if ((baseLazyFragment instanceof GridFragment) && !sortAdapter.getItem(position).filters.isEmpty()) {// 弹出筛选
-                        ((GridFragment) baseLazyFragment).showFilter();
-                    } else if (baseLazyFragment instanceof UserFragment) {
-                        showSiteSwitch();
-                    }
-                }
-            }
-        });
-
-//        mBinding.mGridView.setOnInBorderKeyEventListener(new TvRecyclerView.OnInBorderKeyEventListener() {
-//            public final boolean onInBorderKeyEvent(int direction, View view) {
-//                if (direction != View.FOCUS_DOWN) {
-//                    return false;
-//                }
-//                isDownOrUp = true;
-//                BaseLazyFragment baseLazyFragment = fragments.get(sortFocused);
-//                if (!(baseLazyFragment instanceof GridFragment)) {
-//                    return false;
-//                }
-//                if (!((GridFragment) baseLazyFragment).isLoad()) {
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-        mBinding.tvName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dataInitOk = false;
-                jarInitOk = true;
-                showSiteSwitch();
-            }
+        mBinding.tvName.setOnClickListener(v -> {
+            dataInitOk = false;
+            jarInitOk = true;
+            showSiteSwitch();
         });
 
         mBinding.ivSearch.setOnClickListener(view -> jumpActivity(FastSearchActivity.class));
         mBinding.ivHistory.setOnClickListener(view -> jumpActivity(HistoryActivity.class));
         setLoadSir(mBinding.contentLayout);
-        //mHandler.postDelayed(mFindFocus, 500);
+
+        initViewModel();
+
+        initData();
     }
+
 
     private void initViewModel() {
         sourceViewModel = new ViewModelProvider(this).get(SourceViewModel.class);
-        sourceViewModel.sortResult.observe(this, new Observer<AbsSortXml>() {
-            @Override
-            public void onChanged(AbsSortXml absXml) {
-                showSuccess();
-                List<MovieSort.SortData> sortDataList = new ArrayList<>();
-                if (absXml != null && absXml.classes != null && absXml.classes.sortList != null) {
-                    sortDataList = DefaultConfig.adjustSort(ApiConfig.get().getHomeSourceBean().getKey(), absXml.classes.sortList, true);
-                    sortAdapter.setNewData(DefaultConfig.adjustSort(ApiConfig.get().getHomeSourceBean().getKey(), absXml.classes.sortList, true));
-                } else {
-                    sortDataList = DefaultConfig.adjustSort(ApiConfig.get().getHomeSourceBean().getKey(), new ArrayList<>(), true);
-                }
-                sortAdapter.setNewData(sortDataList);
-                initViewPager(absXml);
+        sourceViewModel.sortResult.observe(this, absXml -> {
+            showSuccess();
+            if (absXml != null && absXml.classes != null && absXml.classes.sortList != null) {
+                mSortDataList = DefaultConfig.adjustSort(ApiConfig.get().getHomeSourceBean().getKey(), absXml.classes.sortList, true);
+            } else {
+                mSortDataList = DefaultConfig.adjustSort(ApiConfig.get().getHomeSourceBean().getKey(), new ArrayList<>(), true);
             }
+            initViewPager(absXml);
         });
     }
-
-    private boolean dataInitOk = false;
-    private boolean jarInitOk = false;
 
     private void initData() {
 
@@ -372,11 +278,9 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
     }
 
     private void initViewPager(AbsSortXml absXml) {
-
-        mBinding.tabLayout.removeAllViews();
-
-        if (sortAdapter.getData().size() > 0) {
-            for (MovieSort.SortData data : sortAdapter.getData()) {
+        if (mSortDataList.size() > 0) {
+            mBinding.tabLayout.removeAllViews();
+            for (MovieSort.SortData data : mSortDataList) {
                 mBinding.tabLayout.addView(getTabTextView(data.name));
 
                 if (data.id.equals("my0")) {//tab是主页,添加主页fragment 根据设置项显示豆瓣热门/站点推荐(每个源不一样)/历史记录
@@ -389,10 +293,10 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
                     fragments.add(GridFragment.newInstance(data));
                 }
             }
-            pageAdapter = new HomePageAdapter(getChildFragmentManager(), fragments);
-            mBinding.mViewPager.setAdapter(pageAdapter);
-//            mBinding.mViewPager.setCurrentItem(currentSelected, false);
 
+            //重新渲染vp
+            mBinding.mViewPager.setAdapter(new HomePageAdapter(getChildFragmentManager(), fragments));
+            //tab和vp绑定
             ViewPager1Delegate.Companion.install(mBinding.mViewPager, mBinding.tabLayout,true);
         }
     }
@@ -401,38 +305,6 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
     public void onPause() {
         super.onPause();
         mHandler.removeCallbacksAndMessages(null);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refresh(RefreshEvent event) {
-        if (event.type == RefreshEvent.TYPE_PUSH_URL) {
-            if (ApiConfig.get().getSource("push_agent") != null) {
-                Intent newIntent = new Intent(mContext, DetailActivity.class);
-                newIntent.putExtra("id", (String) event.obj);
-                newIntent.putExtra("sourceKey", "push_agent");
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(newIntent);
-            }
-        }
-    }
-
-    private Runnable mDataRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (sortChange) {
-                sortChange = false;
-                if (sortFocused != currentSelected) {
-                    currentSelected = sortFocused;
-                    mBinding.mViewPager.setCurrentItem(sortFocused, false);
-                }
-            }
-        }
-    };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ControlManager.get().stopServer();
     }
 
     void showSiteSwitch() {

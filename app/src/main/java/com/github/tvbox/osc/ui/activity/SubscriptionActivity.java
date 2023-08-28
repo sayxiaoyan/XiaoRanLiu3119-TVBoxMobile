@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.ClipboardUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ShellUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
@@ -107,6 +110,16 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
                 }
             }
             adapter.notifyDataSetChanged();
+        });
+
+        mSubscriptionAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                //长按复制url到剪切板
+                ClipboardUtils.copyText(mSubscriptions.get(position).getUrl());
+                ToastUtils.showLong("已复制订阅地址");
+                return true;
+            }
         });
     }
 

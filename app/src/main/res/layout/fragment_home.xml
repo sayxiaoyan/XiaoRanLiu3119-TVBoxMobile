@@ -70,17 +70,6 @@
         app:layout_constraintTop_toBottomOf="@+id/topLayout"
         android:paddingTop="20dp">
 
-        <com.owen.tvrecyclerview.widget.TvRecyclerView
-            android:id="@+id/mGridView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tv_selectedItemIsCentered="true"
-            tools:listitem="@layout/item_home_sort"
-            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:visibility="gone"
-            />
         <com.angcyo.tablayout.DslTabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
