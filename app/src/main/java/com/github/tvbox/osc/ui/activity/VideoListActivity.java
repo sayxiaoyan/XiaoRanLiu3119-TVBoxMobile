@@ -133,7 +133,7 @@ public class VideoListActivity extends BaseVbActivity<ActivityMovieFoldersBindin
         mLocalVideoAdapter.notifyDataSetChanged();
     }
     @Override
-    public void onEvent(RefreshEvent event) {
+    public void refresh(RefreshEvent event) {
         new Handler().postDelayed(this::groupVideos,1000);
     }
 

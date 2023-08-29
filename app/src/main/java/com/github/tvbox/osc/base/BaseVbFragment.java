@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
 
+import com.github.tvbox.osc.bean.AbsXml;
 import com.github.tvbox.osc.callback.EmptyCallback;
 import com.github.tvbox.osc.callback.LoadingCallback;
 import com.github.tvbox.osc.event.RefreshEvent;
@@ -42,12 +43,6 @@ public abstract class BaseVbFragment<T extends ViewBinding> extends Fragment imp
     protected T mBinding;
     private LoadService mLoadService;
 
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
@@ -99,11 +94,6 @@ public abstract class BaseVbFragment<T extends ViewBinding> extends Fragment imp
     }
 
     protected abstract void init();
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(RefreshEvent event) {
-
-    }
 
     protected void setLoadSir(View view) {
         if (mLoadService == null) {
@@ -164,11 +154,5 @@ public abstract class BaseVbFragment<T extends ViewBinding> extends Fragment imp
         if (getActivity() != null && getActivity() instanceof CustomAdapt)
             return ((CustomAdapt) getActivity()).isBaseOnWidth();
         return true;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 }

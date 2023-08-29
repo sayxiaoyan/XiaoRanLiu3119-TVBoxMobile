@@ -46,18 +46,5 @@ public abstract class BaseVbActivity<T extends ViewBinding> extends BaseActivity
         } catch (NoSuchMethodException | IllegalAccessException| InvocationTargetException e) {
             e.printStackTrace();
         }
-
-        EventBus.getDefault().register(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(RefreshEvent event) {
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroy();
     }
 }

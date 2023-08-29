@@ -107,7 +107,7 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void initView() {
-        EventBus.getDefault().register(this);
+
         llLayout = findViewById(R.id.llLayout);
         etSearch = findViewById(R.id.et_search);
 
@@ -434,6 +434,5 @@ public class SearchActivity extends BaseActivity {
         } catch (Throwable th) {
             th.printStackTrace();
         }
-        EventBus.getDefault().unregister(this);
     }
 }
