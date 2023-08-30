@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_focused="true">
         <shape>
-            <corners android:radius="@dimen/common_corners" />
+            <corners android:radius="25dp" />
             <!--  选中按钮颜色   -->
             <!--<solid android:color="@color/color_353744" />-->
             <solid android:color="@color/color_1890FF" />
@@ -10,7 +10,7 @@
     </item>
     <item android:state_focused="false">
         <shape>
-            <corners android:radius="@dimen/common_corners" />
+            <corners android:radius="25dp" />
             <solid android:color="@color/color_CC353744" />
         </shape>
     </item>

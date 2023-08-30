@@ -50,9 +50,9 @@ public class MyFragment extends BaseVbFragment<FragmentMyBinding> {
         mBinding.llSubscription.setOnClickListener(v -> jumpActivity(SubscriptionActivity.class));
 
         mBinding.llAbout.setOnClickListener(v -> {
-            FastClickCheckUtil.check(v);
-            AboutDialog dialog = new AboutDialog(mActivity);
-            dialog.show();
+            new XPopup.Builder(mActivity)
+                    .asCustom(new AboutDialog(mActivity))
+                    .show();
         });
     }
 

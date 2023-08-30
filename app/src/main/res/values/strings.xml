@@ -1,6 +1,9 @@
 <resources>
     <!--  app名称   -->
     <string name="app_name">TVBox</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="about">本软件代码已全部开源,不收集或上传任何个人隐私。
+        \n软件内只提供展示功能, 不参与任何制作。
+        \n仅供学习参考, 请于安装后24小时内删除。
+        </string>
 </resources>

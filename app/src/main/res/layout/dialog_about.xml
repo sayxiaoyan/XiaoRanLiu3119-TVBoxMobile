@@ -1,19 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
     android:background="@drawable/shape_bottom_dialog_bg_gray"
     android:orientation="vertical"
-    android:padding="@dimen/dp_30">
+    android:paddingHorizontal="@dimen/dp_30"
+    android:paddingTop="20dp"
+    android:paddingBottom="30dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关于"
+            android:textColor="@color/color_CC000000"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_close_24"
+            app:tint="@color/colorPrimary"
+            android:padding="10dp"/>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lineSpacingExtra="@dimen/ts_50"
-        android:lineSpacingMultiplier="0"
-        android:text="本软件只提供展示功能, 不参与任何制作, 上传, 储存, 下载等内容. 仅供学习参考, 请于安装后24小时内删除。\n\n打包分发请保留出处\nhttps://github.com/CatVodTVOfficial/TVBoxOSC\nhttps://github.com/q215613905/TVBoxOS"
+        android:layout_marginTop="10dp"
+        android:lineSpacingExtra="10dp"
+        android:text="@string/about"
         android:textColor="@color/color_CC000000"
          />
+
+<!--    地址单拿出来以便复制-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="项目地址"
+        android:textColor="@color/color_CC000000"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="https://github.com/XiaoRanLiu3119/TVBoxOS"
+        android:textIsSelectable="true"
+        android:layout_marginTop="4dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="打包分发请保留出处"
+        android:textColor="@color/color_CC000000"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="4dp"
+        android:layout_marginVertical="4dp"
+        android:textIsSelectable="true"
+        android:text="https://github.com/CatVodTVOfficial/TVBoxOSC"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:text="https://github.com/q215613905/TVBoxOS"/>
 
 </LinearLayout>

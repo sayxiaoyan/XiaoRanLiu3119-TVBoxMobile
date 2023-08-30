@@ -17,11 +17,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.bean.IJKCode;
 import com.github.tvbox.osc.bean.ParseBean;
+import com.github.tvbox.osc.constant.CacheConst;
 import com.github.tvbox.osc.subtitle.widget.SimpleSubtitleView;
 import com.github.tvbox.osc.ui.adapter.ParseAdapter;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
@@ -914,7 +916,7 @@ public class VodController extends BaseController {
             fromLongPress = true;
             try {
                 speed_old = (float) mPlayerConfig.getDouble("sp");
-                float speed = 3.0f;
+                float speed = SPUtils.getInstance().getFloat(CacheConst.VIDEO_SPEED, 2.0f);
                 mPlayerConfig.put("sp", speed);
                 updatePlayerCfgView();
                 listener.updatePlayerCfg();

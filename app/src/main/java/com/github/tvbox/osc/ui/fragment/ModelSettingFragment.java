@@ -78,6 +78,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
     private TextView tvHistoryNum;
     private TextView tvFastSearchText;
     private TextView tvIjkCachePlay;
+    TextView tvLongPressSpeed;
 
     public static ModelSettingFragment newInstance() {
         return new ModelSettingFragment().setArguments();
@@ -129,17 +130,44 @@ public class ModelSettingFragment extends BaseLazyFragment {
             }
         });
 
+        tvLongPressSpeed = findViewById(R.id.tvSpeed);
+        float beforeSpeed = SPUtils.getInstance().getFloat(CacheConst.VIDEO_SPEED, 2.0f);
+        tvLongPressSpeed.setText(String.valueOf(beforeSpeed));
         findViewById(R.id.llPressSpeed).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String[] items = {"2.0", "3.0"};
-                float beforeSpeed = SPUtils.getInstance().getFloat(CacheConst.VIDEO_SPEED, 2.0f);
-                int defaultIndex = Arrays.asList(items).indexOf(String.valueOf(beforeSpeed));
-                new XPopup.Builder(mActivity)
-                        .asCenterList(null, items,null,defaultIndex, (position, text) -> {
-                            SPUtils.getInstance().put(CacheConst.VIDEO_SPEED, Float.parseFloat(text));
-                            ToastUtils.showShort("设置成功");
-                        }).show();
+                int defaultPos = Arrays.asList(items).indexOf(String.valueOf(beforeSpeed));
+
+                ArrayList<Integer> types = new ArrayList<>();
+                types.add(0);
+                types.add(1);
+                SelectDialog<Integer> dialog = new SelectDialog<>(mActivity);
+                dialog.setTip("请选择");
+                dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<Integer>() {
+                    @Override
+                    public void click(Integer value, int pos) {
+                        SPUtils.getInstance().put(CacheConst.VIDEO_SPEED,Float.parseFloat(items[pos]));
+                        tvLongPressSpeed.setText(items[pos]);
+                        v.postDelayed(() -> dialog.dismiss(),500);
+                    }
+
+                    @Override
+                    public String getDisplay(Integer val) {
+                        return items[val];
+                    }
+                }, new DiffUtil.ItemCallback<Integer>() {
+                    @Override
+                    public boolean areItemsTheSame(@NonNull @NotNull Integer oldItem, @NonNull @NotNull Integer newItem) {
+                        return oldItem.intValue() == newItem.intValue();
+                    }
+
+                    @Override
+                    public boolean areContentsTheSame(@NonNull @NotNull Integer oldItem, @NonNull @NotNull Integer newItem) {
+                        return oldItem.intValue() == newItem.intValue();
+                    }
+                }, types, defaultPos);
+                dialog.show();
             }
         });
 

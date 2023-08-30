@@ -313,7 +313,7 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
             SelectDialog<SourceBean> dialog = new SelectDialog<>(getActivity());
             TvRecyclerView tvRecyclerView = dialog.findViewById(R.id.list);
 
-            tvRecyclerView.setLayoutManager(new V7GridLayoutManager(dialog.getContext(), 3));
+            tvRecyclerView.setLayoutManager(new V7GridLayoutManager(dialog.getContext(), 2));
 
             dialog.setTip("请选择首页数据源");
             dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<SourceBean>() {

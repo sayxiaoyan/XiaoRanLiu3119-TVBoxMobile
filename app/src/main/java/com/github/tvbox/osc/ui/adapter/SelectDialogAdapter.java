@@ -2,7 +2,6 @@ package com.github.tvbox.osc.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ColorUtils;
 import com.github.tvbox.osc.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -85,11 +85,11 @@ public class SelectDialogAdapter<T> extends ListAdapter<T, SelectDialogAdapter.S
         String name = dialogInterface.getDisplay(value);
         TextView view = holder.itemView.findViewById(R.id.tvName);
         if (position == select) {
-            view.setTextColor(0xff02f8e1);
-            view .setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        }else {
             view.setTextColor(Color.WHITE);
-            view .setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            view.setBackground(view.getContext().getDrawable(R.drawable.button_primary_r25));
+        }else {
+            view.setBackground(view.getContext().getDrawable(R.drawable.bg_r_25_stroke_primary));
+            view.setTextColor(ColorUtils.getColor(R.color.colorPrimary));
         }
         view.setText(name);
         holder.itemView.setOnClickListener(new View.OnClickListener() {

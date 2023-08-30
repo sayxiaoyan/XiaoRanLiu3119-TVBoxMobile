@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/button_dialog_main"
+    android:background="@drawable/bg_r_25_stroke_primary"
     android:clickable="true"
     android:focusable="true"
     android:gravity="center"
@@ -14,6 +14,6 @@
     android:maxLines="2"
     android:ellipsize="end"
     android:text="@{name}"
-    android:textColor="@color/color_FFFFFF"
+    android:textColor="@color/colorPrimary"
     tools:text="小破站"
     android:textSize="16sp"/>
