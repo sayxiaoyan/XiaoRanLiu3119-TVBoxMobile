@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
@@ -109,8 +110,10 @@ public class UserFragment extends BaseLazyFragment {
         homeHotVodAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (ApiConfig.get().getSourceBeanList().isEmpty())
+                if (ApiConfig.get().getSourceBeanList().isEmpty()){
+                    ToastUtils.showShort("暂无订阅");
                     return;
+                }
                 Movie.Video vod = ((Movie.Video) adapter.getItem(position));
 //                if (vod.id != null && !vod.id.isEmpty()) {
 //                    Bundle bundle = new Bundle();

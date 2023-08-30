@@ -344,6 +344,8 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
                 }
             }, sites, sites.indexOf(ApiConfig.get().getHomeSourceBean()));
             dialog.show();
+        }else {
+            ToastUtils.showLong("暂无可用数据源");
         }
     }
 }
