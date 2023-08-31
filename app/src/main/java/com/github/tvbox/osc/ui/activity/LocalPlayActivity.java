@@ -194,11 +194,7 @@ public class LocalPlayActivity extends BaseVbActivity<ActivityLocalPlayBinding> 
     }
 
     void initPlayerCfg() {
-        try {
-            mVodPlayerCfg = new JSONObject();
-        } catch (Throwable th) {
-            mVodPlayerCfg = new JSONObject();
-        }
+        mVodPlayerCfg = new JSONObject();
         try {
             if (!mVodPlayerCfg.has("pl")) {
                 mVodPlayerCfg.put("pl", Hawk.get(HawkConfig.PLAY_TYPE, 1));
@@ -207,7 +203,7 @@ public class LocalPlayActivity extends BaseVbActivity<ActivityLocalPlayBinding> 
                 mVodPlayerCfg.put("pr", Hawk.get(HawkConfig.PLAY_RENDER, 0));
             }
             if (!mVodPlayerCfg.has("ijk")) {
-                mVodPlayerCfg.put("ijk", Hawk.get(HawkConfig.IJK_CODEC, "软解码"));
+                mVodPlayerCfg.put("ijk", Hawk.get(HawkConfig.IJK_CODEC, "硬解码"));
             }
             if (!mVodPlayerCfg.has("sc")) {
                 mVodPlayerCfg.put("sc", Hawk.get(HawkConfig.PLAY_SCALE, 0));
