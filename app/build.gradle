@@ -167,4 +167,10 @@ dependencies {
     //流式布局
     implementation 'com.hyman:flowlayout-lib:1.1.2'
 
+    def androidPickerVersion = "4.1.12"
+    //文件选择器基本弹窗
+    implementation "com.github.gzu-liyujiang.AndroidPicker:Common:${androidPickerVersion}"
+    //文件选择器
+    implementation "com.github.gzu-liyujiang.AndroidPicker:FilePicker:${androidPickerVersion}"
+
 }

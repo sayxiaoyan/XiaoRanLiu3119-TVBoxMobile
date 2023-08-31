@@ -95,6 +95,7 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
 
     @Override
     protected void init() {
+        ControlManager.get().startServer();
 
         mBinding.tvName.setOnClickListener(v -> {
             dataInitOk = false;
@@ -347,5 +348,11 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
         }else {
             ToastUtils.showLong("暂无可用数据源");
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ControlManager.get().stopServer();
     }
 }

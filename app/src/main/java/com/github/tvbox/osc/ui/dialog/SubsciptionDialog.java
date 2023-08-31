@@ -1,7 +1,6 @@
 package com.github.tvbox.osc.ui.dialog;
 
 import android.content.Context;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -18,14 +17,15 @@ import com.lxj.xpopup.core.CenterPopupView;
  */
 public class SubsciptionDialog extends CenterPopupView {
 
-    public interface OnConfirmListener {
+    public interface OnSubsciptionListener {
         void onConfirm(String name,String url);
+        void chooseLocal();
     }
 
     private final String mDefaultName;
-    private OnConfirmListener listener;
+    private OnSubsciptionListener listener;
 
-    public SubsciptionDialog(@NonNull Context context,String defaultName,OnConfirmListener listener) {
+    public SubsciptionDialog(@NonNull Context context, String defaultName, OnSubsciptionListener listener) {
         super(context);
         mDefaultName = defaultName;
         this.listener = listener;
@@ -58,6 +58,10 @@ public class SubsciptionDialog extends CenterPopupView {
                 listener.onConfirm(name,url);
             }
             dismiss();
+        });
+
+        binding.tvLocal.setOnClickListener(view -> {
+            dismissWith(() -> listener.chooseLocal());
         });
     }
 }

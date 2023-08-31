@@ -8,13 +8,29 @@
     android:paddingVertical="20dp"
     android:background="@drawable/bg_large_round_gray">
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:text="添加订阅"
-        android:textColor="@color/colorPrimary"
-        android:layout_width="wrap_content"
-        android:textSize="16sp"
-        android:layout_height="wrap_content"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:text="添加订阅"
+            android:textColor="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_local"
+            android:text="本地导入"
+            android:textColor="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@drawable/ic_file_24"
+            android:drawablePadding="4dp"/>
+    </RelativeLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_marginTop="10dp"
