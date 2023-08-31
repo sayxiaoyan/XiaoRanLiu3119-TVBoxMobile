@@ -104,20 +104,11 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
 
                         @Override
                         public void chooseLocal() {//本地导入
-                            ExplorerConfig config = new ExplorerConfig(SubscriptionActivity.this);
-                            config.setAllowExtensions(new String[]{".txt",".json",".jar"});
-                            config.setExplorerMode(ExplorerMode.FILE);
-                            config.setOnFilePickedListener(file -> {
-                                //返回:storage/emulated/0/Download/wuge/wuge/wuge.json
-                                //期望:clan://localhost/Download/wuge/wuge/wuge.json
-                                LogUtils.d(file.getAbsolutePath());
-                                String clanPath = file.getAbsolutePath().replace("/storage/emulated/0", "clan://localhost");
-                                addSubscription(file.getName(), clanPath);
-                            });
-                            FilePicker picker = new FilePicker(SubscriptionActivity.this);
-                            picker.setExplorerConfig(config);
-                            picker.getOkView().setText("选择");
-                            picker.show();
+                            if (!XXPermissions.isGranted(mContext, Permission.MANAGE_EXTERNAL_STORAGE)) {
+                                showPermissionTipPopup();
+                            } else {
+                                pickFile();
+                            }
                         }
                     })).show();
         });
@@ -159,6 +150,52 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
         });
     }
 
+    private void showPermissionTipPopup() {
+        new XPopup.Builder(SubscriptionActivity.this)
+                .asConfirm("提示","这将访问您设备文件的读取权限", () -> {
+                    XXPermissions.with(this)
+                            .permission(Permission.MANAGE_EXTERNAL_STORAGE)
+                            .request(new OnPermissionCallback() {
+                                @Override
+                                public void onGranted(List<String> permissions, boolean all) {
+                                    if (all) {
+                                        pickFile();
+                                    }else {
+                                        ToastUtils.showLong("部分权限未正常授予,请授权");
+                                    }
+                                }
+
+                                @Override
+                                public void onDenied(List<String> permissions, boolean never) {
+                                    if (never) {
+                                        ToastUtils.showLong("读写文件权限被永久拒绝，请手动授权");
+                                        // 如果是被永久拒绝就跳转到应用权限系统设置页面
+                                        XXPermissions.startPermissionActivity(SubscriptionActivity.this, permissions);
+                                    } else {
+                                        ToastUtils.showShort("获取权限失败");
+                                        showPermissionTipPopup();
+                                    }
+                                }
+                            });
+                }).show();
+    }
+
+    private void pickFile(){
+        ExplorerConfig config = new ExplorerConfig(SubscriptionActivity.this);
+        config.setAllowExtensions(new String[]{".txt",".json",".jar"});
+        config.setExplorerMode(ExplorerMode.FILE);
+        config.setOnFilePickedListener(file -> {
+            //返回:storage/emulated/0/Download/wuge/wuge/wuge.json
+            //期望:clan://localhost/Download/wuge/wuge/wuge.json
+            LogUtils.d(file.getAbsolutePath());
+            String clanPath = file.getAbsolutePath().replace("/storage/emulated/0", "clan://localhost");
+            addSubscription(file.getName(), clanPath);
+        });
+        FilePicker picker = new FilePicker(SubscriptionActivity.this);
+        picker.setExplorerConfig(config);
+        picker.getOkView().setText("选择");
+        picker.show();
+    }
     private void addSubscription(String name,String url) {
         if (url.startsWith("clan://")){
             mSubscriptions.add(new Subscription(name,url));
