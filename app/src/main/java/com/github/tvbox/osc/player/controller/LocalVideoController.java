@@ -897,6 +897,7 @@ public class LocalVideoController extends BaseController {
             mControlWrapper.setSpeed(speed);
             mLlSpeed.setVisibility(VISIBLE);
             mTvSpeedTip.setText(speed + "x");
+            VibrateUtils.vibrate(200);
         }
     }
 

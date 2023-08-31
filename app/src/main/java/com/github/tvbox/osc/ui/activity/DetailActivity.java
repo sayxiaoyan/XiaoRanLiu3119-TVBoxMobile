@@ -121,6 +121,8 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         initData();
 
         ImmersionBar.with(this)
+                .statusBarColor(R.color.black)
+                .fitsSystemWindows(true)
                 .statusBarDarkFont(false)
                 .init();
     }
@@ -841,11 +843,15 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         fullWindows = !fullWindows;
 
         if (fullWindows){
-            ImmersionBar.hideStatusBar(getWindow());
             ScreenUtils.setLandscape(this);
+            ImmersionBar.with(this)
+                            .fitsSystemWindows(false);
+            ImmersionBar.hideStatusBar(getWindow());
         }else {
-            ImmersionBar.showStatusBar(getWindow());
             ScreenUtils.setPortrait(this);
+            ImmersionBar.with(this)
+                    .fitsSystemWindows(true);
+            ImmersionBar.showStatusBar(getWindow());
         }
 
         llPlayerFragmentContainer.setLayoutParams(fullWindows ? windowsFull : windowsPreview);
