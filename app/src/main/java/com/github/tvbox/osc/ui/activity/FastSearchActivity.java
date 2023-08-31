@@ -65,6 +65,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -86,7 +87,6 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
 
     private FastSearchAdapter searchAdapter;
     private FastSearchAdapter searchAdapterFilter;
-    private FastListAdapter spListAdapter;
     private String searchTitle = "";
     private HashMap<String, String> spNames;
     private boolean isFilterMode = false;
@@ -213,18 +213,6 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
     }
 
     private void initView() {
-        //搜索建议模块(热门/历史)
-        mBinding.mGridViewWord.setHasFixedSize(true);
-        mBinding.mGridViewWord.setLayoutManager(new V7LinearLayoutManager(this.mContext, 1, false));
-        spListAdapter = new FastListAdapter();
-        mBinding.mGridViewWord.setAdapter(spListAdapter);
-
-
-//        mGridViewWord.setFocusable(true);
-//        mGridViewWord.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View itemView, boolean hasFocus) {}
-//        });
 
         mBinding.etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -249,31 +237,13 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
             }
         });
 
-        spListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                String spName = spListAdapter.getItem(position);
-                filterResult(spName);
-            }
-        });
-
-        mBinding.tabLayout.configTabLayoutConfig(new Function1<DslTabLayoutConfig, Unit>() {
-            @Override
-            public Unit invoke(DslTabLayoutConfig dslTabLayoutConfig) {
-                dslTabLayoutConfig.setOnSelectViewChange(new Function4<View, List<? extends View>, Boolean, Boolean, Unit>() {
-                    @Override
-                    public Unit invoke(View view, List<? extends View> views, Boolean aBoolean, Boolean aBoolean2) {
-                        TextView tvItem = (TextView) views.get(0);
-                        String spName = tvItem.getText().toString();
-                        LogUtils.d(spName);
-                        filterResult(spName);
-                        return null;
-                    }
-                });
+        mBinding.tabLayout.configTabLayoutConfig(dslTabLayoutConfig -> {
+            dslTabLayoutConfig.setOnSelectViewChange((view, views, aBoolean, aBoolean2) -> {
+                TextView tvItem = (TextView) views.get(0);
+                filterResult(tvItem.getText().toString());
                 return null;
-            }
-
-
+            });
+            return null;
         });
 
         mBinding.mGridView.setHasFixedSize(true);
@@ -464,12 +434,11 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
         searchAdapter.setNewData(new ArrayList<>());
         searchAdapterFilter.setNewData(new ArrayList<>());
 
-        spListAdapter.reset();
-        mBinding.tabLayout.removeAllViews();
         resultVods.clear();
         searchFilterKey = "";
         isFilterMode = false;
         spNames.clear();
+        mBinding.tabLayout.removeAllViews();
 
         searchResult();
     }
@@ -511,10 +480,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
 
 
         ArrayList<String> siteKey = new ArrayList<>();
-        ArrayList<String> hots = new ArrayList<>();
 
-        spListAdapter.setNewData(hots);
-        spListAdapter.addData("全部显示");
         mBinding.tabLayout.addView(getSiteTextView("全部显示"));
         mBinding.tabLayout.setCurrentItem(0, true,false);
         for (SourceBean bean : searchRequestList) {
@@ -543,26 +509,28 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
         }
     }
 
-    // 向过滤栏添加有结果的spname
+    /**
+     * 添加到最后面并返回最后一个key
+     * @param key
+     * @return
+     */
     private String addWordAdapterIfNeed(String key) {
         try {
             String name = "";
             for (String n : spNames.keySet()) {
-                if (spNames.get(n) == key) {
+                if (Objects.equals(spNames.get(n), key)) {
                     name = n;
                 }
             }
-            if (name == "") return key;
+            if (Objects.equals(name, "")) return key;
 
-            List<String> names = spListAdapter.getData();
-
-            for (int i = 0; i < names.size(); ++i) {
-                if (name == names.get(i)) {
+            for (int i = 0; i < mBinding.tabLayout.getChildCount(); ++i) {
+                TextView item = (TextView)mBinding.tabLayout.getChildAt(i);
+                if (Objects.equals(name, item.getText().toString())) {
                     return key;
                 }
             }
 
-            spListAdapter.addData(name);
             mBinding.tabLayout.addView(getSiteTextView(name));
             return key;
         } catch (Exception e) {
@@ -593,7 +561,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
                     resultVods.put(video.sourceKey, new ArrayList<Movie.Video>());
                 }
                 resultVods.get(video.sourceKey).add(video);
-                if (video.sourceKey != lastSourceKey) {
+                if (video.sourceKey != lastSourceKey) {// 添加到最后面并记录最后一个key用于下次判断
                     lastSourceKey = this.addWordAdapterIfNeed(video.sourceKey);
                 }
             }

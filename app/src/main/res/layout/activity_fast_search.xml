@@ -140,18 +140,6 @@
             android:orientation="vertical"
             android:paddingLeft="10dp">
 
-            <com.owen.tvrecyclerview.widget.TvRecyclerView
-                android:id="@+id/mGridViewWord"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:focusable="true"
-                app:tv_horizontalSpacingWithMargins="@dimen/dp_5"
-                app:tv_selectedItemIsCentered="true"
-                app:tv_verticalSpacingWithMargins="@dimen/dp_5"
-                android:visibility="gone"/>
-
             <com.angcyo.tablayout.DslTabLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
