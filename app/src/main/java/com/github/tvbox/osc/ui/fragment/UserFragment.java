@@ -26,7 +26,6 @@ import com.github.tvbox.osc.ui.activity.LivePlayActivity;
 
 import com.github.tvbox.osc.ui.activity.SettingActivity;
 import com.github.tvbox.osc.ui.adapter.GridAdapter;
-import com.github.tvbox.osc.ui.adapter.HomeHotVodAdapter;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.UA;
@@ -61,10 +60,6 @@ public class UserFragment extends BaseLazyFragment {
     private List<Movie.Video> homeSourceRec;
     RecyclerView tvHotList1;
 
-    public static UserFragment newInstance() {
-        return new UserFragment();
-    }
-
     public static UserFragment newInstance(List<Movie.Video> recVod) {
         return new UserFragment().setArguments(recVod);
     }
@@ -80,22 +75,6 @@ public class UserFragment extends BaseLazyFragment {
 
         tvHotList1.setHasFixedSize(true);
         tvHotList1.setLayoutManager(new GridLayoutManager(this.mContext, 3));
-
-        if (Hawk.get(HawkConfig.HOME_REC, 0) == 2) {
-            List<VodInfo> allVodRecord = RoomDataManger.getAllVodRecord(30);
-            List<Movie.Video> vodList = new ArrayList<>();
-            for (VodInfo vodInfo : allVodRecord) {
-                Movie.Video vod = new Movie.Video();
-                vod.id = vodInfo.id;
-                vod.sourceKey = vodInfo.sourceKey;
-                vod.name = vodInfo.name;
-                vod.pic = vodInfo.pic;
-                if (vodInfo.playNote != null && !vodInfo.playNote.isEmpty())
-                    vod.note = "上次看到" + vodInfo.playNote;
-                vodList.add(vod);
-            }
-            homeHotVodAdapter.setNewData(vodList);
-        }
     }
 
     @Override
@@ -156,17 +135,18 @@ public class UserFragment extends BaseLazyFragment {
         });
 
         tvHotList1.setAdapter(homeHotVodAdapter);
-
+        setLoadSir2(tvHotList1);
         initHomeHotVod(homeHotVodAdapter);
     }
 
     private void initHomeHotVod(GridAdapter adapter) {
         if (Hawk.get(HawkConfig.HOME_REC, 0) == 1) {
-            if (homeSourceRec != null) {
+            if (homeSourceRec != null && homeSourceRec.size() > 0) {
+                showSuccess();
                 adapter.setNewData(homeSourceRec);
+            }else {
+                showEmpty();
             }
-            return;
-        } else if (Hawk.get(HawkConfig.HOME_REC, 0) == 2) {
             return;
         }
         try {
@@ -181,6 +161,7 @@ public class UserFragment extends BaseLazyFragment {
                 if (!json.isEmpty()) {
                     ArrayList<Movie.Video> hotMovies = loadHots(json);
                     if (hotMovies != null && hotMovies.size() > 0) {
+                        showSuccess();
                         adapter.setNewData(hotMovies);
                         return;
                     }
@@ -198,7 +179,13 @@ public class UserFragment extends BaseLazyFragment {
                             mActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    adapter.setNewData(loadHots(netJson));
+                                    ArrayList<Movie.Video> videos = loadHots(netJson);
+                                    if (videos.size()>0){
+                                        showSuccess();
+                                        adapter.setNewData(videos);
+                                    }else {
+                                        showEmpty();
+                                    }
                                 }
                             });
                         }
@@ -210,6 +197,9 @@ public class UserFragment extends BaseLazyFragment {
                     });
         } catch (Throwable th) {
             th.printStackTrace();
+            if (adapter.getData().isEmpty()){
+                showEmpty();
+            }
         }
     }
 

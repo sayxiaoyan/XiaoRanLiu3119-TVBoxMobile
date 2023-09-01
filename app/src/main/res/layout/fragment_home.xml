@@ -45,7 +45,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:padding="6dp"
-            android:src="@drawable/ic_search"/>
+            android:src="@drawable/ic_search_48"/>
 
         <ImageView
             android:id="@+id/iv_history"
@@ -53,7 +53,7 @@
             android:layout_height="40dp"
             android:padding="6dp"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_history"/>
+            android:src="@drawable/ic_history_48"/>
     </LinearLayout>
 
     <LinearLayout

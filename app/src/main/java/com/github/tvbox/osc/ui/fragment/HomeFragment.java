@@ -274,7 +274,7 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
         TextView textView = new TextView(mContext);
         textView.setText(text);
         textView.setGravity(Gravity.CENTER);
-        textView.setPadding(ConvertUtils.dp2px(10), ConvertUtils.dp2px(10), ConvertUtils.dp2px(10), ConvertUtils.dp2px(10));
+        textView.setPadding(ConvertUtils.dp2px(20), ConvertUtils.dp2px(10), ConvertUtils.dp2px(5), ConvertUtils.dp2px(10));
         return textView;
     }
 

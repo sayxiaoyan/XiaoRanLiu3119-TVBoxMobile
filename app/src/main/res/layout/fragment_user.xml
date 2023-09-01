@@ -10,7 +10,7 @@
         android:id="@+id/tvHotList1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_user_hot_vod"
+        tools:listitem="@layout/item_grid"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:spanCount="3"
         android:paddingHorizontal="10dp"

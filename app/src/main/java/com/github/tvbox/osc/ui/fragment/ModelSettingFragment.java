@@ -319,7 +319,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 players.add(4);
                 players.add(5);
                 SelectDialog<Integer> dialog = new SelectDialog<>(mActivity);
-                dialog.setTip("请选择默认画面缩放");
+                dialog.setTip("请选择画面缩放");
                 dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<Integer>() {
                     @Override
                     public void click(Integer value, int pos) {
@@ -433,9 +433,8 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 ArrayList<Integer> types = new ArrayList<>();
                 types.add(0);
                 types.add(1);
-                types.add(2);
                 SelectDialog<Integer> dialog = new SelectDialog<>(mActivity);
-                dialog.setTip("请选择首页列表数据");
+                dialog.setTip("主页内容显示");
                 dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<Integer>() {
                     @Override
                     public void click(Integer value, int pos) {
@@ -619,8 +618,6 @@ public class ModelSettingFragment extends BaseLazyFragment {
     String getHomeRecName(int type) {
         if (type == 1) {
             return "站点推荐";
-        } else if (type == 2) {
-            return "观看历史";
         } else {
             return "豆瓣热播";
         }
