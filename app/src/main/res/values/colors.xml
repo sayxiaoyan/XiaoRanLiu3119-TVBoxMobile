@@ -24,6 +24,9 @@
     <color name="disable_text">#b3b3b3</color>
     <color name="bg_popup">#ececec</color>
 
+    <!--    带点透明度的pop弹窗背景颜色-->
+    <color name="bg_popup_trans">#ccececec</color>
+
     <!--    制定颜色-->
     <!--    页面背景色,activity.fragment等-->
     <color name="bg_page">#000000</color>

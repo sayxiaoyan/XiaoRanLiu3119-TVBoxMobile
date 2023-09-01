@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.lihang.ShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/sl"
-    android:layout_width="wrap_content"
+    android:layout_width="80dp"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="10dp"
@@ -11,7 +11,8 @@
     app:hl_shapeMode="selected"
     app:hl_bindTextView="@+id/tvSeries"
     app:hl_textColor_true="#fff"
-    app:hl_textColor="@color/colorPrimary">
+    app:hl_textColor="@color/colorPrimary"
+    android:layout_marginHorizontal="5dp">
 
     <TextView
         android:id="@+id/tvSeries"

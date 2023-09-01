@@ -2,6 +2,7 @@ package com.github.tvbox.osc.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
@@ -94,31 +95,15 @@ public class UserFragment extends BaseLazyFragment {
                     return;
                 }
                 Movie.Video vod = ((Movie.Video) adapter.getItem(position));
-//                if (vod.id != null && !vod.id.isEmpty()) {
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("id", vod.id);
-//                    bundle.putString("sourceKey", vod.sourceKey);
-//                    if(Hawk.get(HawkConfig.HOME_REC, 0)==1 && Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
-//                        bundle.putString("title", vod.name);
-//                        jumpActivity(FastSearchActivity.class, bundle);
-//                    }else {
-//                        jumpActivity(DetailActivity.class, bundle);
-//                    }
-//                } else {
-//                    Intent newIntent = new Intent(mContext, FastSearchActivity.class);
-////                    if(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false)){
-////                        newIntent = new Intent(mContext, FastSearchActivity.class);
-////                    }else {
-////                        newIntent = new Intent(mContext, SearchActivity.class);
-////                    }
-//                    newIntent.putExtra("title", vod.name);
-//                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    mActivity.startActivity(newIntent);
-//                }
-
                 Bundle bundle = new Bundle();
-                bundle.putString("title", vod.name);
-                jumpActivity(FastSearchActivity.class, bundle);
+                if (!TextUtils.isEmpty(vod.id)) {
+                    bundle.putString("id", vod.id);
+                    bundle.putString("sourceKey", vod.sourceKey);
+                    jumpActivity(DetailActivity.class, bundle);
+                } else {
+                    bundle.putString("title", vod.name);
+                    jumpActivity(FastSearchActivity.class, bundle);
+                }
             }
         });
 

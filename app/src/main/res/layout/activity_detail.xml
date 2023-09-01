@@ -32,7 +32,6 @@
             <LinearLayout
                 android:id="@+id/ll_title"
                 android:layout_width="wrap_content"
-                android:paddingRight="20dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -40,14 +39,16 @@
                     android:id="@+id/tvName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp_5"
+                    android:maxLength="16"
                     android:ellipsize="end"
-                    android:maxLines="1"
+                    android:layout_marginBottom="5dp"
+                    android:text="鬼灭之刃鬼灭之刃鬼灭之刃鬼灭之刃鬼灭之刃鬼灭之刃"
                     android:singleLine="true"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_gray"
-                    tools:text="鬼灭之刃"/>
+                    />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -73,32 +74,15 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     tools:text="非凡影视"
-                    android:textSize="10sp"
+                    android:textSize="8sp"
                     android:textColor="@color/white"/>
             </com.lihang.ShadowLayout>
-
-<!--            <com.ctetin.expandabletextviewlibrary.ExpandableTextView-->
-<!--                android:id="@+id/tvDes"-->
-<!--                android:layout_width="fill_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_margin="15dp"-->
-<!--                android:lineSpacingExtra="4dp"-->
-<!--                android:textSize="14sp"-->
-<!--                app:ep_contract_color="@color/colorAccent"-->
-<!--                app:ep_contract_text="收回"-->
-<!--                app:ep_expand_color="@color/colorAccent"-->
-<!--                app:ep_expand_text="展开"-->
-<!--                app:ep_max_line="4"-->
-<!--                app:ep_need_always_showright="true"-->
-<!--                app:ep_need_animation="true"-->
-<!--                app:ep_need_contract="true"-->
-<!--                app:ep_need_expand="true" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:gravity="end"
+                android:gravity="end|center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
@@ -112,7 +96,11 @@
                     android:paddingHorizontal="10dp"
                     android:text="倒序"
                     android:textColor="@color/text_gray" />
-
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:background="@color/colorPrimary"
+                    android:layout_marginHorizontal="6dp"/>
                 <TextView
                     android:id="@+id/tvCollect"
                     android:layout_width="wrap_content"
@@ -125,6 +113,11 @@
                     android:text="收藏"
                     android:textColor="@color/text_gray" />
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:background="@color/colorPrimary"
+                    android:layout_marginHorizontal="6dp"/>
                 <TextView
                     android:id="@+id/tvDownload"
                     android:layout_width="wrap_content"
@@ -168,6 +161,15 @@
                 />
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="线路"
+            android:textColor="@color/text_gray"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            />
         <!--        线路列表-->
         <com.owen.tvrecyclerview.widget.TvRecyclerView
             android:id="@+id/mGridViewFlag"
@@ -180,19 +182,33 @@
             app:tv_selectedItemIsCentered="true"
             tools:listitem="@layout/item_series_flag" />
 
-        <!--        集数分组-->
-        <com.owen.tvrecyclerview.widget.TvRecyclerView
-            android:id="@+id/mSeriesGroupView"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            app:tv_horizontalSpacingWithMargins="@dimen/dp_10"
-            app:tv_selectedItemIsCentered="true" />
-
+            android:layout_marginHorizontal="10dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="选集"
+                android:textColor="@color/text_gray"
+                android:textSize="16sp"
+                android:layout_centerVertical="true"
+                />
+            <TextView
+                android:id="@+id/tv_all_series"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全部"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/text_gray"
+                android:drawablePadding="4dp"
+                android:textSize="16dp"
+                android:paddingVertical="6dp"
+                />
+        </RelativeLayout>
         <!--        集数列表-->
-        <com.owen.tvrecyclerview.widget.TvRecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mGridView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -201,7 +217,11 @@
             android:clipToPadding="false"
             app:tv_horizontalSpacingWithMargins="@dimen/dp_10"
             app:tv_selectedItemIsCentered="true"
-            app:tv_verticalSpacingWithMargins="@dimen/dp_10" />
+            app:tv_verticalSpacingWithMargins="@dimen/dp_10"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:orientation="horizontal"
+            tools:listitem="@layout/item_series"/>
+
     </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView
