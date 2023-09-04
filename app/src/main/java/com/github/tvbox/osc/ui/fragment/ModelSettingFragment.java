@@ -39,6 +39,8 @@ import com.github.tvbox.osc.util.HistoryHelper;
 import com.github.tvbox.osc.util.LOG;
 import com.github.tvbox.osc.util.OkGoHelper;
 import com.github.tvbox.osc.util.PlayerHelper;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.hjq.bar.TitleBar;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -95,6 +97,11 @@ public class ModelSettingFragment extends BaseLazyFragment {
 
     @Override
     protected void init() {
+        TitleBar titleBar = findViewById(R.id.title_bar);
+        titleBar.getLeftView().setOnClickListener(view -> {
+            SettingActivity activity = (SettingActivity) mActivity;
+            activity.onBackPressed();
+        });
         tvFastSearchText = findViewById(R.id.showFastSearchText);
         tvFastSearchText.setText(Hawk.get(HawkConfig.FAST_SEARCH_MODE, false) ? "已开启" : "已关闭");
 
@@ -121,6 +128,15 @@ public class ModelSettingFragment extends BaseLazyFragment {
         tvPlay.setText(PlayerHelper.getPlayerName(Hawk.get(HawkConfig.PLAY_TYPE, 0)));
         tvRender.setText(PlayerHelper.getRenderName(Hawk.get(HawkConfig.PLAY_RENDER, 0)));
         tvIjkCachePlay.setText(Hawk.get(HawkConfig.IJK_CACHE_PLAY, false) ? "开启" : "关闭");
+
+        SwitchMaterial switchPrivate = findViewById(R.id.switchPrivateBrowsing);
+        switchPrivate.setChecked(Hawk.get(HawkConfig.PRIVATE_BROWSING, false));
+        switchPrivate.setOnClickListener(view -> {
+            boolean newConfig = !Hawk.get(HawkConfig.PRIVATE_BROWSING, false);
+            switchPrivate.setChecked(newConfig);
+            Hawk.put(HawkConfig.PRIVATE_BROWSING, newConfig);
+        });
+
         findViewById(R.id.llDebug).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -66,26 +66,47 @@
                             android:textSize="12dp"/>
                     </LinearLayout>
 
-                    <com.lihang.ShadowLayout
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:clickable="false"
-                        app:hl_cornerRadius="@dimen/common_corners"
-                        app:hl_layoutBackground="@color/colorPrimary"
-                        android:layout_marginTop="6dp"
-                        android:padding="6dp">
+                        >
 
-                        <TextView
-                            android:id="@+id/tvSite"
+                        <com.lihang.ShadowLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            tools:text="非凡影视"
-                            android:textSize="8sp"
-                            android:textColor="@color/white"/>
-                    </com.lihang.ShadowLayout>
+                            app:clickable="false"
+                            app:hl_cornerRadius="@dimen/common_corners"
+                            app:hl_layoutBackground="@color/colorPrimary"
+                            android:layout_marginTop="6dp"
+                            android:padding="6dp">
+
+                            <TextView
+                                android:id="@+id/tvSite"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                tools:text="非凡影视"
+                                android:textSize="8sp"
+                                android:textColor="@color/white"/>
+                        </com.lihang.ShadowLayout>
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"/>
+                        <ImageView
+                            android:id="@+id/iv_private_browsing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:src="@drawable/ic_private_browsing"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

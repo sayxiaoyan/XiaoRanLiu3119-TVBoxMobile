@@ -94,8 +94,6 @@ import android.graphics.Paint;
  */
 
 public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
-    private FragmentContainerView llPlayerFragmentContainer;
-    private View llPlayerPlace;
     private PlayFragment playFragment = null;
     private SourceViewModel sourceViewModel;
     private Movie.Video mVideo;
@@ -124,15 +122,9 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     }
 
     private void initView() {
-        llPlayerPlace = findViewById(R.id.previewPlayerPlace);
-        llPlayerFragmentContainer = findViewById(R.id.previewPlayer);
-        llPlayerFragmentContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ToastUtils.showShort("显示");
-            }
-        });
-        llPlayerPlace.setVisibility(showPreview ? View.VISIBLE : View.GONE);
+        mBinding.ivPrivateBrowsing.setVisibility(Hawk.get(HawkConfig.PRIVATE_BROWSING, false)?View.VISIBLE:View.GONE);
+        mBinding.ivPrivateBrowsing.setOnClickListener(view -> ToastUtils.showShort("当前为无痕浏览"));
+        mBinding.previewPlayerPlace.setVisibility(showPreview ? View.VISIBLE : View.GONE);
         mBinding.mGridView.setHasFixedSize(true);
         mBinding.mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext,0,false));
         seriesAdapter = new SeriesAdapter();
@@ -425,7 +417,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                         refreshList();
                         if (showPreview) {
                             jumpToPlay();
-                            llPlayerFragmentContainer.setVisibility(View.VISIBLE);
+                            mBinding.previewPlayer.setVisibility(View.VISIBLE);
                             toggleSubtitleTextSize();
                         }
                         // startQuickSearch();
@@ -436,7 +428,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                     }
                 } else {
                     showEmpty();
-                    llPlayerFragmentContainer.setVisibility(View.GONE);
+                    mBinding.previewPlayer.setVisibility(View.GONE);
                 }
             }
         });
@@ -624,6 +616,9 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     }
 
     private void insertVod(String sourceKey, VodInfo vodInfo) {
+        if (Hawk.get(HawkConfig.PRIVATE_BROWSING, false)) {//无痕浏览
+            return;
+        }
         try {
             vodInfo.playNote = vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex).name;
         } catch (Throwable th) {
@@ -680,7 +675,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
 
     public void toggleFullPreview() {
         if (windowsPreview == null) {
-            windowsPreview = llPlayerFragmentContainer.getLayoutParams();
+            windowsPreview = mBinding.previewPlayer.getLayoutParams();
         }
         if (windowsFull == null) {
             windowsFull = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -702,7 +697,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 .fitsSystemWindows(fitsSystemWindows)
                 .init();
 
-        llPlayerFragmentContainer.setLayoutParams(fullWindows ? windowsFull : windowsPreview);
+        mBinding.previewPlayer.setLayoutParams(fullWindows ? windowsFull : windowsPreview);
         mBinding.mGridView.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
         mBinding.mGridViewFlag.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
 

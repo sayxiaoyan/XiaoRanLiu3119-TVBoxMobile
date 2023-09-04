@@ -9,9 +9,8 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:leftTitle="历史记录"
+        app:title="历史记录"
         app:leftTitleSize="16sp"
-        app:leftIcon="@null"
         app:rightIcon="@drawable/ic_clear"
         app:lineVisible="false"/>
 

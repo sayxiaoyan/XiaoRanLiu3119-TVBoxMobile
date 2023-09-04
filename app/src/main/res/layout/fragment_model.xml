@@ -8,13 +8,13 @@
     android:paddingTop="30dp">
 
     <com.hjq.bar.TitleBar
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         app:title="设置"
         app:titleStyle="bold"
         app:titleColor="@color/black"
-        app:lineVisible="false"
-        app:leftIcon="@null"/>
+        app:lineVisible="false"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -150,6 +150,35 @@
                     android:alpha="0.75"
                     android:src="@drawable/icon_pre"
                     app:tint="@color/text_gray"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llPrivateBrowsing"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_60"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="无痕浏览"
+                    android:textColor="@color/text_gray"
+                    android:textSize="16sp"
+                    />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+               <com.google.android.material.switchmaterial.SwitchMaterial
+                   android:id="@+id/switchPrivateBrowsing"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
             </LinearLayout>
 
             <LinearLayout
