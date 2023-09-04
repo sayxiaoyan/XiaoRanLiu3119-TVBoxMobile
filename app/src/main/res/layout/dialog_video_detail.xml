@@ -125,6 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:lineSpacingExtra="4dp"
+        android:maxLines="20"
         app:ep_max_line="5"
         app:ep_need_contract="true"
         app:ep_need_animation="false"

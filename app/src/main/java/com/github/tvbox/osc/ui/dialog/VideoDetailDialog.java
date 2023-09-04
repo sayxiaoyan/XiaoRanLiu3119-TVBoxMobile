@@ -74,8 +74,8 @@ public class VideoDetailDialog extends BottomPopupView {
     }
 
     private String removeHtmlTag(String info) {
-        if (info == null)
-            return "";
+        if (TextUtils.isEmpty(info))
+            return "暂无";
         return info.replaceAll("\\<.*?\\>", "").replaceAll("\\s", "");
     }
 

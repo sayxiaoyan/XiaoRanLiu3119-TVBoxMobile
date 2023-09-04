@@ -11,7 +11,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.bean.VodInfo;
 import com.github.tvbox.osc.ui.adapter.SeriesAdapter;
+import com.github.tvbox.osc.ui.widget.GridSpacingItemDecoration;
+import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BottomPopupView;
+import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +42,10 @@ public class AllSeriesDialog extends BottomPopupView {
     protected void onCreate() {
         super.onCreate();
         RecyclerView rv = findViewById(R.id.rv);
+
+        int spanCount = 3; // 3 columns
+        rv.addItemDecoration(new GridSpacingItemDecoration(spanCount, 20, true));
+
         SeriesAdapter seriesAdapter = new SeriesAdapter();
         seriesAdapter.setNewData(mList);
         rv.setAdapter(seriesAdapter);
@@ -51,6 +58,18 @@ public class AllSeriesDialog extends BottomPopupView {
             seriesAdapter.getData().get(position).selected = true;
             seriesAdapter.notifyItemChanged(position);
             mSelectListener.onSelect(position,"");
+        });
+
+        seriesAdapter.setOnItemLongClickListener((adapter, view, position) -> {
+            VodInfo.VodSeries vodSeries = seriesAdapter.getData().get(position);
+            new XPopup.Builder(getContext())
+                    .hasShadowBg(false)
+                    .atView(view)
+                    .popupPosition(PopupPosition.Top)
+                    .asAttachList(new String[]{vodSeries.name},null,null)
+                    .show()
+                    .delayDismiss(3000);
+            return true;
         });
     }
 }

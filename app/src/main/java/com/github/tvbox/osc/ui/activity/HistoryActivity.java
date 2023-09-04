@@ -56,15 +56,12 @@ public class HistoryActivity extends BaseVbActivity<ActivityHistoryBinding> {
         historyAdapter.setOnItemLongClickListener((BaseQuickAdapter.OnItemLongClickListener) (adapter, view, position) -> {
             FastClickCheckUtil.check(view);
             VodInfo vodInfo = historyAdapter.getData().get(position);
-            new XPopup.Builder(this)
-                    .asConfirm("提示", "确定删除该条记录?", () -> {
-                        if (vodInfo != null) {
-                            historyAdapter.remove(position);
-                            RoomDataManger.deleteVodRecord(vodInfo.sourceKey, vodInfo);
-                        } else {
-                            ToastUtils.showLong("未查询到该条记录,请重试或清空全部记录");
-                        }
-                    }).show();
+            if (vodInfo != null) {
+                historyAdapter.remove(position);
+                RoomDataManger.deleteVodRecord(vodInfo.sourceKey, vodInfo);
+            } else {
+                ToastUtils.showLong("未查询到该条记录,请重试或清空全部记录");
+            }
             return true;
         });
 

@@ -8,7 +8,7 @@
     android:background="@drawable/bg_gray_trans_top_r25"
     android:orientation="vertical"
     android:paddingTop="20dp"
-    android:paddingBottom="30dp"
+    android:paddingBottom="10dp"
     android:gravity="center_horizontal">
 
     <com.lihang.ShadowLayout
@@ -20,11 +20,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
-        android:layout_width="wrap_content"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         tools:listitem="@layout/item_series"
-        app:spanCount="4"
+        app:spanCount="3"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         />
 

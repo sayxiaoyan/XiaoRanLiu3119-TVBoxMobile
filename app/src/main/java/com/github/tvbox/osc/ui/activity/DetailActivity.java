@@ -687,17 +687,20 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         }
         fullWindows = !fullWindows;
 
+        boolean fitsSystemWindows;
         if (fullWindows){
+            fitsSystemWindows = false;
             ScreenUtils.setLandscape(this);
-            ImmersionBar.with(this)
-                            .fitsSystemWindows(false);
             ImmersionBar.hideStatusBar(getWindow());
         }else {
+            fitsSystemWindows = true;
             ScreenUtils.setPortrait(this);
-            ImmersionBar.with(this)
-                    .fitsSystemWindows(true);
             ImmersionBar.showStatusBar(getWindow());
         }
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.black)
+                .fitsSystemWindows(fitsSystemWindows)
+                .init();
 
         llPlayerFragmentContainer.setLayoutParams(fullWindows ? windowsFull : windowsPreview);
         mBinding.mGridView.setVisibility(fullWindows ? View.GONE : View.VISIBLE);

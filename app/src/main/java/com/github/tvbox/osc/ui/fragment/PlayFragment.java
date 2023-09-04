@@ -260,11 +260,8 @@ public class PlayFragment extends BaseLazyFragment {
             @Override
             public void exit() {
                 DetailActivity activity = (DetailActivity) mActivity;
-                if (ScreenUtils.isLandscape()) {//横屏直接调用activity的切换横竖屏方法, DetailActivity中切换横竖屏后设置了屏幕方向,在此直接判断即可,不用在activity中处理
-                    activity.toggleFullPreview();
-                } else {
-                    activity.finish();
-                }
+                //activity中已处理
+                activity.onBackPressed();
             }
         });
         mVideoView.setVideoController(mController);
@@ -726,9 +723,9 @@ public class PlayFragment extends BaseLazyFragment {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
             mController.mLandscapePortraitBtn.setText("竖屏");
         }
-        if (mController.onBackPressed()) {
-            return true;
-        }
+//        if (mController.onBackPressed()) {
+//            return true;
+//        }
         return false;
     }
 
