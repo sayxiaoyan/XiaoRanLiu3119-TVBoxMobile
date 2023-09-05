@@ -14,14 +14,18 @@
         android:layout_height="wrap_content"
         app:title="订阅管理"
         app:rightIcon="@drawable/ic_add_24"
-        />
+        >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="多仓解析成功会存储为单条订阅格式"
-        android:textSize="12sp"
-        android:layout_marginVertical="10dp"/>
+        <ImageView
+            android:id="@+id/iv_use_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_use_tip"
+            android:layout_gravity="end|center_vertical"
+            android:paddingLeft="10dp"
+            android:layout_marginRight="50dp"/>
+    </com.hjq.bar.TitleBar>
+
     <androidx.recyclerview.widget.RecyclerView
         android:background="@drawable/bg_large_round_gray"
         android:layout_margin="10dp"

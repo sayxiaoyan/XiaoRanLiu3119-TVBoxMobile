@@ -10,9 +10,9 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 3,
-      "versionName": "0.0.3",
-      "outputFile": "TVBoxMobile_v0.0.3_release_20230831.apk"
+      "versionCode": 4,
+      "versionName": "0.0.4",
+      "outputFile": "TVBoxMobile_v0.0.4_release_20230904.apk"
     }
   ]
 }

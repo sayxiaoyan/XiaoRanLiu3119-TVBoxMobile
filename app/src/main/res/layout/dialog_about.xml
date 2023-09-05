@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:background="@drawable/shape_bottom_dialog_bg_gray"
     android:orientation="vertical"
-    android:paddingHorizontal="@dimen/dp_30"
+    android:paddingHorizontal="20dp"
     android:paddingTop="20dp"
     android:paddingBottom="30dp">
 
@@ -34,7 +34,6 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic_close_24"
-            app:tint="@color/colorPrimary"
             android:padding="10dp"/>
     </LinearLayout>
 

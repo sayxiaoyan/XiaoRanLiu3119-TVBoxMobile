@@ -27,6 +27,7 @@ import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.Subscription;
 import com.github.tvbox.osc.databinding.ActivitySubscriptionBinding;
 import com.github.tvbox.osc.ui.adapter.SubscriptionAdapter;
+import com.github.tvbox.osc.ui.dialog.SubsTipDialog;
 import com.github.tvbox.osc.ui.dialog.SubsciptionDialog;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.google.gson.JsonArray;
@@ -87,6 +88,12 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
 
         mSubscriptionAdapter.setNewData(mSubscriptions);
 
+        mBinding.ivUseTip.setOnClickListener(view -> {
+            new XPopup.Builder(this)
+                    .asCustom(new SubsTipDialog(this))
+                    .show();
+        });
+
         mBinding.titleBar.getRightView().setOnClickListener(view -> {//添加订阅
             new XPopup.Builder(this)
                     .autoFocusEditText(false)
@@ -112,7 +119,6 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
                         }
                     })).show();
         });
-
 
         mSubscriptionAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             LogUtils.d("删除订阅");
