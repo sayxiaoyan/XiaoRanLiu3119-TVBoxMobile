@@ -131,8 +131,10 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
         MainActivity mainActivity = (MainActivity)mActivity;
 
         SourceBean home = ApiConfig.get().getHomeSourceBean();
-        if (home != null && home.getName() != null && !home.getName().isEmpty())
+        if (home != null && home.getName() != null && !home.getName().isEmpty()){
             mBinding.tvName.setText(home.getName());
+            mBinding.tvName.postDelayed(() -> mBinding.tvName.setSelected(true),2000);
+        }
         if (dataInitOk && jarInitOk) {
             showLoading();
             sourceViewModel.getSort(ApiConfig.get().getHomeSourceBean().getKey());
