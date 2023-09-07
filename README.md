@@ -10,23 +10,11 @@
 * [CatVodTVOfficial](https://github.com/CatVodTVOfficial)/[TVBoxOSC](https://github.com/CatVodTVOfficial/TVBoxOSC)
 * [q215613905](https://github.com/q215613905)/[TVBoxOS](https://github.com/q215613905/TVBoxOS)
 
-## 功能进度
+## 进度
 
 - [x] 优化/适配所有UI为手机版
 
-- [x] 本地订阅导入
-
-- [x] 无痕浏览
-
-- [x] 本地视频
-
-- [ ] 播放中选集,便捷设置
-
-- [ ] 深色模式
-
-- [ ] Material Design3风格(待基本功能完善)
-
-- [ ] 其余优化...
+- [ ] 其余优化
 
 
 ## 源/配置/推荐
