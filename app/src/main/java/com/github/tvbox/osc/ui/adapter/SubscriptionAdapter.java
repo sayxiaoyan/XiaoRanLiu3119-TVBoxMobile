@@ -1,7 +1,11 @@
 package com.github.tvbox.osc.ui.adapter;
 
+import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
+
+import com.blankj.utilcode.util.ColorUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -12,6 +16,8 @@ import com.github.tvbox.osc.bean.Subscription;
 import com.github.tvbox.osc.bean.VideoFolder;
 import com.github.tvbox.osc.bean.VideoInfo;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SubscriptionAdapter extends BaseQuickAdapter<Subscription, BaseViewHolder> {
@@ -23,8 +29,31 @@ public class SubscriptionAdapter extends BaseQuickAdapter<Subscription, BaseView
     protected void convert(BaseViewHolder helper, Subscription item) {
         helper.setText(R.id.tv_name,item.getName())
         .setText(R.id.tv_url,item.getUrl())
-        .setChecked(R.id.cb,item.isChecked());
+        .setChecked(R.id.cb,item.isChecked())
+        .setVisible(R.id.iv_pushpin,item.isTop());
 
         helper.addOnClickListener(R.id.iv_del);
     }
+
+    @Override
+    public void setNewData(@Nullable List<Subscription> data) {
+        if (data!=null){
+            data.sort(mComparator);
+        }
+        super.setNewData(data);
+    }
+
+    Comparator<Subscription> mComparator = (s1, s2) -> {
+        if (s1.isTop() && !s2.isTop()) {
+            return -1;
+        } else if (!s1.isTop() && s2.isTop()) {
+            return 1;
+        } else if (s1.isChecked() && !s2.isChecked()) {
+            return -1;
+        } else if (!s1.isChecked() && s2.isChecked()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    };
 }

@@ -138,11 +138,6 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
         if (dataInitOk && jarInitOk) {
             showLoading();
             sourceViewModel.getSort(ApiConfig.get().getHomeSourceBean().getKey());
-            if (XXPermissions.isGranted(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                LOG.e("有");
-            } else {
-                LOG.e("无");
-            }
             return;
         }
         showLoading();

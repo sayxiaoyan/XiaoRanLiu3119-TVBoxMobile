@@ -37,6 +37,7 @@ import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.enums.PopupPosition;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
@@ -145,14 +146,23 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
             adapter.notifyDataSetChanged();
         });
 
-        mSubscriptionAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-                //长按复制url到剪切板
-                ClipboardUtils.copyText(mSubscriptions.get(position).getUrl());
-                ToastUtils.showLong("已复制订阅地址");
-                return true;
-            }
+        mSubscriptionAdapter.setOnItemLongClickListener((adapter, view, position) -> {
+            Subscription item = mSubscriptions.get(position);
+            new XPopup.Builder(this)
+                    .atView(view)
+                    .hasShadowBg(false)
+                    .asAttachList(new String[]{item.isTop()?"取消置顶":"置顶","复制地址"},null, (index, text) -> {
+                        if (index==0){
+                            item.setTop(!item.isTop());
+                            mSubscriptions.set(position,item);
+                            mSubscriptionAdapter.setNewData(mSubscriptions);
+                            mSubscriptionAdapter.notifyDataSetChanged();
+                        }else {
+                            ClipboardUtils.copyText(mSubscriptions.get(position).getUrl());
+                            ToastUtils.showLong("已复制");
+                        }
+                    }).show();
+            return true;
         });
     }
 
