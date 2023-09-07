@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/nameContainer"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"

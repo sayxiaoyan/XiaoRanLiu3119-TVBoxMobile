@@ -97,7 +97,7 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
     protected void init() {
         ControlManager.get().startServer();
 
-        mBinding.tvName.setOnClickListener(v -> {
+        mBinding.nameContainer.setOnClickListener(v -> {
             dataInitOk = false;
             jarInitOk = true;
             showSiteSwitch();
