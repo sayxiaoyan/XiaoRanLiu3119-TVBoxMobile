@@ -542,13 +542,17 @@
 
     </LinearLayout>
 
-    <ProgressBar
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/play_loading"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:indeterminateBehavior="repeat"
-        android:indeterminateDrawable="@drawable/anim_loading"
-        android:indeterminateOnly="true"
+        app:lottie_autoPlay="true"
+        android:scaleType="centerCrop"
+        app:lottie_fileName="anim_loading.json"
+        app:lottie_speed="2"
+        app:lottie_loop="true"
+        app:lottie_repeatMode="reverse"
         android:tag="vod_control_loading"
         android:visibility="gone" />
 

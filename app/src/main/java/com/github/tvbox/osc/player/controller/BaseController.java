@@ -91,7 +91,7 @@ public abstract class BaseController extends BaseVideoController implements Gest
     }
 
     private TextView mSlideInfo;
-    private ProgressBar mLoading;
+    private View mLoading;
     private ViewGroup mPauseRoot;
     private TextView mPauseTime;
 

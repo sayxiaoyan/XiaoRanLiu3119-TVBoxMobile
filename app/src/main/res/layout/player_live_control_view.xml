@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
         android:id="@+id/tv_pause_container"
@@ -64,14 +65,18 @@
         tools:text="100"
         android:textColor="@color/white"/>
 
-    <ProgressBar
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/play_loading"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:indeterminateBehavior="repeat"
-        android:indeterminateDrawable="@drawable/anim_loading"
-        android:indeterminateOnly="true"
+        app:lottie_autoPlay="true"
+        android:scaleType="centerCrop"
+        app:lottie_fileName="anim_loading.json"
+        app:lottie_speed="2"
+        app:lottie_loop="true"
+        app:lottie_repeatMode="reverse"
         android:tag="vod_control_loading"
-        android:visibility="gone" />
-
+        android:visibility="gone"
+        tools:visibility="visible"/>
 </FrameLayout>
