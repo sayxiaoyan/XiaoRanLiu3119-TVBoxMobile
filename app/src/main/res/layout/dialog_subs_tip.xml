@@ -11,39 +11,55 @@
     android:paddingTop="20dp"
     android:paddingBottom="20dp">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="订阅模块使用"
-        android:textColor="@color/color_CC000000"
-        android:textStyle="bold"
-        android:textSize="16sp"/>
-
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="10dp"
-        android:text="@string/subs_use_tip"
-        android:textColor="@color/color_CC000000"
-        />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="免责说明"
-        android:textColor="@color/color_CC000000"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_marginTop="24dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="10dp"
-        android:text="@string/subs_tip"
-        android:textColor="@color/color_CC000000"
-         />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="订阅模块使用"
+                android:textColor="@color/color_CC000000"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="6dp"
+                android:text="@string/subs_use_tip"
+                android:textColor="@color/color_CC000000"
+                android:layout_marginTop="10dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="免责说明"
+                android:textColor="@color/color_CC000000"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="6dp"
+                android:text="@string/subs_tip"
+                android:textColor="@color/color_CC000000"
+                android:layout_marginTop="10dp"
+                />
+        </LinearLayout>
+    </ScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_search_subs1"

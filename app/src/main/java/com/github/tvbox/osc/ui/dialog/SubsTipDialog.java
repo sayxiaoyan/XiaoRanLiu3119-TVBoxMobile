@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.databinding.DialogSubsTipBinding;
 import com.lxj.xpopup.core.BottomPopupView;
@@ -27,6 +28,11 @@ public class SubsTipDialog extends BottomPopupView {
     @Override
     protected int getImplLayoutId() {
         return R.layout.dialog_subs_tip;
+    }
+
+    @Override
+    protected int getMaxHeight() {
+        return ScreenUtils.getScreenHeight()-100;
     }
 
     @Override
