@@ -58,14 +58,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="https://github.com/XiaoRanLiu3119/TVBoxOS"
+        android:text="https://github.com/XiaoRanLiu3119/TVBoxOS-Mobile"
         android:textIsSelectable="true"
         android:layout_marginTop="4dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="打包分发请保留出处"
+        android:text="修改自"
         android:textColor="@color/color_CC000000"
         />
 
