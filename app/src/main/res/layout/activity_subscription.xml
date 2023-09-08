@@ -19,10 +19,10 @@
         <ImageView
             android:id="@+id/iv_use_tip"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_use_tip"
             android:layout_gravity="end|center_vertical"
-            android:paddingLeft="10dp"
+            android:paddingLeft="20dp"
             android:layout_marginRight="50dp"/>
     </com.hjq.bar.TitleBar>
 

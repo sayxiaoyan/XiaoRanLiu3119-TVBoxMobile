@@ -49,10 +49,11 @@ public class ChooseSourceDialog extends BottomPopupView {
         sourceAdapter.setNewData(mSources);
 
         sourceAdapter.setOnItemClickListener((adapter, view, position) -> {
-            if (mListener!=null){
-                mListener.onSelect(position, mSources.get(position).getSourceUrl());
-            }
-            dismiss();
+            dismissWith(() -> {
+                if (mListener!=null){
+                    mListener.onSelect(position, mSources.get(position).getSourceUrl());
+                }
+            });
         });
     }
 }

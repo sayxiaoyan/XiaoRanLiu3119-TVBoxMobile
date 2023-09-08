@@ -11,6 +11,8 @@
 
     <color name="bg_gray">#f7f7f7</color>
     <color name="gray_darker">#7f7b79</color>
+    <!--    深灰点击透明度-->
+    <color name="gray_darker_press_alpha">#3C808080</color>
 
     <!--    通用颜色-->
     <color name="white">#FFFFFF</color>
@@ -24,8 +26,11 @@
     <color name="disable_text">#b3b3b3</color>
     <color name="bg_popup">#ececec</color>
 
-    <!--    带点透明度的pop弹窗背景颜色-->
-    <color name="bg_popup_trans">#ccececec</color>
+    <!--    带点透明度(e6 90/100不透明)的pop弹窗背景颜色-->
+    <color name="bg_popup_alpha_90">#e6ececec</color>
+
+    <!--    带点透明度(e6 90/100不透明)的pop弹窗背景颜色-->
+    <color name="bg_popup_alpha_95">#f2ececec</color>
 
     <!--    制定颜色-->
     <!--    页面背景色,activity.fragment等-->

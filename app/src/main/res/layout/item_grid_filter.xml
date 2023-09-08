@@ -8,19 +8,8 @@
     android:orientation="horizontal"
     android:padding="@dimen/dp_1">
 
-    <TextView
-        android:id="@+id/filterName"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginEnd="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
-        android:gravity="center"
-        android:textAlignment="gravity"
-        android:textColor="@color/text_gray"
-        tools:text="11111111111" />
 
-    <com.owen.tvrecyclerview.widget.TvRecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mFilterKv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,6 +17,9 @@
         android:clipToPadding="false"
         app:tv_horizontalSpacingWithMargins="@dimen/dp_5"
         app:tv_selectedItemIsCentered="true"
-        app:tv_verticalSpacingWithMargins="@dimen/dp_5" />
+        app:tv_verticalSpacingWithMargins="@dimen/dp_5"
+        tools:listitem="@layout/item_grid_filter_value"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:orientation="horizontal"/>
 
 </LinearLayout>
