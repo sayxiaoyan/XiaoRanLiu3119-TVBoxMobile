@@ -282,8 +282,10 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
                                                 }))
                                                 .show();
                                     }
+                                } else {// 单线路/其余
+                                    mSubscriptions.add(new Subscription(name, url));
                                 }
-                            } catch (Throwable th) {//单线路/其余能连接通的路径
+                            } catch (Throwable th) {
                                 mSubscriptions.add(new Subscription(name, url));
                             }
                             mSubscriptionAdapter.setNewData(mSubscriptions);
