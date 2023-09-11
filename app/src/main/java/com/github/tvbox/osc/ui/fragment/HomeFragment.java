@@ -299,6 +299,22 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
         }
     }
 
+    /**
+     * 提供给主页返回操作
+     */
+    public void scrollToFirstTab(){
+        if (mBinding.tabLayout.getCurrentItemIndex()!=0){
+            mBinding.mViewPager.setCurrentItem(0, false);
+        }
+    }
+
+    /**
+     * 提供给主页返回操作
+     */
+    public int getTabIndex(){
+        return mBinding.tabLayout.getCurrentItemIndex();
+    }
+
     @Override
     public void onPause() {
         super.onPause();

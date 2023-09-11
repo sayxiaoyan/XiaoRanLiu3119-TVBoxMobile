@@ -17,8 +17,10 @@ import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.databinding.ActivityMainBinding;
+import com.github.tvbox.osc.ui.fragment.GridFragment;
 import com.github.tvbox.osc.ui.fragment.HomeFragment;
 import com.github.tvbox.osc.ui.fragment.MyFragment;
+import com.github.tvbox.osc.ui.fragment.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -75,6 +77,22 @@ public class MainActivity extends BaseVbActivity<ActivityMainBinding> {
     private long exitTime = 0L;
     @Override
     public void onBackPressed() {
+        HomeFragment homeFragment = (HomeFragment)fragments.get(0);
+        List<Fragment> childFragments = homeFragment.getChildFragmentManager().getFragments();
+        Fragment fragment = childFragments.get(homeFragment.getTabIndex());
+        if (fragment instanceof GridFragment){// 影视列表,非主页
+            GridFragment item = (GridFragment)fragment;
+            if (item.restoreView()){// 有回退的view,先回退(AList等文件夹列表)
+                return;
+            }
+            // 没有可回退的,返到主页tab
+            homeFragment.scrollToFirstTab();
+        }else {// 主页tab提示退出
+            confirmExit();
+        }
+    }
+
+    private void confirmExit(){
         if (System.currentTimeMillis() - exitTime > 2000) {
             ToastUtils.showShort("再按一次退出程序");
             exitTime = System.currentTimeMillis();
