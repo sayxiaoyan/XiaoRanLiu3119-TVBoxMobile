@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -371,7 +372,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                     vodInfo.setVideo(mVideo);
                     vodInfo.sourceKey = mVideo.sourceKey;
 
-                    mBinding.tvName.setText(mVideo.name);
+                    mBinding.tvName.setText(TextUtils.isEmpty(mVideo.name)?"暂无信息":mVideo.name);
                     setTextShow(mBinding.tvSite, "来源：", ApiConfig.get().getSource(mVideo.sourceKey).getName());
 
                     if (vodInfo.seriesMap != null && vodInfo.seriesMap.size() > 0) {//线路

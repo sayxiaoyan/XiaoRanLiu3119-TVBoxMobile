@@ -3,11 +3,13 @@ package com.github.tvbox.osc.base;
 import android.app.Activity;
 import androidx.multidex.MultiDexApplication;
 
+import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.bean.VodInfo;
 import com.github.tvbox.osc.callback.EmptyCallback;
 import com.github.tvbox.osc.callback.LoadingCallback;
 import com.github.tvbox.osc.data.AppDataManager;
 import com.github.tvbox.osc.server.ControlManager;
+import com.github.tvbox.osc.ui.activity.MainActivity;
 import com.github.tvbox.osc.util.AppManager;
 import com.github.tvbox.osc.util.EpgUtil;
 import com.github.tvbox.osc.util.FileUtils;
@@ -20,6 +22,7 @@ import com.kingja.loadsir.core.LoadSir;
 import com.orhanobut.hawk.Hawk;
 import com.p2p.P2PClass;
 
+import cat.ereza.customactivityoncrash.config.CaocConfig;
 import me.jessyan.autosize.AutoSizeConfig;
 import me.jessyan.autosize.unit.Subunits;
 
@@ -60,6 +63,7 @@ public class App extends MultiDexApplication {
         PlayerHelper.init();
         JSEngine.getInstance().create();
         FileUtils.cleanPlayerCache();
+        initCrashConfig();
     }
 
     private void initParams() {
@@ -100,6 +104,20 @@ public class App extends MultiDexApplication {
             LOG.e(e.toString());
             return null;
         }
+    }
+
+    private void initCrashConfig(){
+        //配置全局异常崩溃操作
+        CaocConfig.Builder.create()
+                .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT) //背景模式,开启沉浸式
+                .enabled(true) //是否启动全局异常捕获
+                .showErrorDetails(true) //是否显示错误详细信息
+                .showRestartButton(true) //是否显示重启按钮
+                .trackActivities(true) //是否跟踪Activity
+                .minTimeBetweenCrashesMs(2000) //崩溃的间隔时间(毫秒)
+                .errorDrawable(R.drawable.app_icon) //错误图标
+                .restartActivity(MainActivity.class) //重新启动后的activity
+                .apply();
     }
 
 }

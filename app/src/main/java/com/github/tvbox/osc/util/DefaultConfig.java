@@ -173,8 +173,10 @@ public class DefaultConfig {
     }
 
     public static String checkReplaceProxy(String urlOri) {
-        if (urlOri.startsWith("proxy://"))
+        if (!TextUtils.isEmpty(urlOri) && urlOri.startsWith("proxy://")) {
             return urlOri.replace("proxy://", ControlManager.get().getAddress(true) + "proxy?");
-        return urlOri;
+        }else {
+            return urlOri;
+        }
     }
 }
