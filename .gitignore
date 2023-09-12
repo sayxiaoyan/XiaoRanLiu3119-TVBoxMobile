@@ -3,7 +3,7 @@ Thumbs.db
 # Mac DS_Store Files
 .DS_Store
 # Built application files
-*.apk
+#*.apk
 *.aar
 *.ap_
 *.aab
@@ -95,3 +95,4 @@ lint/tmp/
 /LTDecodeNew3.exe
 
 .idea/
+/app/release/
