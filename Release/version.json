@@ -2,6 +2,6 @@
   "versionCode": 6,
   "versionName": "0.0.6",
   "desc": "feat 多仓导入\nfeat 崩溃详情页\nfix 首页douban图片显示\n筛选弹窗/部分ui优化",
-  "apkUrl": "https://github.com/XiaoRanLiu3119/TVBoxOS-Mobile/Release/TVBoxMobile_v0.0.6_release_20230911.apk",
+  "apkUrl": "https://raw.githubusercontent.com/XiaoRanLiu3119/TVBoxOS-Mobile/main/Release/TVBoxMobile_v0.0.6_release_20230911.apk",
   "forcedUpgrade": false
 }
