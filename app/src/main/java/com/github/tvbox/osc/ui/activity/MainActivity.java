@@ -79,15 +79,19 @@ public class MainActivity extends BaseVbActivity<ActivityMainBinding> {
     public void onBackPressed() {
         HomeFragment homeFragment = (HomeFragment)fragments.get(0);
         List<Fragment> childFragments = homeFragment.getChildFragmentManager().getFragments();
+        if (childFragments.isEmpty()){//加载中(没有tab)
+            confirmExit();
+            return;
+        }
         Fragment fragment = childFragments.get(homeFragment.getTabIndex());
-        if (fragment instanceof GridFragment){// 影视列表,非主页
+        if (fragment instanceof GridFragment){// 首页数据源动态加载的tab
             GridFragment item = (GridFragment)fragment;
             if (item.restoreView()){// 有回退的view,先回退(AList等文件夹列表)
                 return;
             }
             // 没有可回退的,返到主页tab
             homeFragment.scrollToFirstTab();
-        }else {// 主页tab提示退出
+        }else {
             confirmExit();
         }
     }
