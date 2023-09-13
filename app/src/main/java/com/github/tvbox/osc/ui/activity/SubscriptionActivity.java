@@ -322,7 +322,7 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
         //切换了订阅地址
         if (!TextUtils.isEmpty(mSelectedUrl) && !mBeforeUrl.equals(mSelectedUrl)) {
             Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
         super.finish();

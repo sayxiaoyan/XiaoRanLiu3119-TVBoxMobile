@@ -98,6 +98,8 @@ public class MainActivity extends BaseVbActivity<ActivityMainBinding> {
             exitTime = System.currentTimeMillis();
         } else {
             ActivityUtils.finishAllActivities(true);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(0);
         }
     }
 
