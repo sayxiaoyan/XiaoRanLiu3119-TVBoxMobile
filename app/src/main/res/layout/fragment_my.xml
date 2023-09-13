@@ -25,7 +25,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_margin="20dp"
         android:background="@drawable/bg_large_round_gray"
         android:scrollbars="none"
@@ -336,5 +337,15 @@
 
     </ScrollView>
 
+    <TextView
+        android:id="@+id/tv_version"
+        android:textSize="11sp"
+        tools:text="v0.01"
+        android:paddingBottom="6dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gray_darker"
+        />
 </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.github.tvbox.osc.ui.fragment;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.BaseLazyFragment;
@@ -31,6 +32,8 @@ public class MyFragment extends BaseVbFragment<FragmentMyBinding> {
 
     @Override
     protected void init() {
+        mBinding.tvVersion.setText("v"+ AppUtils.getAppVersionName());
+
         mBinding.tvLive.setOnClickListener(v -> jumpActivity(LivePlayActivity.class));
 
         mBinding.tvSetting.setOnClickListener(v -> jumpActivity(SettingActivity.class));

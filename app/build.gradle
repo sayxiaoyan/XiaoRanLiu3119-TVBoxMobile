@@ -8,8 +8,8 @@ android {
         applicationId 'com.github.tvbox.osc'
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 6
-        versionName '0.0.6'
+        versionCode 7
+        versionName '0.0.7'
         multiDexEnabled true
         //设置room的Schema的位置
         javaCompileOptions {
@@ -174,4 +174,7 @@ dependencies {
     implementation "com.github.gzu-liyujiang.AndroidPicker:FilePicker:${androidPickerVersion}"
     //崩溃
     implementation project(":crash")
+    //版本更新
+    implementation 'com.qianwen:update-app:3.5.2'
+    implementation 'com.qianwen:okhttp-utils:3.8.0'
 }
