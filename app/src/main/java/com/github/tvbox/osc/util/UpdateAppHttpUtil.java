@@ -32,10 +32,16 @@ import okhttp3.Response;
  */
 public class UpdateAppHttpUtil implements HttpManager {
 
+    private final boolean mProxyAvailable;
+
+    public UpdateAppHttpUtil(boolean proxyAvailable) {
+        mProxyAvailable = proxyAvailable;
+    }
+
     @Override
     public void asyncGet(@NonNull String url, @NonNull Map<String, String> params, @NonNull Callback callBack) {
         OkHttpUtils.get()
-                .url(url)
+                .url(mProxyAvailable ? URL.DOMAIN_NAME_PROXY + URL.GITHUB_VERSION_PATH : URL.GITHUB_VERSION_PATH)
                 .params(params)
                 .build()
                 .execute(new StringCallback() {
@@ -46,22 +52,19 @@ public class UpdateAppHttpUtil implements HttpManager {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Github.getInstance()
-                                .checkProxy(isAvailable -> {
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(response);
-                                        int newVersionCode = jsonObject.optInt("version_code");
-                                        if (AppUtils.getAppVersionCode() < newVersionCode) {//有新版本
-                                            String apkFileUrl = jsonObject.optString("apk_file_url");
-                                            if (isAvailable){//代理地址可用,设置代理并覆盖参数
-                                                jsonObject.put("apk_file_url", URL.DOMAIN_NAME_PROXY+ apkFileUrl);
-                                            }
-                                            callBack.onResponse(jsonObject.toString());
-                                        }
-                                    } catch (JSONException e) {
-                                        LogUtils.d(e.toString());
-                                    }
-                                });
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            int newVersionCode = jsonObject.optInt("version_code");
+                            if (AppUtils.getAppVersionCode() < newVersionCode) {//有新版本
+                                String apkFileUrl = jsonObject.optString("apk_file_url");
+                                if (mProxyAvailable){//代理地址可用,设置代理并覆盖参数
+                                    jsonObject.put("apk_file_url", URL.DOMAIN_NAME_PROXY+ apkFileUrl);
+                                }
+                                callBack.onResponse(jsonObject.toString());
+                            }
+                        } catch (JSONException e) {
+                            LogUtils.d(e.toString());
+                        }
                     }
                 });
     }

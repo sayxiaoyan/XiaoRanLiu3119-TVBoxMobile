@@ -9,28 +9,19 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.BaseVbActivity;
-import com.github.tvbox.osc.constant.URL;
 import com.github.tvbox.osc.databinding.ActivityMainBinding;
 import com.github.tvbox.osc.ui.fragment.GridFragment;
 import com.github.tvbox.osc.ui.fragment.HomeFragment;
 import com.github.tvbox.osc.ui.fragment.MyFragment;
-import com.github.tvbox.osc.util.Github;
+import com.github.tvbox.osc.util.Checker;
 import com.github.tvbox.osc.util.UpdateAppHttpUtil;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 import com.vector.update_app.UpdateAppManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.OkHttpClient;
 
 public class MainActivity extends BaseVbActivity<ActivityMainBinding> {
 
@@ -81,14 +72,14 @@ public class MainActivity extends BaseVbActivity<ActivityMainBinding> {
     }
 
     public void initUpdater() {
-        Github.getInstance()
+        Checker.getInstance()
                 .checkProxy(isAvailable -> {
                     new UpdateAppManager
                             .Builder()
                             .setTopPic(R.drawable.iv_dialog_top)
                             .setActivity(MainActivity.this)
-                            .setUpdateUrl(isAvailable ? URL.DOMAIN_NAME_PROXY + URL.GITHUB_VERSION_PATH : URL.GITHUB_VERSION_PATH)
-                            .setHttpManager(new UpdateAppHttpUtil())
+                            .setUpdateUrl("later incoming")// 给UpdateAppHttpUtil一起做处理
+                            .setHttpManager(new UpdateAppHttpUtil(isAvailable))
                             .build()
                             .update();
                 });

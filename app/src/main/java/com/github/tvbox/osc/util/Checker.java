@@ -1,43 +1,35 @@
 package com.github.tvbox.osc.util;
 
-import android.text.TextUtils;
-
-import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.constant.URL;
-import com.github.tvbox.osc.ui.activity.MainActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.vector.update_app.UpdateAppManager;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 
-public class Github {
+public class Checker {
 
     public interface OnProxyAvailableListener {
         void available(boolean isAvailable);
-
     }
 
     private OkHttpClient mClient;
 
-    private Github() {
+    private Checker() {
 
     }
 
-    private static volatile Github instance = null;
+    private static volatile Checker instance = null;
 
-    public static Github getInstance() {
+    public static Checker getInstance() {
         if (instance == null) {
             // 加锁
-            synchronized (Github.class) {
+            synchronized (Checker.class) {
                 // 这一次判断也是必须的，不然会有并发问题
                 if (instance == null) {
-                    instance = new Github();
+                    instance = new Checker();
                 }
             }
         }
