@@ -20,7 +20,6 @@
             android:lineSpacingMultiplier="0"
             android:padding="@dimen/dp_20"
             android:singleLine="true"
-            android:text="11111111"
             android:textColor="@color/color_CC000000"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"

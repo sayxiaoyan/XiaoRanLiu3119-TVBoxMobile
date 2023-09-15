@@ -27,9 +27,6 @@
     <color name="bg_popup">#ececec</color>
 
     <!--    带点透明度(e6 90/100不透明)的pop弹窗背景颜色-->
-    <color name="bg_popup_alpha_90">#e6ececec</color>
-
-    <!--    带点透明度(e6 90/100不透明)的pop弹窗背景颜色-->
     <color name="bg_popup_alpha_95">#f2ececec</color>
 
     <!--    制定颜色-->

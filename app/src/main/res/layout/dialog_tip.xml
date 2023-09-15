@@ -22,7 +22,6 @@
             android:lineSpacingMultiplier="0"
             android:textAlignment="gravity"
             android:textColor="@color/color_CC000000"
-
             tools:text="1111111111111111111111111111111111111111111111111111" />
 
 

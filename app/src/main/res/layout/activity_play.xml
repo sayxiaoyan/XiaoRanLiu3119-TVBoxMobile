@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/dp_50"
-        android:text="1111111111111"
+        tools:text="1111111111111"
 
          />
 </FrameLayout>

@@ -49,6 +49,7 @@ import com.github.tvbox.osc.ui.adapter.SeriesFlagAdapter;
 import com.github.tvbox.osc.ui.dialog.AllSeriesDialog;
 import com.github.tvbox.osc.ui.dialog.VideoDetailDialog;
 import com.github.tvbox.osc.ui.fragment.PlayFragment;
+import com.github.tvbox.osc.ui.widget.LinearSpacingItemDecoration;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.SearchHelper;
@@ -126,8 +127,11 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         mBinding.ivPrivateBrowsing.setVisibility(Hawk.get(HawkConfig.PRIVATE_BROWSING, false)?View.VISIBLE:View.GONE);
         mBinding.ivPrivateBrowsing.setOnClickListener(view -> ToastUtils.showShort("当前为无痕浏览"));
         mBinding.previewPlayerPlace.setVisibility(showPreview ? View.VISIBLE : View.GONE);
+
         mBinding.mGridView.setHasFixedSize(true);
         mBinding.mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext,0,false));
+        mBinding.mGridView.addItemDecoration(new LinearSpacingItemDecoration(20));
+
         seriesAdapter = new SeriesAdapter();
         mBinding.mGridView.setAdapter(seriesAdapter);
         mBinding.mGridViewFlag.setHasFixedSize(true);
