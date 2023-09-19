@@ -3,7 +3,6 @@
     <item android:id="@android:id/background">
         <!--  设置背景⾊（透明）  -->
         <shape>
-            <corners android:radius="@dimen/common_corners" />
             <solid android:color="@android:color/transparent"/>
         </shape>
     </item>
@@ -11,7 +10,6 @@
         <clip>
             <!--  设置进度条颜  -->
             <shape>
-<!--                <corners android:radius="@dimen/common_corners" />-->
                 <solid android:color="@color/white"/>
             </shape>
         </clip>

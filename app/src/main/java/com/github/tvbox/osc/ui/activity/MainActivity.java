@@ -90,6 +90,10 @@ public class MainActivity extends BaseVbActivity<ActivityMainBinding> {
     @Override
     public void onBackPressed() {
         HomeFragment homeFragment = (HomeFragment) fragments.get(0);
+        if (!homeFragment.isAdded()) {// 资源不足销毁重建时未挂载到activity时getChildFragmentManager会崩溃
+            confirmExit();
+            return;
+        }
         List<Fragment> childFragments = homeFragment.getChildFragmentManager().getFragments();
         if (childFragments.isEmpty()) {//加载中(没有tab)
             confirmExit();

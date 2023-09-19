@@ -22,9 +22,12 @@
     <com.lihang.ShadowLayout
         android:id="@+id/ll_thum"
         android:layout_width="100dp"
-        android:layout_height="130dp"
+        android:layout_height="0dp"
+        app:layout_constrainedHeight="true"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"
         app:hl_cornerRadius="@dimen/common_corners"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_director"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_name">
 
@@ -33,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            tools:srcCompat="@drawable/img_loading_placeholder" />
+            app:srcCompat="@drawable/img_loading_placeholder" />
     </com.lihang.ShadowLayout>
 
     <TextView
@@ -107,12 +110,12 @@
         android:id="@+id/tv_director"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
         app:layout_constraintBottom_toTopOf="@+id/tv_des"
         app:layout_constraintLeft_toLeftOf="@+id/tv_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_actor"
         app:layout_constraintRight_toRightOf="parent"
-        android:maxLines="2"
-        android:ellipsize="end"
+        app:layout_constraintTop_toBottomOf="@+id/tv_actor"
         tools:text="导演: 中" />
 
     <com.ctetin.expandabletextviewlibrary.ExpandableTextView

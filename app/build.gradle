@@ -8,8 +8,8 @@ android {
         applicationId 'com.github.tvbox.osc'
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 7
-        versionName '0.0.7'
+        versionCode 8
+        versionName '0.0.8'
         multiDexEnabled true
         //设置room的Schema的位置
         javaCompileOptions {
@@ -177,4 +177,6 @@ dependencies {
     //版本更新
     implementation 'com.qianwen:update-app:3.5.2'
     implementation 'com.qianwen:okhttp-utils:3.8.0'
+    //展开折叠
+    implementation 'com.github.cachapa:ExpandableLayout:2.9.2'
 }

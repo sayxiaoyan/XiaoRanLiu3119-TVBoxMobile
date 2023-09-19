@@ -2,6 +2,7 @@ package com.github.tvbox.osc.ui.dialog;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -12,7 +13,9 @@ import com.github.tvbox.osc.databinding.DialogVideoDetailBinding;
 import com.github.tvbox.osc.picasso.RoundTransformation;
 import com.github.tvbox.osc.util.DefaultConfig;
 import com.github.tvbox.osc.util.MD5;
+import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BottomPopupView;
+import com.lxj.xpopup.util.SmartGlideImageLoader;
 import com.squareup.picasso.Picasso;
 
 import me.jessyan.autosize.utils.AutoSizeUtils;
@@ -57,12 +60,21 @@ public class VideoDetailDialog extends BottomPopupView {
         binding.tvDirector.setText("导演："+getText(mVideo.director));
         binding.tvDes.setContent("简介："+removeHtmlTag(mVideo.des));
 
+        String picUrl = DefaultConfig.checkReplaceProxy(mVideo.pic);
+        if (!TextUtils.isEmpty(picUrl)){
+            Picasso.get()
+                    .load(picUrl)
+                    .placeholder(R.drawable.img_loading_placeholder)
+                    .error(R.drawable.img_loading_placeholder)
+                    .into(binding.ivThum);
 
-        Picasso.get()
-                .load(DefaultConfig.checkReplaceProxy(mVideo.pic))
-                .placeholder(R.drawable.img_loading_placeholder)
-                .error(R.drawable.img_loading_placeholder)
-                .into(binding.ivThum);
+            binding.llThum.setOnClickListener(view -> {
+                // 单张图片场景
+                new XPopup.Builder(getContext())
+                        .asImageViewer(binding.ivThum, picUrl, new SmartGlideImageLoader())
+                        .show();
+            });
+        }
     }
 
     private String getText(String str){

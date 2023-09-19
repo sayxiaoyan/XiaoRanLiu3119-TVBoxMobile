@@ -38,6 +38,7 @@ import com.github.tvbox.osc.event.ServerEvent;
 import com.github.tvbox.osc.ui.adapter.FastListAdapter;
 import com.github.tvbox.osc.ui.adapter.FastSearchAdapter;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
+import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.SearchHelper;
 import com.github.tvbox.osc.util.js.JSEngine;
 import com.github.tvbox.osc.viewmodel.SourceViewModel;
@@ -421,7 +422,9 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
             ToastUtils.showShort("请输入搜索内容");
             return;
         }
-        saveSearchHistory(title);
+        if (!Hawk.get(HawkConfig.PRIVATE_BROWSING, false)) {//无痕浏览不存搜索历史
+            saveSearchHistory(title);
+        }
 
         hideHotAndHistorySearch(true);
         KeyboardUtils.hideSoftInput(this);

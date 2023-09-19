@@ -1,6 +1,7 @@
 package com.github.tvbox.osc.ui.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 
@@ -185,7 +186,7 @@ public class GridFragment extends BaseLazyFragment {
                     else if(homeSourceBean.isQuickSearch() && Hawk.get(HawkConfig.FAST_SEARCH_MODE, false) && enableFastSearch()){
                         jumpActivity(FastSearchActivity.class, bundle);
                     }else{
-                        if(video.id == null || video.id.isEmpty() || video.id.startsWith("msearch:")){
+                        if(TextUtils.isEmpty(video.id) || video.id.startsWith("msearch:")){
                             jumpActivity(FastSearchActivity.class, bundle);
 //                            jumpActivity(SearchActivity.class, bundle);
                         }else {

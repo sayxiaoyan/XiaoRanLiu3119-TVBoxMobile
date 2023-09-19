@@ -46,11 +46,18 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/iv_video" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:background="@drawable/bg_gradient_primary_b2t"
+                android:layout_alignParentBottom="true"/>
+
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="3dp"
+                tools:progress="50"
                 android:layout_alignParentBottom="true"
                 android:progressDrawable="@drawable/bg_progressbar" />
 
