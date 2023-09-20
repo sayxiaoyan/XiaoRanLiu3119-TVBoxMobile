@@ -163,6 +163,7 @@ public class LocalVideoController extends BaseController {
     protected void initView() {
         super.initView();
         findViewById(R.id.setting).setVisibility(GONE);
+        findViewById(R.id.choose_series).setVisibility(GONE);
         mCurrentTime = findViewById(R.id.curr_time);
         mTvSpeedTip = findViewById(R.id.tv_speed);
         mLlSpeed = findViewById(R.id.ll_speed);
