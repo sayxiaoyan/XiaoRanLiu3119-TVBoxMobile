@@ -120,8 +120,6 @@ public class LocalVideoController extends BaseController {
     public TextView mPlayerSpeedBtn;
     TextView mPlayerBtn;
     TextView mPlayerIJKBtn;
-    ImageView mPlayerRetry;
-    ImageView mPlayrefresh;
     public TextView mPlayerTimeStartEndText;
     public TextView mPlayerTimeStartBtn;
     public TextView mPlayerTimeSkipBtn;
@@ -164,6 +162,7 @@ public class LocalVideoController extends BaseController {
     @Override
     protected void initView() {
         super.initView();
+        findViewById(R.id.setting).setVisibility(GONE);
         mCurrentTime = findViewById(R.id.curr_time);
         mTvSpeedTip = findViewById(R.id.tv_speed);
         mLlSpeed = findViewById(R.id.ll_speed);
@@ -178,8 +177,8 @@ public class LocalVideoController extends BaseController {
         mBottomRoot = findViewById(R.id.bottom_container);
         mTopRoot1 = findViewById(R.id.tv_top_l_container);
         mTopRoot2 = findViewById(R.id.tv_top_r_container);
-        mPlayerRetry = findViewById(R.id.play_retry);
-        mPlayrefresh = findViewById(R.id.play_refresh);
+
+
         mNextBtn = findViewById(R.id.play_next);
         mPreBtn = findViewById(R.id.play_pre);
         mPlayerScaleBtn = findViewById(R.id.play_scale);
@@ -251,14 +250,14 @@ public class LocalVideoController extends BaseController {
         mPlayTitle.setOnClickListener(view -> listener.exit());
         mPlayTitle1.setOnClickListener(view -> listener.exit());
 
-        mPlayerRetry.setOnClickListener(new OnClickListener() {
+        findViewById(R.id.play_retry).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.replay(true);
                 hideBottom();
             }
         });
-        mPlayrefresh.setOnClickListener(new OnClickListener() {
+        findViewById(R.id.play_refresh).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.replay(false);

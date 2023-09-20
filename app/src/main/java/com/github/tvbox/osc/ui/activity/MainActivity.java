@@ -89,6 +89,10 @@ public class MainActivity extends BaseVbActivity<ActivityMainBinding> {
 
     @Override
     public void onBackPressed() {
+        if (mBinding.vp.getCurrentItem() == 1) {
+            mBinding.vp.setCurrentItem(0);
+            return;
+        }
         HomeFragment homeFragment = (HomeFragment) fragments.get(0);
         if (!homeFragment.isAdded()) {// 资源不足销毁重建时未挂载到activity时getChildFragmentManager会崩溃
             confirmExit();
