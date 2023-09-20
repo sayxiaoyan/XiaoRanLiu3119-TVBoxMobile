@@ -197,6 +197,7 @@ public class VodController extends BaseController {
         mZimuBtn = findViewById(R.id.zimu_select);
         mAudioTrackBtn = findViewById(R.id.audio_track_select);
         mLandscapePortraitBtn = findViewById(R.id.landscape_portrait);
+        ExpandableLayout expandableSetting = findViewById(R.id.expandable_setting);
 
         initSubtitleInfo();
 
@@ -205,6 +206,9 @@ public class VodController extends BaseController {
             @Override
             public void run() {
                 hideBottom();
+                if (expandableSetting.isExpanded()){
+                    expandableSetting.collapse();
+                }
             }
         };
 
@@ -299,14 +303,12 @@ public class VodController extends BaseController {
                 hideBottom();
             }
         });
-
-        ExpandableLayout expandableLayout = findViewById(R.id.expandable_setting);
         findViewById(R.id.setting).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 myHandle.removeCallbacks(myRunnable);
                 myHandle.postDelayed(myRunnable, myHandleSeconds);
-                expandableLayout.toggle();
+                expandableSetting.toggle();
             }
         });
         findViewById(R.id.iv_fullscreen).setOnClickListener(new OnClickListener() {
