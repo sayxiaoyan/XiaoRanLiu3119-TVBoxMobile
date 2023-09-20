@@ -173,6 +173,12 @@ public class PlayActivity extends BaseVbActivity<ActivityPlayBinding> {
         };
         mBinding.mVideoView.setProgressManager(progressManager);
         mController.setListener(new VodController.VodControlListener() {
+
+            @Override
+            public void chooseSeries() {
+
+            }
+
             @Override
             public void playNext(boolean rmProgress) {
                 String preProgressKey = progressKey;

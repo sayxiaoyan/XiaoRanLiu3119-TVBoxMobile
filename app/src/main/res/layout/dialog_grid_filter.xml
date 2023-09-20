@@ -47,6 +47,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_confirm"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="36dp"
@@ -54,8 +55,8 @@
                 android:insetBottom="0dp"
                 app:cornerRadius="20dp"
                 android:textColor="@color/white"
-                style="@style/Widget.MaterialComponents.Button"
                 android:text="筛选"
+                android:stateListAnimator="@null"
                 android:layout_marginBottom="14dp"/>
         </LinearLayout>
     </LinearLayout>

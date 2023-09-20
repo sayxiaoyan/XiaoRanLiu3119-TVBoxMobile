@@ -197,6 +197,13 @@ public class PlayFragment extends BaseLazyFragment {
         };
         mVideoView.setProgressManager(progressManager);
         mController.setListener(new VodController.VodControlListener() {
+            final DetailActivity activity = (DetailActivity) mActivity;
+            @Override
+            public void chooseSeries() {
+                //activity中已处理
+                activity.showAllSeriesDialog();
+            }
+
             @Override
             public void playNext(boolean rmProgress) {
                 String preProgressKey = progressKey;
@@ -254,14 +261,11 @@ public class PlayFragment extends BaseLazyFragment {
 
             @Override
             public void toggleFullScreen() {
-                DetailActivity activity = (DetailActivity) mActivity;
                 activity.toggleFullPreview();
             }
 
             @Override
             public void exit() {
-                DetailActivity activity = (DetailActivity) mActivity;
-                //activity中已处理
                 activity.onBackPressed();
             }
         });

@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.SpanUtils;
@@ -47,6 +48,7 @@ import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.ui.adapter.SeriesAdapter;
 import com.github.tvbox.osc.ui.adapter.SeriesFlagAdapter;
 import com.github.tvbox.osc.ui.dialog.AllSeriesDialog;
+import com.github.tvbox.osc.ui.dialog.AllSeriesRightDialog;
 import com.github.tvbox.osc.ui.dialog.VideoDetailDialog;
 import com.github.tvbox.osc.ui.fragment.PlayFragment;
 import com.github.tvbox.osc.ui.widget.LinearSpacingItemDecoration;
@@ -61,6 +63,7 @@ import com.google.gson.JsonElement;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
@@ -239,15 +242,29 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         });
 
         mBinding.tvAllSeries.setOnClickListener(view -> {
+            showAllSeriesDialog();
+        });
+
+        setLoadSir(mBinding.llLayout);
+    }
+
+    public void showAllSeriesDialog(){
+        if (fullWindows){
+            new XPopup.Builder(this)
+                    .popupHeight(ScreenUtils.getScreenHeight())
+                    .popupPosition(PopupPosition.Right)
+                    .asCustom(new AllSeriesRightDialog(this, seriesAdapter.getData(), (position, text) -> {
+                        chooseSeries(position);
+                    }))
+                    .show();
+        }else {
             new XPopup.Builder(this)
                     .maxHeight(ScreenUtils.getScreenHeight() - (ScreenUtils.getScreenHeight() / 4))
                     .asCustom(new AllSeriesDialog(this, seriesAdapter.getData(), (position, text) -> {
                         chooseSeries(position);
                     }))
                     .show();
-        });
-
-        setLoadSir(mBinding.llLayout);
+        }
     }
 
     private void chooseSeries(int position){

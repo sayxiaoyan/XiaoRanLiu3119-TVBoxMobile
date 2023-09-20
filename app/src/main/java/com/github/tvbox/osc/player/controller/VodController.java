@@ -611,6 +611,14 @@ public class VodController extends BaseController {
             }
         });
         mNextBtn.setNextFocusLeftId(R.id.play_time_start);
+        findViewById(R.id.choose_series).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FastClickCheckUtil.check(view);
+                hideBottom();
+                listener.chooseSeries();
+            }
+        });
     }
 
     private void hideLiveAboutBtn() {
@@ -708,6 +716,7 @@ public class VodController extends BaseController {
     }
 
     public interface VodControlListener {
+        void chooseSeries();
         void playNext(boolean rmProgress);
 
         void playPre();
