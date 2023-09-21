@@ -709,10 +709,12 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
             fitsSystemWindows = false;
             ScreenUtils.setLandscape(this);
             ImmersionBar.hideStatusBar(getWindow());
+            playFragment.changedLandscape(true);
         }else {
             fitsSystemWindows = true;
             ScreenUtils.setPortrait(this);
             ImmersionBar.showStatusBar(getWindow());
+            playFragment.changedLandscape(false);
         }
         ImmersionBar.with(this)
                 .statusBarColor(R.color.black)

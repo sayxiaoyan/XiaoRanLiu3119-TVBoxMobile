@@ -92,8 +92,6 @@ public abstract class BaseController extends BaseVideoController implements Gest
 
     private TextView mSlideInfo;
     private View mLoading;
-    private ViewGroup mPauseRoot;
-    private TextView mPauseTime;
 
     @Override
     protected void initView() {
@@ -103,14 +101,11 @@ public abstract class BaseController extends BaseVideoController implements Gest
         setOnTouchListener(this);
         mSlideInfo = findViewWithTag("vod_control_slide_info");
         mLoading = findViewWithTag("vod_control_loading");
-        mPauseRoot = findViewWithTag("vod_control_pause");
-        mPauseTime = findViewWithTag("vod_control_pause_t");
     }
 
     @Override
     protected void setProgress(int duration, int position) {
         super.setProgress(duration, position);
-        mPauseTime.setText(PlayerUtils.stringForTime(position) + " / " + PlayerUtils.stringForTime(duration));
     }
 
     @Override
@@ -121,11 +116,9 @@ public abstract class BaseController extends BaseVideoController implements Gest
                 mLoading.setVisibility(GONE);
                 break;
             case VideoView.STATE_PLAYING:
-                mPauseRoot.setVisibility(GONE);
                 mLoading.setVisibility(GONE);
                 break;
             case VideoView.STATE_PAUSED:
-                mPauseRoot.setVisibility(VISIBLE);
                 mLoading.setVisibility(GONE);
                 break;
             case VideoView.STATE_PREPARED:
@@ -139,7 +132,6 @@ public abstract class BaseController extends BaseVideoController implements Gest
                 break;
             case VideoView.STATE_PLAYBACK_COMPLETED:
                 mLoading.setVisibility(GONE);
-                mPauseRoot.setVisibility(GONE);
                 break;
         }
     }

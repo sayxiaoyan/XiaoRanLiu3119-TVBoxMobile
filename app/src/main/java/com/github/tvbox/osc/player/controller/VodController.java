@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
@@ -55,6 +56,7 @@ import static xyz.doikki.videoplayer.util.PlayerUtils.stringForTime;
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 public class VodController extends BaseController {
+
     public VodController(@NonNull @NotNull Context context) {
         super(context);
         mHandlerCallback = new HandlerCallback() {
@@ -73,7 +75,6 @@ public class VodController extends BaseController {
                         mBottomRoot.setVisibility(VISIBLE);
                         mTopRoot1.setVisibility(VISIBLE);
                         mTopRoot2.setVisibility(VISIBLE);
-                        mPlayTitle.setVisibility(GONE);
                         mNextBtn.requestFocus();
                         break;
                     }
@@ -104,7 +105,7 @@ public class VodController extends BaseController {
     TextView mCurrentTime;
     TextView mTotalTime;
     boolean mIsDragging;
-    LinearLayout mProgressRoot;
+    View mProgressRoot;
     TextView mProgressText;
     ImageView mProgressIcon;
     LinearLayout mBottomRoot;
@@ -112,7 +113,6 @@ public class VodController extends BaseController {
     LinearLayout mTopRoot2;
     LinearLayout mParseRoot;
     TvRecyclerView mGridView;
-    TextView mPlayTitle;
     TextView mPlayTitle1;
     TextView mPlayLoadNetSpeedRightTop;
     ImageView mNextBtn;
@@ -132,7 +132,8 @@ public class VodController extends BaseController {
     TextView mZimuBtn;
     TextView mAudioTrackBtn;
     public TextView mLandscapePortraitBtn;
-
+    private ImageView mIvPlayStatus;
+    private View mChooseSeries;
     Handler myHandle;
     Runnable myRunnable;
     int myHandleSeconds = 10000;//闲置多少毫秒秒关闭底栏  默认6秒
@@ -168,7 +169,6 @@ public class VodController extends BaseController {
         super.initView();
         mCurrentTime = findViewById(R.id.curr_time);
         mTotalTime = findViewById(R.id.total_time);
-        mPlayTitle = findViewById(R.id.tv_info_name);
         mPlayTitle1 = findViewById(R.id.tv_info_name1);
         mPlayLoadNetSpeedRightTop = findViewById(R.id.tv_play_load_net_speed_right_top);
         mSeekBar = findViewById(R.id.seekBar);
@@ -198,6 +198,8 @@ public class VodController extends BaseController {
         mAudioTrackBtn = findViewById(R.id.audio_track_select);
         mLandscapePortraitBtn = findViewById(R.id.landscape_portrait);
         ExpandableLayout expandableSetting = findViewById(R.id.expandable_setting);
+        mIvPlayStatus = findViewById(R.id.play_status);
+        mChooseSeries = findViewById(R.id.choose_series);
 
         initSubtitleInfo();
 
@@ -272,7 +274,6 @@ public class VodController extends BaseController {
             }
         });
 
-        mPlayTitle.setOnClickListener(view -> listener.exit());
         mPlayTitle1.setOnClickListener(view -> listener.exit());
 
         findViewById(R.id.play_retry).setOnClickListener(new OnClickListener() {
@@ -287,6 +288,17 @@ public class VodController extends BaseController {
             public void onClick(View v) {
                 listener.replay(false);
                 hideBottom();
+            }
+        });
+        mIvPlayStatus.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                togglePlay();
+                view.postDelayed(() -> {
+                    if (videoPlayState == VideoView.STATE_PLAYING){
+                        hideBottom();
+                    }
+                },500);
             }
         });
         mNextBtn.setOnClickListener(new OnClickListener() {
@@ -611,7 +623,7 @@ public class VodController extends BaseController {
             }
         });
         mNextBtn.setNextFocusLeftId(R.id.play_time_start);
-        findViewById(R.id.choose_series).setOnClickListener(new OnClickListener() {
+        mChooseSeries.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 FastClickCheckUtil.check(view);
@@ -701,18 +713,28 @@ public class VodController extends BaseController {
     }
 
     public void setTitle(String playTitleInfo) {
-        mPlayTitle.setText(playTitleInfo);
         mPlayTitle1.setText(playTitleInfo);
     }
-
-    public void setUrlTitle(String playTitleInfo) {
-        mPlayTitle.setText(playTitleInfo);
-    }
-
     public void resetSpeed() {
         skipEnd = true;
         mHandler.removeMessages(1004);
         mHandler.sendEmptyMessageDelayed(1004, 100);
+    }
+
+    /**
+     * 变成全屏
+     * @param b
+     */
+    public void changedLandscape(boolean b) {
+        if (b){
+            mPreBtn.setVisibility(VISIBLE);
+            mNextBtn.setVisibility(VISIBLE);
+            mChooseSeries.setVisibility(VISIBLE);
+        }else {
+            mPreBtn.setVisibility(GONE);
+            mNextBtn.setVisibility(GONE);
+            mChooseSeries.setVisibility(GONE);
+        }
     }
 
     public interface VodControlListener {
@@ -840,11 +862,13 @@ public class VodController extends BaseController {
             case VideoView.STATE_PLAYING:
                 initLandscapePortraitBtnInfo();
                 startProgress();
+                LogUtils.d("STATE_PLAYING");
+                mIvPlayStatus.setImageResource(R.drawable.ic_pause);
                 break;
             case VideoView.STATE_PAUSED:
                 mTopRoot1.setVisibility(GONE);
                 mTopRoot2.setVisibility(GONE);
-                mPlayTitle.setVisibility(VISIBLE);
+                mIvPlayStatus.setImageResource(R.drawable.ic_play);
                 break;
             case VideoView.STATE_ERROR:
                 listener.errReplay();

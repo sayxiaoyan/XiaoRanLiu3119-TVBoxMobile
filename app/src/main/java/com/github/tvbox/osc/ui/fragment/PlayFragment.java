@@ -272,6 +272,14 @@ public class PlayFragment extends BaseLazyFragment {
         mVideoView.setVideoController(mController);
     }
 
+    /**
+     * activity返回/点击播放器切换全屏操作等
+     * @param b
+     */
+    public void changedLandscape(boolean b) {
+        mController.changedLandscape(b);
+    }
+
     //设置字幕
     void setSubtitle(String path) {
         if (path != null && path.length() > 0) {

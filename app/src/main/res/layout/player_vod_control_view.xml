@@ -27,7 +27,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:paddingTop="10dp"
-                android:text="http://http://http://http://http://http://http://"
+                tools:text="http://http://http://http://http://http://http://"
                 android:textColor="@color/white"
                 android:drawablePadding="20dp"
                 android:drawableLeft="@drawable/dkplayer_ic_action_arrow_back"
@@ -156,12 +156,23 @@
             android:gravity="center_vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/play_status"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:scaleType="centerCrop"
+                android:padding="4dp"
+                android:src="@drawable/ic_pause"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/play_pre"
                 android:layout_width="34dp"
                 android:layout_height="34dp"
                 android:scaleType="centerCrop"
                 android:padding="4dp"
-                android:src="@drawable/ic_play_pre"/>
+                android:src="@drawable/ic_play_pre"
+                android:visibility="gone"
+                tools:visibility="visible"
+                />
 
             <TextView
                 android:id="@+id/curr_time"
@@ -171,6 +182,7 @@
                 android:paddingRight="@dimen/dp_10"
                 android:text="00:00"
                 android:textColor="@color/color_FFFFFF"
+                android:layout_marginLeft="4dp"
                  />
 
             <SeekBar
@@ -200,6 +212,7 @@
                 android:paddingLeft="@dimen/dp_10"
                 android:text="00:00"
                 android:textColor="@color/color_FFFFFF"
+                android:layout_marginRight="4dp"
                  />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -209,7 +222,9 @@
                 android:scaleType="centerCrop"
                 android:padding="4dp"
                 android:layout_marginHorizontal="4dp"
-                android:src="@drawable/ic_play_next"/>
+                android:src="@drawable/ic_play_next"
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/choose_series"
@@ -219,6 +234,8 @@
                 android:padding="4dp"
                 android:src="@drawable/ic_expand_all_18"
                 android:tint="@color/white"
+                android:visibility="gone"
+                tools:visibility="visible"
                 />
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/setting"
@@ -454,72 +471,7 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/tv_pause_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:tag="vod_control_pause"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginLeft="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_10"
-            android:orientation="vertical"
-            >
-
-            <TextView
-                android:id="@+id/tv_info_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:maxWidth="600dp"
-                android:maxLines="3"
-                android:ellipsize="end"
-                android:paddingTop="10dp"
-                tools:text="http://http://http://http://http://http://http://http://http://http://http://"
-                android:textColor="@color/white"
-                android:drawablePadding="20dp"
-                android:drawableLeft="@drawable/dkplayer_ic_action_arrow_back"
-                 />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="180dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:src="@drawable/icon_play" />
-
-            <TextView
-                android:id="@+id/tv_pause_progress_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:tag="vod_control_pause_t"
-                android:textColor="@color/white"
-                tools:text="30:10" />
-        </LinearLayout>
-
-    </FrameLayout>
-
+<!--    亮度+音量调整-->
     <TextView
         android:id="@+id/tv_slide_progress_text"
         android:layout_width="@dimen/dp_200"
@@ -533,39 +485,48 @@
         tools:visibility="visible"
         android:visibility="gone"
         android:textColor="@color/white"
-        tools:text="100" />
+        tools:text="音量+10" />
 
-    <LinearLayout
+    <com.lihang.ShadowLayout
         android:id="@+id/tv_progress_container"
-        android:layout_width="180dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        app:hl_layoutBackground="@color/gray_darker_press_alpha"
+        app:hl_cornerRadius="25dp"
+        android:visibility="gone"
+        tools:visibility="visible">
 
-        <ImageView
-            android:id="@+id/tv_progress_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            tools:src="@drawable/icon_back" />
-
-        <TextView
-            android:id="@+id/tv_progress_text"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            tools:text="30:10/40:10"
-            android:textColor="@color/white"/>
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/tv_progress_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                tools:src="@drawable/icon_back" />
+
+            <TextView
+                android:id="@+id/tv_progress_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="6dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                tools:text="30:10/40:10"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+    </com.lihang.ShadowLayout>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/play_loading"
