@@ -1,35 +1,20 @@
 package com.github.tvbox.osc.ui.fragment;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
 import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.BounceInterpolator;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.angcyo.tablayout.DslTabLayout;
-import com.angcyo.tablayout.DslTabLayoutConfig;
 import com.angcyo.tablayout.delegate.ViewPager1Delegate;
 import com.blankj.utilcode.util.ConvertUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
@@ -40,45 +25,25 @@ import com.github.tvbox.osc.bean.AbsSortXml;
 import com.github.tvbox.osc.bean.MovieSort;
 import com.github.tvbox.osc.bean.SourceBean;
 import com.github.tvbox.osc.databinding.FragmentHomeBinding;
-import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.server.ControlManager;
-import com.github.tvbox.osc.ui.activity.DetailActivity;
 
 import com.github.tvbox.osc.ui.activity.FastSearchActivity;
 import com.github.tvbox.osc.ui.activity.HistoryActivity;
 import com.github.tvbox.osc.ui.activity.MainActivity;
-import com.github.tvbox.osc.ui.adapter.HomePageAdapter;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
-import com.github.tvbox.osc.ui.adapter.SortAdapter;
 import com.github.tvbox.osc.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.ui.dialog.TipDialog;
-import com.github.tvbox.osc.ui.tv.widget.DefaultTransformer;
-import com.github.tvbox.osc.ui.tv.widget.FixedSpeedScroller;
-import com.github.tvbox.osc.ui.tv.widget.NoScrollViewPager;
-import com.github.tvbox.osc.util.AppManager;
 import com.github.tvbox.osc.util.DefaultConfig;
 import com.github.tvbox.osc.util.HawkConfig;
-import com.github.tvbox.osc.util.LOG;
 import com.github.tvbox.osc.viewmodel.SourceViewModel;
-import com.hjq.permissions.XXPermissions;
 import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
-import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.functions.Function4;
-import me.jessyan.autosize.utils.AutoSizeUtils;
 
 public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
     private SourceViewModel sourceViewModel;
@@ -278,6 +243,7 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
     private void initViewPager(AbsSortXml absXml) {
         if (mSortDataList.size() > 0) {
             mBinding.tabLayout.removeAllViews();
+            fragments.clear();
             for (MovieSort.SortData data : mSortDataList) {
                 mBinding.tabLayout.addView(getTabTextView(data.name));
 
@@ -293,7 +259,18 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
             }
 
             //重新渲染vp
-            mBinding.mViewPager.setAdapter(new HomePageAdapter(getChildFragmentManager(), fragments));
+            mBinding.mViewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
+                @NonNull
+                @Override
+                public Fragment getItem(int position) {
+                    return fragments.get(position);
+                }
+
+                @Override
+                public int getCount() {
+                    return fragments.size();
+                }
+            });
             //tab和vp绑定
             ViewPager1Delegate.Companion.install(mBinding.mViewPager, mBinding.tabLayout,true);
         }
