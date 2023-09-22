@@ -10,16 +10,12 @@ import android.os.Bundle;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.BaseLazyFragment;
 import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.databinding.ActivityMainBinding;
 import com.github.tvbox.osc.ui.fragment.GridFragment;
 import com.github.tvbox.osc.ui.fragment.HomeFragment;
 import com.github.tvbox.osc.ui.fragment.MyFragment;
-import com.github.tvbox.osc.util.Checker;
-import com.github.tvbox.osc.util.UpdateAppHttpUtil;
-import com.vector.update_app.UpdateAppManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +46,6 @@ public class MainActivity extends BaseVbActivity<ActivityMainBinding> {
                 mBinding.bottomNav.getMenu().getItem(position).setChecked(true);
             }
         });
-
-        initUpdater();
     }
 
     private void initVp() {
@@ -70,20 +64,6 @@ public class MainActivity extends BaseVbActivity<ActivityMainBinding> {
             }
         });
         mBinding.vp.setOffscreenPageLimit(fragments.size());
-    }
-
-    public void initUpdater() {
-        Checker.getInstance()
-                .checkProxy(isAvailable -> {
-                    new UpdateAppManager
-                            .Builder()
-                            .setTopPic(R.drawable.iv_dialog_top)
-                            .setActivity(MainActivity.this)
-                            .setUpdateUrl("later incoming")// 给UpdateAppHttpUtil一起做处理
-                            .setHttpManager(new UpdateAppHttpUtil(isAvailable))
-                            .build()
-                            .update();
-                });
     }
 
     private long exitTime = 0L;
