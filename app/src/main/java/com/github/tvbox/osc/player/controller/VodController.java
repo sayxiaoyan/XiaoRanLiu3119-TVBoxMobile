@@ -136,7 +136,7 @@ public class VodController extends BaseController {
     private View mChooseSeries;
     Handler myHandle;
     Runnable myRunnable;
-    int myHandleSeconds = 10000;//闲置多少毫秒秒关闭底栏  默认6秒
+    int myHandleSeconds = 4000;//闲置多少毫秒秒关闭底栏  默认6秒
 
     int videoPlayState = 0;
 
@@ -294,11 +294,10 @@ public class VodController extends BaseController {
             @Override
             public void onClick(View view) {
                 togglePlay();
-                view.postDelayed(() -> {
-                    if (videoPlayState == VideoView.STATE_PLAYING){
-                        hideBottom();
-                    }
-                },500);
+                if (videoPlayState == VideoView.STATE_PLAYING){
+                    myHandle.removeCallbacks(myRunnable);
+                    myHandle.postDelayed(myRunnable, 300);
+                }
             }
         });
         mNextBtn.setOnClickListener(new OnClickListener() {
@@ -866,8 +865,6 @@ public class VodController extends BaseController {
                 mIvPlayStatus.setImageResource(R.drawable.ic_pause);
                 break;
             case VideoView.STATE_PAUSED:
-                mTopRoot1.setVisibility(GONE);
-                mTopRoot2.setVisibility(GONE);
                 mIvPlayStatus.setImageResource(R.drawable.ic_play);
                 break;
             case VideoView.STATE_ERROR:

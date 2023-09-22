@@ -132,7 +132,7 @@ public class LocalVideoController extends BaseController {
     private ImageView mIvPlayStatus;
     Handler myHandle;
     Runnable myRunnable;
-    int myHandleSeconds = 10000;//闲置多少毫秒秒关闭底栏  默认6秒
+    int myHandleSeconds = 4000;//闲置多少毫秒秒关闭底栏  默认6秒
 
     int videoPlayState = 0;
 
@@ -176,10 +176,6 @@ public class LocalVideoController extends BaseController {
         mTopRoot1 = findViewById(R.id.tv_top_l_container);
         mTopRoot2 = findViewById(R.id.tv_top_r_container);
 
-        //本地播放没小屏播放,直接显示上下集(后续将本地播放的xml独立)
-        mPreBtn.setVisibility(VISIBLE);
-        mNextBtn.setVisibility(VISIBLE);
-
         mNextBtn = findViewById(R.id.play_next);
         mPreBtn = findViewById(R.id.play_pre);
         mPlayerScaleBtn = findViewById(R.id.play_scale);
@@ -199,6 +195,10 @@ public class LocalVideoController extends BaseController {
         mLandscapePortraitBtn = findViewById(R.id.landscape_portrait);
         mIvPlayStatus = findViewById(R.id.play_status);
         initSubtitleInfo();
+
+        //本地播放没小屏播放,直接显示上下集(后续将本地播放的xml独立)
+        mPreBtn.setVisibility(VISIBLE);
+        mNextBtn.setVisibility(VISIBLE);
 
         myHandle = new Handler();
         myRunnable = new Runnable() {
@@ -268,11 +268,10 @@ public class LocalVideoController extends BaseController {
             @Override
             public void onClick(View view) {
                 togglePlay();
-                view.postDelayed(() -> {
-                    if (videoPlayState == VideoView.STATE_PLAYING){
-                        hideBottom();
-                    }
-                },500);
+                if (videoPlayState == VideoView.STATE_PLAYING){
+                    myHandle.removeCallbacks(myRunnable);
+                    myHandle.postDelayed(myRunnable, 300);
+                }
             }
         });
         mNextBtn.setOnClickListener(new OnClickListener() {

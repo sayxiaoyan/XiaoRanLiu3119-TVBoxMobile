@@ -292,6 +292,14 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
         return mBinding.tabLayout.getCurrentItemIndex();
     }
 
+    /**
+     * 提供给主页返回操作
+     */
+    public List<BaseLazyFragment> getAllFragments(){
+        return fragments;
+    }
+
+
     @Override
     public void onPause() {
         super.onPause();
