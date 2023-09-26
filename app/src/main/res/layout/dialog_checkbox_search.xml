@@ -9,8 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="@drawable/shape_dialog_pg_search_checkbox"
-        android:orientation="vertical">
+        android:background="@drawable/bg_gray_trans_top_r25"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -24,13 +25,12 @@
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:background="@drawable/button_dialog_main"
                 android:clickable="true"
                 android:focusable="true"
-                android:textColor="@color/color_FFFFFF"
                 android:textSize="16sp"
                 android:paddingVertical="8dp"
-                android:text="全选" />
+                android:text="全选"
+                android:textColor="@color/text_gray"/>
 
             <TextView
                 android:id="@+id/clearAll"
@@ -40,20 +40,20 @@
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:background="@drawable/button_dialog_main"
                 android:clickable="true"
                 android:focusable="true"
                 android:textSize="16sp"
                 android:paddingVertical="8dp"
                 android:text="全不选"
-                android:textColor="@color/color_FFFFFF"/>
+                android:textColor="@color/text_gray"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mGridView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical"
+            tools:listitem="@layout/item_dialog_checkbox_search"/>
 
     </LinearLayout>
 

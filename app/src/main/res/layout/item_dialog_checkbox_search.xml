@@ -11,12 +11,14 @@
         android:paddingRight="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <CheckBox
+        <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/oneSearchSource"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:text="源名称"/>
+            android:text="源名称"
+            android:textColor="@color/text_gray"
+            />
     </LinearLayout>
 </FrameLayout>

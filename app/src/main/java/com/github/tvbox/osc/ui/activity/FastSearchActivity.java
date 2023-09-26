@@ -1,5 +1,6 @@
 package com.github.tvbox.osc.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +40,7 @@ import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.event.ServerEvent;
 import com.github.tvbox.osc.ui.adapter.FastListAdapter;
 import com.github.tvbox.osc.ui.adapter.FastSearchAdapter;
+import com.github.tvbox.osc.ui.dialog.SearchCheckboxDialog;
 import com.github.tvbox.osc.ui.dialog.SearchSuggestionsDialog;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
@@ -102,9 +104,10 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
     private String searchFilterKey = "";    // 过滤的key
     private HashMap<String, ArrayList<Movie.Video>> resultVods; // 搜索结果
     private List<String> quickSearchWord = new ArrayList<>();
-    private HashMap<String, String> mCheckSources = null;
+    private static HashMap<String, String> mCheckSources = null;
     private List<Runnable> pauseRunnable = null;
     private SearchSuggestionsDialog mSearchSuggestionsDialog;
+    private SearchCheckboxDialog mSearchCheckboxDialog;
 
     @Override
     protected void init() {
@@ -147,7 +150,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
         mBinding.etSearch.addTextChangedListener(this);
 
         findViewById(R.id.iv_filter).setOnClickListener(view -> {
-            ToastUtils.showShort("等候开放");
+            filterSearchSource();
         });
         findViewById(R.id.iv_back).setOnClickListener(view -> {
             finish();
@@ -226,6 +229,33 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
 
     private void initViewModel() {
         sourceViewModel = new ViewModelProvider(this).get(SourceViewModel.class);
+    }
+
+    /**
+     * 指定搜索源(过滤)
+     */
+    private void filterSearchSource(){
+        if (mSearchCheckboxDialog == null) {
+            List<SourceBean> allSourceBean = ApiConfig.get().getSourceBeanList();
+            List<SourceBean> searchAbleSource = new ArrayList<>();
+            for(SourceBean sourceBean : allSourceBean) {
+                if (sourceBean.isSearchable()) {
+                    searchAbleSource.add(sourceBean);
+                }
+            }
+            mSearchCheckboxDialog = new SearchCheckboxDialog(FastSearchActivity.this, searchAbleSource, mCheckSources);
+        }
+        mSearchCheckboxDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                dialog.dismiss();
+            }
+        });
+        mSearchCheckboxDialog.show();
+    }
+
+    public static void setCheckedSourcesForSearch(HashMap<String,String> checkedSources) {
+        mCheckSources = checkedSources;
     }
 
     private void filterResult(String spName) {
