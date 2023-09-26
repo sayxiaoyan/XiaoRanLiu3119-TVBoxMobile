@@ -190,7 +190,8 @@
 -dontwarn com.google.android.exoplayer2.**
 
 # 实体类
-#-keep class com.github.tvbox.osc.bean.** { *; }
+-keep class com.github.tvbox.osc.bean.** { *; }
+
 #CardView
 -keep class com.github.tvbox.osc.ui.tv.widget.card.**{*;}
 #ViewObj
