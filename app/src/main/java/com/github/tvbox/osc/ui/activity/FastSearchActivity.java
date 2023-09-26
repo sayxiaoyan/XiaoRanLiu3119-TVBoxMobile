@@ -89,7 +89,7 @@ import kotlin.jvm.functions.Function4;
  * @date :2020/12/23
  * @description:
  */
-public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding> {
+public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding> implements TextWatcher{
 
     SourceViewModel sourceViewModel;
 
@@ -144,27 +144,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
             return false;
         });
 
-        mBinding.etSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String text = editable.toString();
-                if (TextUtils.isEmpty(text) && mSearchSuggestionsDialog!=null){
-                    mSearchSuggestionsDialog.dismiss();
-                }else {
-                    getSuggest(text);
-                }
-            }
-        });
+        mBinding.etSearch.addTextChangedListener(this);
 
         findViewById(R.id.iv_filter).setOnClickListener(view -> {
             ToastUtils.showShort("等候开放");
@@ -173,12 +153,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
             finish();
         });
         findViewById(R.id.iv_search).setOnClickListener(view -> {
-            String s =  mBinding.etSearch.getText().toString();
-            if (TextUtils.isEmpty(s)) {
-                ToastUtils.showShort("请输入搜索内容");
-            }else {
-                search(s);
-            }
+            search(mBinding.etSearch.getText().toString());
         });
 
         mBinding.tabLayout.configTabLayoutConfig(dslTabLayoutConfig -> {
@@ -314,9 +289,10 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("title")) {
             String title = intent.getStringExtra("title");
-            mBinding.etSearch.setText(title);
-            showLoading();
-            search(title);
+            if (!TextUtils.isEmpty(title)){
+                showLoading();
+                search(title);
+            }
         }
     }
 
@@ -519,6 +495,12 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
             return;
         }
 
+        //先移除监听,避免重新设置要搜索的文字触发搜索建议并弹窗
+        mBinding.etSearch.removeTextChangedListener(this);
+        mBinding.etSearch.setText(title);
+        mBinding.etSearch.setSelection(title.length());
+        mBinding.etSearch.addTextChangedListener(this);
+
         if (mSearchSuggestionsDialog!=null && mSearchSuggestionsDialog.isShow()){
             mSearchSuggestionsDialog.dismiss();
         }
@@ -704,6 +686,26 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
             }
         } catch (Throwable th) {
             th.printStackTrace();
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        String text = editable.toString();
+        if (TextUtils.isEmpty(text) && mSearchSuggestionsDialog!=null){
+            mSearchSuggestionsDialog.dismiss();
+        }else {
+            getSuggest(text);
         }
     }
 }
