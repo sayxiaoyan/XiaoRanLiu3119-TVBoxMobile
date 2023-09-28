@@ -733,7 +733,6 @@ public class VodController extends BaseController {
      * @param b
      */
     public void changedLandscape(boolean b) {
-        mPlayTitle1.setMaxWidth(com.blankj.utilcode.util.ScreenUtils.getAppScreenWidth()/2);
         mPlayTitle1.setSelected(true);
         if (b){
             mPreBtn.setVisibility(VISIBLE);
