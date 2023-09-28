@@ -19,6 +19,8 @@
             android:focusable="true"
             android:text="源名称"
             android:textColor="@color/text_gray"
+            android:button="@drawable/button_checkbox"
+            android:padding="8dp"
             />
     </LinearLayout>
 </FrameLayout>

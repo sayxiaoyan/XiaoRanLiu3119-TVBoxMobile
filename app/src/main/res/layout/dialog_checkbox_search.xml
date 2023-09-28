@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="400dp">
+    android:layout_height="450dp">
     <LinearLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="@drawable/bg_gray_trans_top_r25"
-        android:orientation="vertical"
-        android:paddingTop="10dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:orientation="horizontal"
             android:weightSum="2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp">
             <TextView
                 android:id="@+id/checkAll"
                 android:layout_width="0dp"
@@ -27,10 +27,10 @@
                 android:gravity="center"
                 android:clickable="true"
                 android:focusable="true"
-                android:textSize="16sp"
                 android:paddingVertical="8dp"
                 android:text="全选"
-                android:textColor="@color/text_gray"/>
+                android:textColor="@color/text_gray"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/clearAll"
@@ -42,10 +42,10 @@
                 android:gravity="center"
                 android:clickable="true"
                 android:focusable="true"
-                android:textSize="16sp"
                 android:paddingVertical="8dp"
                 android:text="全不选"
-                android:textColor="@color/text_gray"/>
+                android:textColor="@color/text_gray"
+                android:textStyle="bold"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -53,7 +53,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:listitem="@layout/item_dialog_checkbox_search"/>
+            tools:listitem="@layout/item_dialog_checkbox_search"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:spanCount="2"/>
 
     </LinearLayout>
 
