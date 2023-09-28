@@ -1,5 +1,7 @@
 package com.github.tvbox.osc.ui.activity;
 
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +27,7 @@ import com.github.tvbox.osc.player.TrackInfo;
 import com.github.tvbox.osc.player.TrackInfoBean;
 import com.github.tvbox.osc.player.controller.LocalVideoController;
 import com.github.tvbox.osc.player.controller.VodController;
+import com.github.tvbox.osc.receiver.BatteryReceiver;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.util.HawkConfig;
@@ -34,6 +37,8 @@ import com.google.common.reflect.TypeToken;
 import com.orhanobut.hawk.Hawk;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
@@ -53,9 +58,11 @@ public class LocalPlayActivity extends BaseVbActivity<ActivityLocalPlayBinding> 
     JSONObject mVodPlayerCfg;
     private List<VideoInfo> mVideoList = new ArrayList<>();
     private int mPosition;
+    BatteryReceiver mBatteryReceiver = new BatteryReceiver();
 
     @Override
     protected void init() {
+        registerReceiver(mBatteryReceiver,new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         mVideoView = mBinding.player;
         mVideoView.startFullScreen();
         Bundle bundle = getIntent().getExtras();
@@ -79,6 +86,14 @@ public class LocalPlayActivity extends BaseVbActivity<ActivityLocalPlayBinding> 
                     }
                 },500);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refresh(RefreshEvent event) {
+        if (event.type == RefreshEvent.TYPE_BATTERY_CHANGE && mController.mMyBatteryView!=null){
+            mController.mMyBatteryView.updateBattery((int) event.obj);
+        }
+    }
+
 
     /**
      * 跳转到上/下一集,需重新播放
@@ -238,6 +253,7 @@ public class LocalPlayActivity extends BaseVbActivity<ActivityLocalPlayBinding> 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(mBatteryReceiver);
         if (mVideoView != null) {
             mVideoView.release();
             mVideoView = null;

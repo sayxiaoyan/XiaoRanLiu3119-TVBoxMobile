@@ -55,16 +55,18 @@ public class SearchSuggestionsDialog extends PartShadowPopupView {
 
     public void updateSuggestions(List<String> list){
         mList = list;
-        mFl.setAdapter(new TagAdapter<String>(mList)
-        {
-            @Override
-            public View getView(FlowLayout parent, int position, String s)
+        if (mFl!=null){// 搜索框文字变化太快,先于onCreate执行(偶现)
+            mFl.setAdapter(new TagAdapter<String>(mList)
             {
-                TextView tv = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.item_search_word_hot,
-                        mFl, false);
-                tv.setText(s);
-                return tv;
-            }
-        });
+                @Override
+                public View getView(FlowLayout parent, int position, String s)
+                {
+                    TextView tv = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.item_search_word_hot,
+                            mFl, false);
+                    tv.setText(s);
+                    return tv;
+                }
+            });
+        }
     }
 }

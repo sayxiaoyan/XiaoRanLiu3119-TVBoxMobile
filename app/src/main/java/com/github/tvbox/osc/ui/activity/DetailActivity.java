@@ -3,6 +3,7 @@ package com.github.tvbox.osc.ui.activity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
@@ -45,6 +46,7 @@ import com.github.tvbox.osc.bean.VodInfo;
 import com.github.tvbox.osc.cache.RoomDataManger;
 import com.github.tvbox.osc.databinding.ActivityDetailBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
+import com.github.tvbox.osc.receiver.BatteryReceiver;
 import com.github.tvbox.osc.ui.adapter.SeriesAdapter;
 import com.github.tvbox.osc.ui.adapter.SeriesFlagAdapter;
 import com.github.tvbox.osc.ui.dialog.AllSeriesDialog;
@@ -111,14 +113,14 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     private boolean isReverse;
     private String preFlag="";
     private HashMap<String, String> mCheckSources = null;
-
+    BatteryReceiver mBatteryReceiver = new BatteryReceiver();
 
     @Override
     protected void init() {
         initView();
         initViewModel();
         initData();
-
+        registerReceiver(mBatteryReceiver,new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         ImmersionBar.with(this)
                 .statusBarColor(R.color.black)
                 .fitsSystemWindows(true)
@@ -653,6 +655,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(mBatteryReceiver);
         try {
             if (searchExecutorService != null) {
                 searchExecutorService.shutdownNow();

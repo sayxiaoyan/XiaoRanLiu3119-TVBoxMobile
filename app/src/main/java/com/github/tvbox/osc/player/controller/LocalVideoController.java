@@ -32,6 +32,7 @@ import com.github.tvbox.osc.subtitle.widget.SimpleSubtitleView;
 import com.github.tvbox.osc.ui.adapter.ParseAdapter;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.ui.dialog.SelectDialog;
+import com.github.tvbox.osc.ui.widget.MyBatteryView;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.PlayerHelper;
 import com.github.tvbox.osc.util.ScreenUtils;
@@ -109,7 +110,7 @@ public class LocalVideoController extends BaseController {
     ImageView mProgressIcon;
     LinearLayout mBottomRoot;
     LinearLayout mTopRoot1;
-    LinearLayout mTopRoot2;
+    View mTopRoot2;
     TextView mPlayTitle1;
     TextView mPlayLoadNetSpeedRightTop;
     ImageView mNextBtn;
@@ -130,6 +131,7 @@ public class LocalVideoController extends BaseController {
     TextView mAudioTrackBtn;
     public TextView mLandscapePortraitBtn;
     private ImageView mIvPlayStatus;
+    public MyBatteryView mMyBatteryView;
     Handler myHandle;
     Runnable myRunnable;
     int myHandleSeconds = 4000;//闲置多少毫秒秒关闭底栏  默认6秒
@@ -160,6 +162,8 @@ public class LocalVideoController extends BaseController {
     @Override
     protected void initView() {
         super.initView();
+        mMyBatteryView = findViewById(R.id.battery);
+        mMyBatteryView.setVisibility(VISIBLE);
         findViewById(R.id.setting).setVisibility(GONE);
         findViewById(R.id.choose_series).setVisibility(GONE);
         mCurrentTime = findViewById(R.id.curr_time);
@@ -807,8 +811,6 @@ public class LocalVideoController extends BaseController {
                 mIvPlayStatus.setImageResource(R.drawable.ic_pause);
                 break;
             case VideoView.STATE_PAUSED:
-                mTopRoot1.setVisibility(GONE);
-                mTopRoot2.setVisibility(GONE);
                 mIvPlayStatus.setImageResource(R.drawable.ic_play);
                 break;
             case VideoView.STATE_ERROR:

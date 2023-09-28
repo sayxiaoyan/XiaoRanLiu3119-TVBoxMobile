@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -29,6 +30,7 @@ import com.github.tvbox.osc.subtitle.widget.SimpleSubtitleView;
 import com.github.tvbox.osc.ui.adapter.ParseAdapter;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.ui.dialog.SelectDialog;
+import com.github.tvbox.osc.ui.widget.MyBatteryView;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.PlayerHelper;
@@ -101,6 +103,8 @@ public class VodController extends BaseController {
         };
     }
 
+    private LinearLayout mLlSpeed;
+    TextView mTvSpeedTip;
     SeekBar mSeekBar;
     TextView mCurrentTime;
     TextView mTotalTime;
@@ -110,7 +114,7 @@ public class VodController extends BaseController {
     ImageView mProgressIcon;
     LinearLayout mBottomRoot;
     LinearLayout mTopRoot1;
-    LinearLayout mTopRoot2;
+    View mTopRoot2;
     LinearLayout mParseRoot;
     TvRecyclerView mGridView;
     TextView mPlayTitle1;
@@ -134,6 +138,7 @@ public class VodController extends BaseController {
     public TextView mLandscapePortraitBtn;
     private ImageView mIvPlayStatus;
     private View mChooseSeries;
+    public MyBatteryView mMyBatteryView;
     Handler myHandle;
     Runnable myRunnable;
     int myHandleSeconds = 4000;//闲置多少毫秒秒关闭底栏  默认6秒
@@ -167,6 +172,9 @@ public class VodController extends BaseController {
     @Override
     protected void initView() {
         super.initView();
+        mMyBatteryView = findViewById(R.id.battery);
+        mLlSpeed = findViewById(R.id.ll_speed);
+        mTvSpeedTip = findViewById(R.id.tv_speed);
         mCurrentTime = findViewById(R.id.curr_time);
         mTotalTime = findViewById(R.id.total_time);
         mPlayTitle1 = findViewById(R.id.tv_info_name1);
@@ -274,7 +282,7 @@ public class VodController extends BaseController {
             }
         });
 
-        mPlayTitle1.setOnClickListener(view -> listener.exit());
+        mTopRoot1.setOnClickListener(view -> listener.exit());
 
         findViewById(R.id.play_retry).setOnClickListener(new OnClickListener() {
             @Override
@@ -725,11 +733,15 @@ public class VodController extends BaseController {
      * @param b
      */
     public void changedLandscape(boolean b) {
+        mPlayTitle1.setMaxWidth(com.blankj.utilcode.util.ScreenUtils.getAppScreenWidth()/2);
+        mPlayTitle1.setSelected(true);
         if (b){
             mPreBtn.setVisibility(VISIBLE);
             mNextBtn.setVisibility(VISIBLE);
             mChooseSeries.setVisibility(VISIBLE);
+            mMyBatteryView.setVisibility(VISIBLE);
         }else {
+            mMyBatteryView.setVisibility(GONE);
             mPreBtn.setVisibility(GONE);
             mNextBtn.setVisibility(GONE);
             mChooseSeries.setVisibility(GONE);
@@ -961,6 +973,8 @@ public class VodController extends BaseController {
                 updatePlayerCfgView();
                 listener.updatePlayerCfg();
                 mControlWrapper.setSpeed(speed);
+                mLlSpeed.setVisibility(VISIBLE);
+                mTvSpeedTip.setText(speed + "x");
             } catch (JSONException f) {
                 f.printStackTrace();
             }
@@ -973,6 +987,7 @@ public class VodController extends BaseController {
         if (e.getAction() == MotionEvent.ACTION_UP) {
             if (fromLongPress) {
                 fromLongPress =false;
+                mLlSpeed.setVisibility(GONE);
                 try {
                     float speed = speed_old;
                     mPlayerConfig.put("sp", speed);

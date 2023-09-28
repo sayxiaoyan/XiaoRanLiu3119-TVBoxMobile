@@ -20,7 +20,7 @@
     <color name="text_gray">#FF302F2D</color>
     <color name="light_gray_color">#e6e6e6</color>
     <!--    警示黄色-->
-    <color name="warn">#302F2D</color>
+    <color name="warn">#ffcb6b</color>
     <color name="red">#ff4444</color>
 
     <color name="disable_text">#b3b3b3</color>
