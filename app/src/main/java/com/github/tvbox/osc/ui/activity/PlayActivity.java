@@ -848,7 +848,7 @@ public class PlayActivity extends BaseVbActivity<ActivityPlayBinding> {
             }
 
             @Override
-            public void list(String playList) {
+            public void list(Map<Integer, String> urlMap) {
             }
 
             @Override

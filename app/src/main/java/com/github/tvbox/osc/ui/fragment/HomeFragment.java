@@ -30,6 +30,7 @@ import com.github.tvbox.osc.server.ControlManager;
 import com.github.tvbox.osc.ui.activity.FastSearchActivity;
 import com.github.tvbox.osc.ui.activity.HistoryActivity;
 import com.github.tvbox.osc.ui.activity.MainActivity;
+import com.github.tvbox.osc.ui.activity.SettingActivity;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.ui.dialog.TipDialog;
@@ -63,9 +64,25 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
         ControlManager.get().startServer();
 
         mBinding.nameContainer.setOnClickListener(v -> {
-            dataInitOk = false;
-            jarInitOk = true;
-            showSiteSwitch();
+            if(dataInitOk && jarInitOk){
+                showSiteSwitch();
+            }else {
+                jumpActivity(SettingActivity.class);
+            }
+        });
+
+        mBinding.nameContainer.setOnLongClickListener(v -> {
+            if(dataInitOk && jarInitOk){
+                Intent intent = new Intent(App.getInstance(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("useCache", true);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }else {
+                jumpActivity(SettingActivity.class);
+            }
+            return true;
         });
 
         mBinding.ivSearch.setOnClickListener(view -> jumpActivity(FastSearchActivity.class));

@@ -1,5 +1,8 @@
 package com.github.tvbox.osc.ui.fragment;
 
+import android.content.Intent;
+import android.text.TextUtils;
+
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
@@ -7,6 +10,7 @@ import com.github.tvbox.osc.base.BaseLazyFragment;
 import com.github.tvbox.osc.base.BaseVbFragment;
 import com.github.tvbox.osc.databinding.FragmentMyBinding;
 import com.github.tvbox.osc.ui.activity.CollectActivity;
+import com.github.tvbox.osc.ui.activity.DetailActivity;
 import com.github.tvbox.osc.ui.activity.HistoryActivity;
 import com.github.tvbox.osc.ui.activity.LivePlayActivity;
 import com.github.tvbox.osc.ui.activity.LocalPlayActivity;
@@ -19,6 +23,7 @@ import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.OnInputConfirmListener;
 
 import java.util.List;
 
@@ -34,6 +39,22 @@ public class MyFragment extends BaseVbFragment<FragmentMyBinding> {
     protected void init() {
         mBinding.tvVersion.setText("v"+ AppUtils.getAppVersionName());
 
+        mBinding.addrPlay.setOnClickListener(v ->{
+
+            new XPopup.Builder(getContext())
+                    .asInputConfirm("播放", "", "地址", new OnInputConfirmListener() {
+                        @Override
+                        public void onConfirm(String text) {
+                            if (!TextUtils.isEmpty(text)){
+                                Intent newIntent = new Intent(mContext, DetailActivity.class);
+                                newIntent.putExtra("id", text);
+                                newIntent.putExtra("sourceKey", "push_agent");
+                                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(newIntent);
+                            }
+                        }
+                    }).show();
+        });
         mBinding.tvLive.setOnClickListener(v -> jumpActivity(LivePlayActivity.class));
 
         mBinding.tvSetting.setOnClickListener(v -> jumpActivity(SettingActivity.class));

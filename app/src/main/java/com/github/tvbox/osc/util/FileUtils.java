@@ -1,6 +1,7 @@
 package com.github.tvbox.osc.util;
 
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.github.tvbox.osc.base.App;
 
@@ -193,5 +194,45 @@ public class FileUtils {
         } catch (Exception e) {
             return "";
         }
+    }
+
+    public static String getFileName(String filePath){
+        if(TextUtils.isEmpty(filePath)) return "";
+        String fileName = filePath;
+        int p = fileName.lastIndexOf(File.separatorChar);
+        if(p != -1){
+            fileName = fileName.substring(p + 1);
+        }
+        return fileName;
+    }
+
+    public static String getFileNameWithoutExt(String filePath){
+        if(TextUtils.isEmpty(filePath)) return "";
+        String fileName = filePath;
+        int p = fileName.lastIndexOf(File.separatorChar);
+        if(p != -1){
+            fileName = fileName.substring(p + 1);
+        }
+        p = fileName.indexOf('.');
+        if(p != -1){
+            fileName = fileName.substring(0, p);
+        }
+        return fileName;
+    }
+
+    public static String getFileExt(String fileName){
+        if(TextUtils.isEmpty(fileName)) return "";
+        int p = fileName.lastIndexOf('.');
+        if(p != -1) {
+            return fileName.substring(p).toLowerCase();
+        }
+        return "";
+    }
+
+    public static boolean hasExtension(String path) {
+        int lastDotIndex = path.lastIndexOf(".");
+        int lastSlashIndex = Math.max(path.lastIndexOf("/"), path.lastIndexOf("\\"));
+        // 如果路径中有点号，并且点号在最后一个斜杠之后，认为有后缀
+        return lastDotIndex > lastSlashIndex && lastDotIndex < path.length() - 1;
     }
 }
