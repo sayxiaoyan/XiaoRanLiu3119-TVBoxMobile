@@ -5,6 +5,7 @@ import android.provider.MediaStore;
 
 import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.bean.VideoInfo;
+import com.github.tvbox.osc.bean.VodInfo;
 
 import java.util.ArrayList;
 import java.util.Formatter;
@@ -18,6 +19,18 @@ import java.util.Locale;
  * @Description :
  */
 public class Utils {
+
+    public static int getSeriesSpanCount(List<VodInfo.VodSeries> list) {
+        int spanCount = 4;
+        int total = 0;
+        for (VodInfo.VodSeries item : list) total += item.name.length();
+        int offset = (int) Math.ceil((double) total / list.size());
+        if (offset >= 12) spanCount = 1;
+        else if (offset >= 8) spanCount = 2;
+        else if (offset >= 4) spanCount = 3;
+        else if (offset >= 2) spanCount = 4;
+        return spanCount;
+    }
 
     public static String stringForTime(long timeMs) {
 //        if (timeMs <= 0 || timeMs >= 24 * 60 * 60 * 1000) {

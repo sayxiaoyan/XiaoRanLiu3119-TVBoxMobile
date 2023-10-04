@@ -12,6 +12,7 @@ import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.bean.VodInfo;
 import com.github.tvbox.osc.ui.adapter.SeriesAdapter;
 import com.github.tvbox.osc.ui.widget.GridSpacingItemDecoration;
+import com.github.tvbox.osc.util.Utils;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.enums.PopupPosition;
@@ -43,10 +44,10 @@ public class AllSeriesDialog extends BottomPopupView {
         super.onCreate();
         RecyclerView rv = findViewById(R.id.rv);
 
-        int spanCount = 3; // 3 columns
-        rv.addItemDecoration(new GridSpacingItemDecoration(spanCount, 20, true));
+        rv.setLayoutManager(new GridLayoutManager(getContext(), Utils.getSeriesSpanCount(mList)));
+        rv.addItemDecoration(new GridSpacingItemDecoration(Utils.getSeriesSpanCount(mList), 20, true));
 
-        SeriesAdapter seriesAdapter = new SeriesAdapter();
+        SeriesAdapter seriesAdapter = new SeriesAdapter(true);
         seriesAdapter.setNewData(mList);
         rv.setAdapter(seriesAdapter);
 

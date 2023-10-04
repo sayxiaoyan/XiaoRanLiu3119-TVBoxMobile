@@ -138,7 +138,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         mBinding.mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext,0,false));
         mBinding.mGridView.addItemDecoration(new LinearSpacingItemDecoration(20));
 
-        seriesAdapter = new SeriesAdapter();
+        seriesAdapter = new SeriesAdapter(false);
         mBinding.mGridView.setAdapter(seriesAdapter);
         mBinding.mGridViewFlag.setHasFixedSize(true);
         mBinding.mGridViewFlag.setLayoutManager(new V7LinearLayoutManager(this.mContext, 0, false));

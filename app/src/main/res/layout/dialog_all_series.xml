@@ -25,8 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         tools:listitem="@layout/item_series"
-        app:spanCount="3"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         />
 
 </LinearLayout>
