@@ -125,6 +125,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 .statusBarColor(R.color.black)
                 .fitsSystemWindows(true)
                 .statusBarDarkFont(false)
+                .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
                 .init();
     }
 
@@ -153,6 +154,8 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
 
         findViewById(R.id.ll_title).setOnClickListener(view -> {
             new XPopup.Builder(this)
+                    .isViewMode(true)
+                    .hasNavigationBar(false)
                     .asCustom(new VideoDetailDialog(this, vodInfo))
                     .show();
         });
@@ -253,6 +256,8 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     public void showAllSeriesDialog(){
         if (fullWindows){
             new XPopup.Builder(this)
+                    .isViewMode(true)
+                    .hasNavigationBar(false)
                     .popupHeight(ScreenUtils.getScreenHeight())
                     .popupPosition(PopupPosition.Right)
                     .asCustom(new AllSeriesRightDialog(this, seriesAdapter.getData(), (position, text) -> {
@@ -261,6 +266,8 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                     .show();
         }else {
             new XPopup.Builder(this)
+                    .isViewMode(true)
+                    .hasNavigationBar(false)
                     .maxHeight(ScreenUtils.getScreenHeight() - (ScreenUtils.getScreenHeight() / 4))
                     .asCustom(new AllSeriesDialog(this, seriesAdapter.getData(), (position, text) -> {
                         chooseSeries(position);
