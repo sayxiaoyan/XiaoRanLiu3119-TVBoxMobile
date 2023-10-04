@@ -67,21 +67,12 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
             if(dataInitOk && jarInitOk){
                 showSiteSwitch();
             }else {
-                jumpActivity(SettingActivity.class);
+                ToastUtils.showShort("数据源未加载，长按刷新或切换订阅");
             }
         });
 
         mBinding.nameContainer.setOnLongClickListener(v -> {
-            if(dataInitOk && jarInitOk){
-                Intent intent = new Intent(App.getInstance(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("useCache", true);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }else {
-                jumpActivity(SettingActivity.class);
-            }
+            refreshHomeSouces();
             return true;
         });
 
@@ -336,12 +327,7 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
                 @Override
                 public void click(SourceBean value, int pos) {
                     ApiConfig.get().setSourceBean(value);
-                    Intent intent = new Intent(App.getInstance(), MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean("useCache", true);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                    refreshHomeSouces();
                 }
 
                 @Override
@@ -363,6 +349,15 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
         }else {
             ToastUtils.showLong("暂无可用数据源");
         }
+    }
+
+    private void refreshHomeSouces(){
+        Intent intent = new Intent(App.getInstance(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("useCache", true);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override
