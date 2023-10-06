@@ -90,6 +90,10 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    packagingOptions {//引入dlna-cast时的文件冲突
+        exclude 'META-INF/beans.xml'
+    }
 }
 
 dependencies {
@@ -176,4 +180,6 @@ dependencies {
     implementation project(":crash")
     //展开折叠
     implementation 'com.github.cachapa:ExpandableLayout:2.9.2'
+    //dlna投屏
+    implementation 'com.github.devin1014.DLNA-Cast:dlna-dmc:V1.0.0'
 }

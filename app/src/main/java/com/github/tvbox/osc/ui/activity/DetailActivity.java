@@ -40,6 +40,7 @@ import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.AbsXml;
+import com.github.tvbox.osc.bean.CastVideo;
 import com.github.tvbox.osc.bean.Movie;
 import com.github.tvbox.osc.bean.SourceBean;
 import com.github.tvbox.osc.bean.VodInfo;
@@ -51,6 +52,7 @@ import com.github.tvbox.osc.ui.adapter.SeriesAdapter;
 import com.github.tvbox.osc.ui.adapter.SeriesFlagAdapter;
 import com.github.tvbox.osc.ui.dialog.AllSeriesDialog;
 import com.github.tvbox.osc.ui.dialog.AllSeriesRightDialog;
+import com.github.tvbox.osc.ui.dialog.CastListDialog;
 import com.github.tvbox.osc.ui.dialog.VideoDetailDialog;
 import com.github.tvbox.osc.ui.fragment.PlayFragment;
 import com.github.tvbox.osc.ui.widget.LinearSpacingItemDecoration;
@@ -180,7 +182,12 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 }
             }
         });
-
+        mBinding.tvCast.setOnClickListener(v -> {
+            VodInfo.VodSeries vodSeries = vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex);
+            new XPopup.Builder(this)
+                    .asCustom(new CastListDialog(this,new CastVideo(vodSeries.name,vodSeries.url)))
+                    .show();
+        });
         mBinding.tvCollect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
