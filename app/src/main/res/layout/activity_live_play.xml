@@ -714,7 +714,7 @@
 		android:background="@drawable/shape_user_search"
 		android:layout_width="140dp"
 		android:layout_height="50dp"
-		android:layout_marginTop="30dp"
+		android:layout_marginTop="60dp"
 		android:layout_marginRight="25dp"
 		>
 		<ImageView
@@ -771,12 +771,30 @@
 			/>
 	</RelativeLayout>
 
-	<DigitalClock
-		android:id="@+id/clock"
-		android:layout_gravity="right|top"
+	<LinearLayout
+		android:id="@+id/container_top_right_menu"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textColor="@color/white"
-		android:layout_marginEnd="10dp"
-		android:layout_margin="10dp"/>
+		android:layout_gravity="right|top"
+		android:gravity="end"
+		android:orientation="vertical"
+		android:layout_marginEnd="30dp"
+		android:layout_marginTop="10dp">
+
+		<DigitalClock
+			android:id="@+id/clock"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/white"/>
+
+		<androidx.appcompat.widget.AppCompatImageView
+			android:id="@+id/cast"
+			android:layout_width="34dp"
+			android:layout_height="34dp"
+			android:padding="4dp"
+			android:scaleType="centerCrop"
+			android:src="@drawable/ic_cast_18"
+			app:tint="@color/white" />
+	</LinearLayout>
+
 </FrameLayout>
