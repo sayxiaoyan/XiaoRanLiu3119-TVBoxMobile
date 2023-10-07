@@ -139,6 +139,7 @@ public class VodController extends BaseController {
     private ImageView mIvPlayStatus;
     private View mChooseSeries;
     public MyBatteryView mMyBatteryView;
+    private View mTopRightDeviceInfo;
     Handler myHandle;
     Runnable myRunnable;
     int myHandleSeconds = 4000;//闲置多少毫秒秒关闭底栏  默认6秒
@@ -173,6 +174,7 @@ public class VodController extends BaseController {
     protected void initView() {
         super.initView();
         mMyBatteryView = findViewById(R.id.battery);
+        mTopRightDeviceInfo = findViewById(R.id.container_top_right_device_info);
         mLlSpeed = findViewById(R.id.ll_speed);
         mTvSpeedTip = findViewById(R.id.tv_speed);
         mCurrentTime = findViewById(R.id.curr_time);
@@ -334,6 +336,13 @@ public class VodController extends BaseController {
             @Override
             public void onClick(View view) {
                 listener.toggleFullScreen();
+                hideBottom();
+            }
+        });
+        findViewById(R.id.cast).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.cast();
                 hideBottom();
             }
         });
@@ -738,9 +747,9 @@ public class VodController extends BaseController {
             mPreBtn.setVisibility(VISIBLE);
             mNextBtn.setVisibility(VISIBLE);
             mChooseSeries.setVisibility(VISIBLE);
-            mMyBatteryView.setVisibility(VISIBLE);
+            mTopRightDeviceInfo.setVisibility(VISIBLE);
         }else {
-            mMyBatteryView.setVisibility(GONE);
+            mTopRightDeviceInfo.setVisibility(INVISIBLE);
             mPreBtn.setVisibility(GONE);
             mNextBtn.setVisibility(GONE);
             mChooseSeries.setVisibility(GONE);
@@ -770,6 +779,7 @@ public class VodController extends BaseController {
         void toggleFullScreen();
 
         void exit();
+        void cast();
     }
 
     public void setListener(VodControlListener listener) {

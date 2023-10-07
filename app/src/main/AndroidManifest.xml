@@ -70,9 +70,6 @@
             android:name=".ui.activity.DetailActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|uiMode" />
         <activity
-            android:name=".ui.activity.PlayActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
-        <activity
             android:name=".ui.activity.SearchActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity

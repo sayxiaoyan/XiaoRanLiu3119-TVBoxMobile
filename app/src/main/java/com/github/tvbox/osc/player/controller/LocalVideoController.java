@@ -163,7 +163,7 @@ public class LocalVideoController extends BaseController {
     protected void initView() {
         super.initView();
         mMyBatteryView = findViewById(R.id.battery);
-        mMyBatteryView.setVisibility(VISIBLE);
+        findViewById(R.id.container_top_right_device_info).setVisibility(VISIBLE);
         findViewById(R.id.setting).setVisibility(GONE);
         findViewById(R.id.choose_series).setVisibility(GONE);
         mCurrentTime = findViewById(R.id.curr_time);

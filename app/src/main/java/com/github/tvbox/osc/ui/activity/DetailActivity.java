@@ -67,6 +67,7 @@ import com.google.gson.JsonElement;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.lzy.okgo.OkGo;
@@ -116,6 +117,9 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     private String preFlag="";
     private HashMap<String, String> mCheckSources = null;
     BatteryReceiver mBatteryReceiver = new BatteryReceiver();
+    //改为view模式无法自动响应返回键操作,onBackPress时手动dismiss
+    private BasePopupView mAllSeriesRightDialog;
+    private BasePopupView mAllSeriesBottomDialog;
 
     @Override
     protected void init() {
@@ -183,10 +187,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
             }
         });
         mBinding.tvCast.setOnClickListener(v -> {
-            VodInfo.VodSeries vodSeries = vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex);
-            new XPopup.Builder(this)
-                    .asCustom(new CastListDialog(this,new CastVideo(vodSeries.name,vodSeries.url)))
-                    .show();
+            showCastDialog();
         });
         mBinding.tvCollect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,26 +261,33 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         setLoadSir(mBinding.llLayout);
     }
 
+    public void showCastDialog() {
+        VodInfo.VodSeries vodSeries = vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex);
+        new XPopup.Builder(this)
+                .asCustom(new CastListDialog(this,new CastVideo(vodSeries.name,vodSeries.url)))
+                .show();
+    }
+
     public void showAllSeriesDialog(){
         if (fullWindows){
-            new XPopup.Builder(this)
-                    .isViewMode(true)
+            mAllSeriesRightDialog = new XPopup.Builder(this)
+                    .isViewMode(true)//隐藏导航栏(手势条)在dialog模式下会闪一下,改为view模式,但需处理onBackPress的隐藏,下方同理
                     .hasNavigationBar(false)
                     .popupHeight(ScreenUtils.getScreenHeight())
                     .popupPosition(PopupPosition.Right)
                     .asCustom(new AllSeriesRightDialog(this, seriesAdapter.getData(), (position, text) -> {
                         chooseSeries(position);
-                    }))
-                    .show();
+                    }));
+            mAllSeriesRightDialog.show();
         }else {
-            new XPopup.Builder(this)
+            mAllSeriesBottomDialog = new XPopup.Builder(this)
                     .isViewMode(true)
                     .hasNavigationBar(false)
                     .maxHeight(ScreenUtils.getScreenHeight() - (ScreenUtils.getScreenHeight() / 4))
                     .asCustom(new AllSeriesDialog(this, seriesAdapter.getData(), (position, text) -> {
                         chooseSeries(position);
-                    }))
-                    .show();
+                    }));
+            mAllSeriesBottomDialog.show();
         }
     }
 
@@ -330,32 +338,28 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
             bundle.putString("sourceKey", sourceKey);
 //            bundle.putSerializable("VodInfo", vodInfo);
             App.getInstance().setVodInfo(vodInfo);
-            if (showPreview) {
-                if (previewVodInfo == null) {
-                    try {
-                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                        ObjectOutputStream oos = new ObjectOutputStream(bos);
-                        oos.writeObject(vodInfo);
-                        oos.flush();
-                        oos.close();
-                        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
-                        previewVodInfo = (VodInfo) ois.readObject();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            if (previewVodInfo == null) {
+                try {
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    ObjectOutputStream oos = new ObjectOutputStream(bos);
+                    oos.writeObject(vodInfo);
+                    oos.flush();
+                    oos.close();
+                    ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+                    previewVodInfo = (VodInfo) ois.readObject();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if (previewVodInfo != null) {
-                    previewVodInfo.playerCfg = vodInfo.playerCfg;
-                    previewVodInfo.playFlag = vodInfo.playFlag;
-                    previewVodInfo.playIndex = vodInfo.playIndex;
-                    previewVodInfo.seriesMap = vodInfo.seriesMap;
-//                    bundle.putSerializable("VodInfo", previewVodInfo);
-                    App.getInstance().setVodInfo(previewVodInfo);
-                }
-                playFragment.setData(bundle);
-            } else {
-                jumpActivity(PlayActivity.class, bundle);
             }
+            if (previewVodInfo != null) {
+                previewVodInfo.playerCfg = vodInfo.playerCfg;
+                previewVodInfo.playFlag = vodInfo.playFlag;
+                previewVodInfo.playIndex = vodInfo.playIndex;
+                previewVodInfo.seriesMap = vodInfo.seriesMap;
+//                    bundle.putSerializable("VodInfo", previewVodInfo);
+                App.getInstance().setVodInfo(previewVodInfo);
+            }
+            playFragment.setData(bundle);
         }
     }
 
@@ -685,9 +689,15 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
 
     @Override
     public void onBackPressed() {
+        if (mAllSeriesRightDialog!=null && mAllSeriesRightDialog.isShow()){
+            mAllSeriesRightDialog.dismiss();
+            return;
+        }
+        if (mAllSeriesBottomDialog!=null && mAllSeriesBottomDialog.isShow()){
+            mAllSeriesBottomDialog.dismiss();
+            return;
+        }
         if (fullWindows) {
-            if (playFragment.onBackPressed())
-                return;
             toggleFullPreview();
             mBinding.mGridView.requestFocus();
             return;

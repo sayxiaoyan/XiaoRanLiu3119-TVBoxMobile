@@ -279,6 +279,11 @@ public class PlayFragment extends BaseLazyFragment {
             public void exit() {
                 activity.onBackPressed();
             }
+
+            @Override
+            public void cast() {
+                activity.showCastDialog();
+            }
         });
         mVideoView.setVideoController(mController);
     }
@@ -735,18 +740,6 @@ public class PlayFragment extends BaseLazyFragment {
 
         }
         mController.setPlayerConfig(mVodPlayerCfg);
-    }
-
-    public boolean onBackPressed() {
-        int requestedOrientation = getActivity().getRequestedOrientation();
-        if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT || requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT || requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT) {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-            mController.mLandscapePortraitBtn.setText("竖屏");
-        }
-//        if (mController.onBackPressed()) {
-//            return true;
-//        }
-        return false;
     }
 
     public boolean dispatchKeyEvent(KeyEvent event) {

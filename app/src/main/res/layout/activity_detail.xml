@@ -118,7 +118,7 @@
                             android:id="@+id/tvCast"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/dp_40"
-                            android:drawableRight="@drawable/ic_colloct_18"
+                            android:drawableRight="@drawable/ic_cast_18"
                             android:drawablePadding="6dp"
                             android:focusable="true"
                             android:gravity="center"
