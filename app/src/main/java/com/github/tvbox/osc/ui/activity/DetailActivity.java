@@ -69,6 +69,7 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.enums.PopupPosition;
+import com.lxj.xpopup.interfaces.OnConfirmListener;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
@@ -262,9 +263,11 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     }
 
     public void showCastDialog() {
+
         VodInfo.VodSeries vodSeries = vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex);
         new XPopup.Builder(this)
-                .asCustom(new CastListDialog(this,new CastVideo(vodSeries.name,vodSeries.url)))
+                .asCustom(new CastListDialog(this,new CastVideo(vodSeries.name
+                        ,TextUtils.isEmpty(playFragment.getFinalUrl())?vodSeries.url:playFragment.getFinalUrl())))
                 .show();
     }
 
@@ -769,10 +772,10 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     private void use1DMDownload() {
         if (vodInfo != null && vodInfo.seriesMap.get(vodInfo.playFlag).size() > 0){
             VodInfo.VodSeries vod = vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex);
-
+            String url = TextUtils.isEmpty(playFragment.getFinalUrl())?vod.url:playFragment.getFinalUrl();
             // 创建Intent对象，启动1DM App
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(vod.url));
-            intent.setDataAndType(Uri.parse(vod.url), "video/mp4");
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            intent.setDataAndType(Uri.parse(url), "video/mp4");
             intent.putExtra("title", vodInfo.name+" "+vod.name); // 传入文件保存名
 //            intent.setClassName("idm.internet.download.manager.plus", "idm.internet.download.manager.MainActivity");
             intent.setClassName("idm.internet.download.manager.plus", "idm.internet.download.manager.Downloader");
