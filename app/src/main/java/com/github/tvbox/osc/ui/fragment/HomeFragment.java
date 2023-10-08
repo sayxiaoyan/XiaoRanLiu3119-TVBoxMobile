@@ -31,6 +31,7 @@ import com.github.tvbox.osc.ui.activity.FastSearchActivity;
 import com.github.tvbox.osc.ui.activity.HistoryActivity;
 import com.github.tvbox.osc.ui.activity.MainActivity;
 import com.github.tvbox.osc.ui.activity.SettingActivity;
+import com.github.tvbox.osc.ui.activity.SubscriptionActivity;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.ui.dialog.TipDialog;
@@ -230,6 +231,12 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
                                             dialog.hide();
                                         }
                                     });
+                                }
+
+                                @Override
+                                public void onTitleClick() {
+                                    dialog.hide();
+                                    jumpActivity(SubscriptionActivity.class);
                                 }
                             });
                         if (!dialog.isShowing())

@@ -2,64 +2,74 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:layout_width="@dimen/dp_440"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/shape_bottom_dialog_bg_gray"
         android:orientation="vertical"
-        android:padding="@dimen/dp_30">
+        android:padding="20dp">
 
+        <com.hjq.bar.TitleBar
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:leftIcon="@null"
+            android:background="@android:color/transparent"
+            app:leftTitle="提示"
+            app:leftTitleStyle="bold"
+            app:leftTitleSize="16sp"
+            app:leftTitleColor="@color/text_gray"
+            app:titleColor="@color/text_gray"
+            app:rightTitle="切换订阅"
+            app:rightTitleColor="@color/colorPrimary">
+
+
+        </com.hjq.bar.TitleBar>
 
         <TextView
             android:id="@+id/tipInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
             android:layout_gravity="center"
-            android:lineSpacingExtra="@dimen/ts_50"
+            android:lineSpacingExtra="30dp"
             android:lineSpacingMultiplier="0"
             android:textAlignment="gravity"
             android:textColor="@color/color_CC000000"
-            tools:text="1111111111111111111111111111111111111111111111111111" />
-
+            tools:text="解析失败解析失败解析失败解析失败解析失败解析失败解析失败解析失败" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_30"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp">
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/leftBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="@dimen/dp_5"
-                android:background="@drawable/button_dialog_main"
-                android:focusable="true"
-                android:gravity="center"
-                android:padding="@dimen/dp_10"
-                android:text="确定"
-                android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/ts_22" />
+                style="@style/mbOutline"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="33dp"
+                android:layout_marginRight="20dp"
+                android:text="重 试"
+                app:strokeColor="@color/colorPrimary"
+                />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/rightBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dp_5"
-                android:background="@drawable/button_dialog_main"
-                android:focusable="true"
-                android:gravity="center"
-                android:padding="@dimen/dp_10"
-                android:text="取消"
-                android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/ts_22" />
-        </LinearLayout>
+                style="@style/mbOutline"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:layout_height="33dp"
+                android:textColor="@color/gray_darker"
+                app:strokeColor="@color/gray_darker"
+                android:text="取 消"/>
 
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

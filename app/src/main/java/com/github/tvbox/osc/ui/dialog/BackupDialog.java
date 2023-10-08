@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.App;
@@ -46,6 +47,9 @@ public class BackupDialog extends BaseDialog {
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (view.getId() == R.id.tvName) {
                     restore((String) adapter.getItem(position));
+                }else if (view.getId() == R.id.tvDel) {
+                    delete((String) adapter.getItem(position));
+                    adapter.setNewData(allBackup());
                 }
             }
         });
@@ -157,6 +161,17 @@ public class BackupDialog extends BaseDialog {
         } catch (Throwable e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "备份失败!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    void delete(String dir) {
+        try {
+            String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+            File backup = new File(root + "/tvbox_backup/" + dir);
+            FileUtils.recursiveDelete(backup);
+            ToastUtils.showShort("删除成功");
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 }

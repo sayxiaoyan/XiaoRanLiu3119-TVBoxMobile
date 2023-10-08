@@ -11,28 +11,14 @@
         android:layout_gravity="center"
         android:background="@drawable/shape_bottom_dialog_bg_gray">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:lineSpacingExtra="40dp"
-            android:lineSpacingMultiplier="0"
-            android:padding="20dp"
-            android:singleLine="true"
-            android:text="数据备份还原"
-            android:textColor="@color/color_CC000000"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="11111111111111111111111" />
-
         <LinearLayout
             android:id="@+id/backup_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingHorizontal="30dp"
-            app:layout_constraintTop_toBottomOf="@id/title">
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="20dp">
 
             <TextView
                 android:id="@+id/backupNow"
@@ -48,7 +34,7 @@
                 android:padding="@dimen/dp_10"
                 android:text="立即备份"
                 android:textColor="@color/color_FFFFFF"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
         </LinearLayout>
 
@@ -63,28 +49,26 @@
             android:textColor="@color/color_CC000000"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/backup_buttons"
-            tools:text="11111111111111111111111" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:textStyle="bold"/>
 
         <com.owen.tvrecyclerview.widget.TvRecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_200"
+            android:layout_marginHorizontal="30dp"
             android:orientation="vertical"
             app:layout_constrainedHeight="true"
             app:layout_constraintHeight_max="@dimen/dp_480"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/restore_tip"
+            app:layout_constraintBottom_toTopOf="@id/backup_buttons"
             app:tv_layoutManager="V7LinearLayoutManager"
             app:tv_selectedItemIsCentered="true"
-            app:tv_verticalSpacingWithMargins="@dimen/dp_10" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_30"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/list" />
+            app:tv_verticalSpacingWithMargins="@dimen/dp_10"
+            app:layout_constraintTop_toBottomOf="@+id/restore_tip"
+            android:paddingBottom="10dp"
+            tools:listitem="@layout/item_dialog_backup"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
