@@ -84,6 +84,9 @@ public class VodController extends BaseController {
                         mBottomRoot.setVisibility(GONE);
                         mTopRoot1.setVisibility(GONE);
                         mTopRoot2.setVisibility(GONE);
+                        if (listener!=null){
+                            listener.onHideBottom();
+                        }
                         break;
                     }
                     case 1004: { // 设置速度
@@ -142,7 +145,7 @@ public class VodController extends BaseController {
     private View mTopRightDeviceInfo;
     Handler myHandle;
     Runnable myRunnable;
-    int myHandleSeconds = 4000;//闲置多少毫秒秒关闭底栏  默认6秒
+    int myHandleSeconds = 6000;//闲置多少毫秒秒关闭底栏  默认6秒
 
     int videoPlayState = 0;
 
@@ -647,6 +650,22 @@ public class VodController extends BaseController {
                 listener.chooseSeries();
             }
         });
+
+        findViewById(R.id.container_playing_setting).setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                case MotionEvent.ACTION_MOVE:
+                    // User is scrolling, remove callbacks
+                    myHandle.removeCallbacks(myRunnable);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    // User stopped scrolling, post callbacks
+                    myHandle.postDelayed(myRunnable, myHandleSeconds);
+                    break;
+            }
+            return false;
+        });
     }
 
     private void hideLiveAboutBtn() {
@@ -780,6 +799,11 @@ public class VodController extends BaseController {
 
         void exit();
         void cast();
+
+        /**
+         * Imm..bar沉浸式在系统弹窗/部分弹窗消失后会重新显示标题栏状态栏(未解决),暂时将隐藏底部栏的时机回调给外部页面处理
+         */
+        void onHideBottom();
     }
 
     public void setListener(VodControlListener listener) {

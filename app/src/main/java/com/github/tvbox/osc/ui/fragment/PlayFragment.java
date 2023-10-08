@@ -73,6 +73,8 @@ import com.github.tvbox.osc.util.XWalkUtils;
 import com.github.tvbox.osc.util.thunder.Jianpian;
 import com.github.tvbox.osc.util.thunder.Thunder;
 import com.github.tvbox.osc.viewmodel.SourceViewModel;
+import com.gyf.immersionbar.BarHide;
+import com.gyf.immersionbar.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.HttpHeaders;
@@ -124,6 +126,7 @@ public class PlayFragment extends BaseLazyFragment {
 
     private final long videoDuration = -1;
     private String mFinalUrl;
+    private boolean mFullWindows;
 
     @Override
     protected int getLayoutResID() {
@@ -285,16 +288,25 @@ public class PlayFragment extends BaseLazyFragment {
             public void cast() {
                 activity.showCastDialog();
             }
+
+            @Override
+            public void onHideBottom() {
+                if (mFullWindows){
+                    ImmersionBar.with(activity)
+                            .hideBar(BarHide.FLAG_HIDE_BAR)
+                            .init();
+                }
+            }
         });
         mVideoView.setVideoController(mController);
     }
 
     /**
      * activity返回/点击播放器切换全屏操作等
-     * @param b
      */
-    public void changedLandscape(boolean b) {
-        mController.changedLandscape(b);
+    public void changedLandscape(boolean fullWindows) {
+        mFullWindows = fullWindows;
+        mController.changedLandscape(fullWindows);
     }
 
     //设置字幕

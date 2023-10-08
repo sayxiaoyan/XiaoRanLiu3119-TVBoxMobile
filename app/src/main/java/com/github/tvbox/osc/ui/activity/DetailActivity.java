@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
@@ -130,9 +131,9 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         registerReceiver(mBatteryReceiver,new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         ImmersionBar.with(this)
                 .statusBarColor(R.color.black)
+                .navigationBarColor(R.color.white)
                 .fitsSystemWindows(true)
                 .statusBarDarkFont(false)
-                .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
                 .init();
     }
 
@@ -734,22 +735,28 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         }
         fullWindows = !fullWindows;
 
-        boolean fitsSystemWindows;
         if (fullWindows){
-            fitsSystemWindows = false;
-            ScreenUtils.setLandscape(this);
-            ImmersionBar.hideStatusBar(getWindow());
+            //横屏(传感器)
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+
+            ImmersionBar.with(this)
+                    .hideBar(BarHide.FLAG_HIDE_BAR)
+                    .navigationBarColor(R.color.black)//即使隐藏部分时候还是会显示
+                    .fitsSystemWindows(false)
+                    .init();
+
             playFragment.changedLandscape(true);
         }else {
-            fitsSystemWindows = true;
-            ScreenUtils.setPortrait(this);
-            ImmersionBar.showStatusBar(getWindow());
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+            ImmersionBar.with(this)
+                    .hideBar(BarHide.FLAG_SHOW_BAR)
+                    .navigationBarColor(R.color.white)
+                    .fitsSystemWindows(true)
+                    .init();
+
             playFragment.changedLandscape(false);
         }
-        ImmersionBar.with(this)
-                .statusBarColor(R.color.black)
-                .fitsSystemWindows(fitsSystemWindows)
-                .init();
 
         mBinding.previewPlayer.setLayoutParams(fullWindows ? windowsFull : windowsPreview);
         mBinding.mGridView.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
