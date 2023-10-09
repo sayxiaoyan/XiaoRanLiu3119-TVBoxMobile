@@ -169,7 +169,7 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
         mSubscriptionAdapter.setOnItemLongClickListener((adapter, view, position) -> {
             Subscription item = mSubscriptions.get(position);
             new XPopup.Builder(this)
-                    .atView(view)
+                    .atView(view.findViewById(R.id.tv_name))
                     .hasShadowBg(false)
                     .asAttachList(new String[]{item.isTop() ? "取消置顶" : "置顶", "复制地址"}, null, (index, text) -> {
                         if (index == 0) {

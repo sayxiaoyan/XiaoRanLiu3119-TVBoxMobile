@@ -465,7 +465,6 @@
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:text="字幕"
-                        android:visibility="gone"
                         />
 
                     <TextView
