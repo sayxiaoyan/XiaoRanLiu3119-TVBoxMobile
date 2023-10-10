@@ -59,6 +59,10 @@ import com.github.tvbox.osc.player.TrackInfoBean;
 import com.github.tvbox.osc.player.controller.VodController;
 import com.github.tvbox.osc.ui.activity.DetailActivity;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
+import com.github.tvbox.osc.ui.dialog.AllSeriesDialog;
+import com.github.tvbox.osc.ui.dialog.AllSeriesRightDialog;
+import com.github.tvbox.osc.ui.dialog.PlayingControlDialog;
+import com.github.tvbox.osc.ui.dialog.PlayingControlRightDialog;
 import com.github.tvbox.osc.ui.dialog.SearchSubtitleDialog;
 import com.github.tvbox.osc.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.ui.dialog.SubtitleDialog;
@@ -75,6 +79,9 @@ import com.github.tvbox.osc.util.thunder.Thunder;
 import com.github.tvbox.osc.viewmodel.SourceViewModel;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
+import com.lxj.xpopup.enums.PopupPosition;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.HttpHeaders;
@@ -127,6 +134,14 @@ public class PlayFragment extends BaseLazyFragment {
     private final long videoDuration = -1;
     private String mFinalUrl;
     private boolean mFullWindows;
+    /**
+     * 非全屏下的设置弹窗
+     */
+    private BasePopupView mPlayingControlDialog;
+    /**
+     * 全屏下的设置弹窗
+     */
+    private BasePopupView mPlayingControlRightDialog;
 
     @Override
     protected int getLayoutResID() {
@@ -297,8 +312,39 @@ public class PlayFragment extends BaseLazyFragment {
                             .init();
                 }
             }
+
+            @Override
+            public void showSetting() {
+                if (mFullWindows){
+                    mPlayingControlRightDialog = new XPopup.Builder(activity)
+                            .isViewMode(true)//改为view模式无法自动响应返回键操作,onBackPress时手动dismiss
+                            .hasNavigationBar(false)
+                            .popupHeight(ScreenUtils.getScreenHeight())
+                            .popupPosition(PopupPosition.Right)
+                            .asCustom(new PlayingControlRightDialog(activity,mController,mVideoView));
+                    mPlayingControlRightDialog.show();
+                }else {
+                    mPlayingControlDialog = new XPopup.Builder(activity)
+                            .isViewMode(true)
+                            .hasNavigationBar(false)
+                            .asCustom(new PlayingControlDialog(activity,mController,mVideoView));
+                    mPlayingControlDialog.show();
+                }
+            }
         });
         mVideoView.setVideoController(mController);
+    }
+
+    public boolean hideAllDialogSuccess(){
+        if (mPlayingControlRightDialog!=null && mPlayingControlRightDialog.isShow()){
+            mPlayingControlRightDialog.dismiss();
+            return true;
+        }
+        if (mPlayingControlDialog!=null && mPlayingControlDialog.isShow()){
+            mPlayingControlDialog.dismiss();
+            return true;
+        }
+        return false;
     }
 
     /**

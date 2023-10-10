@@ -28,7 +28,7 @@
                 android:layout_marginEnd="@dimen/dp_5"
                 android:layout_marginRight="@dimen/dp_5"
                 android:layout_weight="1"
-                android:background="@drawable/button_dialog_main"
+                android:background="@drawable/bg_r_common_solid_primary"
                 android:focusable="true"
                 android:gravity="center"
                 android:padding="@dimen/dp_10"

@@ -701,6 +701,9 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
             mAllSeriesBottomDialog.dismiss();
             return;
         }
+        if (playFragment.hideAllDialogSuccess()){//fragment有弹窗隐藏并拦截返回
+            return;
+        }
         if (fullWindows) {
             toggleFullPreview();
             mBinding.mGridView.requestFocus();

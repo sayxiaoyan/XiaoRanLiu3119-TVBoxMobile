@@ -178,8 +178,6 @@ dependencies {
     implementation "com.github.gzu-liyujiang.AndroidPicker:FilePicker:${androidPickerVersion}"
     //崩溃
     implementation project(":crash")
-    //展开折叠
-    implementation 'com.github.cachapa:ExpandableLayout:2.9.2'
     //dlna投屏
     implementation 'com.github.devin1014.DLNA-Cast:dlna-dmc:V1.0.0'
 }
