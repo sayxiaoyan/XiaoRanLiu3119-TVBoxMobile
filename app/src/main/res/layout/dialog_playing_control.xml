@@ -28,8 +28,8 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="16dp"/>
 
-            <ScrollView
-                android:layout_width="match_parent"
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scrollbars="none">
                 <LinearLayout
@@ -114,7 +114,7 @@
                         android:paddingHorizontal="10dp"
                         android:text="x3.0" />
                 </LinearLayout>
-            </ScrollView>
+            </HorizontalScrollView>
 
             <TextView
                 android:layout_width="wrap_content"

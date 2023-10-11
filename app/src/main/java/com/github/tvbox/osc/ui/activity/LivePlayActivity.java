@@ -223,7 +223,19 @@ public class LivePlayActivity extends BaseActivity {
 
         tvLeftChannelListLayout = findViewById(R.id.tvLeftChannnelListLayout);
         clock = findViewById(R.id.container_top_right_menu);
+        findViewById(R.id.quit).setOnClickListener(view -> finish());
         findViewById(R.id.cast).setOnClickListener(view -> showCastDialog());
+        findViewById(R.id.setting).setOnClickListener(view -> showSettingGroup());
+        findViewById(R.id.pre).setOnClickListener(view -> {
+            mHandler.removeCallbacks(mHideChannelListRun);
+            mHandler.post(mHideChannelListRun);
+            playPrevious();
+        });
+        findViewById(R.id.next).setOnClickListener(view -> {
+            mHandler.removeCallbacks(mHideChannelListRun);
+            mHandler.post(mHideChannelListRun);
+            playNext();
+        });
         mChannelGroupView = findViewById(R.id.mGroupGridView);
         mLiveChannelView = findViewById(R.id.mChannelGridView);
         tvRightSettingLayout = findViewById(R.id.tvRightSettingLayout);

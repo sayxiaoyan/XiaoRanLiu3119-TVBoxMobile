@@ -51,9 +51,12 @@ public class PlayingControlRightDialog extends DrawerPopupView {
     }
 
     private void initListener(){
+        mBinding.speed0.setOnClickListener(view -> setSpeed(mBinding.speed0));
         mBinding.speed1.setOnClickListener(view -> setSpeed(mBinding.speed1));
         mBinding.speed2.setOnClickListener(view -> setSpeed(mBinding.speed2));
         mBinding.speed3.setOnClickListener(view -> setSpeed(mBinding.speed3));
+        mBinding.speed4.setOnClickListener(view -> setSpeed(mBinding.speed4));
+        mBinding.speed5.setOnClickListener(view -> setSpeed(mBinding.speed5));
 
         mBinding.scale.setOnClickListener(view -> changeAndUpdateText(mBinding.scale,mController.mPlayerScaleBtn));
         mBinding.playTimeStart.setOnClickListener(view -> changeAndUpdateText(mBinding.playTimeStart,mController.mPlayerTimeStartBtn));
