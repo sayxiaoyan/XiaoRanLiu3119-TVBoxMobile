@@ -36,11 +36,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="14dp"
                     android:orientation="vertical"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="20dp"
+                    >
 
                     <LinearLayout
                         android:id="@+id/ll_title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
@@ -48,49 +49,50 @@
                             android:id="@+id/tvName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxWidth="280dp"
+                            android:maxWidth="300dp"
+                            android:maxLines="2"
                             android:ellipsize="end"
-                            android:layout_marginBottom="5dp"
                             android:text="鬼灭之刃鬼灭之刃鬼灭之刃鬼灭之刃鬼灭之刃鬼灭之刃"
-                            android:singleLine="true"
-                            android:textSize="16sp"
+                            android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_gray"
                             />
+
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="详情 >>"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="12dp"/>
+                            android:layout_marginRight="10dp"
+                            android:textSize="12dp"
+                            android:layout_gravity="bottom|right"/>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         >
-
-                        <com.lihang.ShadowLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:clickable="false"
-                            app:hl_cornerRadius="@dimen/common_corners"
-                            app:hl_layoutBackground="@color/colorPrimary"
-                            android:layout_marginTop="6dp"
-                            android:padding="6dp">
 
                             <TextView
                                 android:id="@+id/tvSite"
+                                android:background="@drawable/bg_large_round_gray"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 tools:text="非凡影视"
-                                android:textSize="8sp"
-                                android:textColor="@color/white"/>
-                        </com.lihang.ShadowLayout>
+                                android:textColor="@color/text_gray"
+                                android:drawableRight="@drawable/ic_change_20"
+                                android:drawablePadding="4dp"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="6dp"/>
 
                         <Space
                             android:layout_width="0dp"
@@ -111,7 +113,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="22dp"
                         android:gravity="end|center_vertical"
                         android:orientation="horizontal">
                         <TextView

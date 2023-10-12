@@ -94,7 +94,7 @@ public class HistoryActivity extends BaseVbActivity<ActivityHistoryBinding> {
         List<VodInfo> vodInfoList = new ArrayList<>();
         for (VodInfo vodInfo : allVodRecord) {
             if (vodInfo.playNote != null && !vodInfo.playNote.isEmpty())
-                vodInfo.note = "上次看到" + vodInfo.playNote;
+                vodInfo.note = vodInfo.playNote;
             vodInfoList.add(vodInfo);
         }
         historyAdapter.setNewData(vodInfoList);

@@ -54,6 +54,7 @@ import com.github.tvbox.osc.ui.adapter.SeriesFlagAdapter;
 import com.github.tvbox.osc.ui.dialog.AllSeriesDialog;
 import com.github.tvbox.osc.ui.dialog.AllSeriesRightDialog;
 import com.github.tvbox.osc.ui.dialog.CastListDialog;
+import com.github.tvbox.osc.ui.dialog.QuickSearchDialog;
 import com.github.tvbox.osc.ui.dialog.VideoDetailDialog;
 import com.github.tvbox.osc.ui.fragment.PlayFragment;
 import com.github.tvbox.osc.ui.widget.LinearSpacingItemDecoration;
@@ -260,6 +261,34 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
             showAllSeriesDialog();
         });
 
+        mBinding.tvSite.setOnClickListener(view -> {
+            startQuickSearch();
+            QuickSearchDialog quickSearchDialog = new QuickSearchDialog(DetailActivity.this);
+            EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_QUICK_SEARCH, quickSearchData));
+            EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_QUICK_SEARCH_WORD, quickSearchWord));
+            quickSearchDialog.show();
+            if (pauseRunnable != null && pauseRunnable.size() > 0) {
+                searchExecutorService = Executors.newFixedThreadPool(5);
+                for (Runnable runnable : pauseRunnable) {
+                    searchExecutorService.execute(runnable);
+                }
+                pauseRunnable.clear();
+                pauseRunnable = null;
+            }
+            quickSearchDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    try {
+                        if (searchExecutorService != null) {
+                            pauseRunnable = searchExecutorService.shutdownNow();
+                            searchExecutorService = null;
+                        }
+                    } catch (Throwable th) {
+                        th.printStackTrace();
+                    }
+                }
+            });
+        });
         setLoadSir(mBinding.llLayout);
     }
 
@@ -387,23 +416,6 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
 
     }
 
-    private void setTextShow(TextView view, String tag, String info) {
-        if (info == null || info.trim().isEmpty()) {
-            view.setVisibility(View.GONE);
-            return;
-        }
-        view.setVisibility(View.VISIBLE);
-//        view.setText(Html.fromHtml(getHtml(tag, info)));
-        SpanUtils.with(view)
-                .append(tag)
-                .setFontSize(16, true)
-                .append(info)
-                .setFontSize(14, true)
-                .create();
-    }
-
-
-
     private void initViewModel() {
         sourceViewModel = new ViewModelProvider(this).get(SourceViewModel.class);
         sourceViewModel.detailResult.observe(this, new Observer<AbsXml>() {
@@ -418,7 +430,8 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                     vodInfo.sourceKey = mVideo.sourceKey;
 
                     mBinding.tvName.setText(TextUtils.isEmpty(mVideo.name)?"暂无信息":mVideo.name);
-                    setTextShow(mBinding.tvSite, "来源：", ApiConfig.get().getSource(mVideo.sourceKey).getName());
+                    String srcName = ApiConfig.get().getSource(mVideo.sourceKey).getName();
+                    mBinding.tvSite.setText("来源："+(TextUtils.isEmpty(srcName)?"未知":srcName));
 
                     if (vodInfo.seriesMap != null && vodInfo.seriesMap.size() > 0) {//线路
                         mBinding.mGridViewFlag.setVisibility(View.VISIBLE);

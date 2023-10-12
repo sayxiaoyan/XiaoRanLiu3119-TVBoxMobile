@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="bg_gray">#212121</color>
 
     <color name="bg_popup">#808080</color>
     <!--    带点透明度(e6 90/100不透明)的pop弹窗背景颜色-->

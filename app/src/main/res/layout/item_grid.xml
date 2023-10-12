@@ -21,10 +21,10 @@
 
         <TextView
             android:id="@+id/tvYear"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_gradient_primary_t2b"
             android:ellipsize="end"
-            android:gravity="center"
             android:padding="5dp"
             android:singleLine="true"
             tools:text="1970"
@@ -51,6 +51,8 @@
                 android:singleLine="true"
                 android:textColor="@color/white"
                 tools:text="更新至10集"
+                android:textSize="12sp"
+                android:drawablePadding="4dp"
                 />
 
             <TextView

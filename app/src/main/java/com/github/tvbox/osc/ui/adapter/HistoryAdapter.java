@@ -1,9 +1,13 @@
 package com.github.tvbox.osc.ui.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -40,10 +44,13 @@ public class HistoryAdapter extends BaseQuickAdapter<VodInfo, BaseViewHolder> {
         }*/
         tvYear.setText(ApiConfig.get().getSource(item.sourceKey).getName());
 
+        TextView tvNote = helper.getView(R.id.tvNote);
         if (item.note == null || item.note.isEmpty()) {
-            helper.setVisible(R.id.tvNote, false);
+            tvNote.setVisibility(View.GONE);
         } else {
-            helper.setText(R.id.tvNote, item.note);
+            tvNote.setText(item.note);
+            Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.ic_history_18);
+            tvNote.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
         }
         helper.setText(R.id.tvName, item.name);
         // helper.setText(R.id.tvActor, item.actor);
