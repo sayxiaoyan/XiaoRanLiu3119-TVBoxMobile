@@ -686,6 +686,7 @@ public class LivePlayActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        mHandler.removeCallbacksAndMessages(null);
         super.onDestroy();
         if (mVideoView != null) {
             mVideoView.release();
