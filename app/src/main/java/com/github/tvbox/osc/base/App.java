@@ -17,6 +17,7 @@ import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.LOG;
 import com.github.tvbox.osc.util.OkGoHelper;
 import com.github.tvbox.osc.util.PlayerHelper;
+import com.github.tvbox.osc.util.Utils;
 import com.github.tvbox.osc.util.js.JSEngine;
 import com.kingja.loadsir.core.LoadSir;
 import com.orhanobut.hawk.Hawk;
@@ -64,6 +65,7 @@ public class App extends MultiDexApplication {
         JSEngine.getInstance().create();
         FileUtils.cleanPlayerCache();
         initCrashConfig();
+        Utils.initTheme();
     }
 
     private void initParams() {

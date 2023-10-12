@@ -3,9 +3,12 @@ package com.github.tvbox.osc.util;
 import android.database.Cursor;
 import android.provider.MediaStore;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.bean.VideoInfo;
 import com.github.tvbox.osc.bean.VodInfo;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
 import java.util.Formatter;
@@ -89,5 +92,23 @@ public class Utils {
             cursor.close();
         }
         return videoList;
+    }
+
+    public static boolean isDarkTheme(){
+        return AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+    }
+
+    public static void initTheme(){
+        switch (Hawk.get(HawkConfig.THEME_TAG,0)) {
+            case 0:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
+            case 1:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case 2:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+        }
     }
 }

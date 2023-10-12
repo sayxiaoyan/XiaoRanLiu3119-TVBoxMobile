@@ -43,4 +43,8 @@ public class HawkConfig {
      * 无痕浏览
      */
     public static final String PRIVATE_BROWSING = "private_browsing";
+    /**
+     * 主题,跟随系统0,浅1,深2
+     */
+    public static final String THEME_TAG = "theme_tag";
 }

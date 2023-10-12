@@ -2,14 +2,19 @@ package com.github.tvbox.osc.ui.fragment;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.BaseLazyFragment;
@@ -18,6 +23,7 @@ import com.github.tvbox.osc.constant.CacheConst;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.player.thirdparty.RemoteTVBox;
 
+import com.github.tvbox.osc.ui.activity.MainActivity;
 import com.github.tvbox.osc.ui.activity.SettingActivity;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.ui.dialog.BackupDialog;
@@ -30,12 +36,17 @@ import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.HistoryHelper;
 import com.github.tvbox.osc.util.OkGoHelper;
 import com.github.tvbox.osc.util.PlayerHelper;
+import com.github.tvbox.osc.util.Utils;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.common.base.Strings;
 import com.hjq.bar.TitleBar;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
+import com.lxj.xpopup.interfaces.OnSelectListener;
+import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.orhanobut.hawk.Hawk;
 
 import org.greenrobot.eventbus.EventBus;
@@ -577,6 +588,36 @@ public class ModelSettingFragment extends BaseLazyFragment {
                     .asConfirm("提示","缓存包括本地视频播放进度等,确定清空吗？", () -> {
                         onClickClearCache(view);
                     }).show();
+        }));
+
+        int oldTheme = Hawk.get(HawkConfig.THEME_TAG, 0);
+        String[] themes = {"跟随系统", "浅色", "深色"};
+        TextView tvTheme = findViewById(R.id.tvTheme);
+        tvTheme.setText(themes[oldTheme]);
+        findViewById(R.id.llTheme).setOnClickListener((view -> {
+            new XPopup.Builder(getContext())
+                    .setPopupCallback(new SimpleCallback(){
+                        @Override
+                        public void onDismiss(BasePopupView popupView) {
+                            super.onDismiss(popupView);
+                            if (oldTheme!=Hawk.get(HawkConfig.THEME_TAG, 0)){
+                                Utils.initTheme();
+                                Bundle bundle = new Bundle();
+                                bundle.putBoolean("useCache", true);
+                                jumpActivity(MainActivity.class, bundle);
+                            }
+                        }
+                    })
+                    .isDarkTheme(Utils.isDarkTheme())
+                    .asBottomList("请选择一项",themes,null,Hawk.get(HawkConfig.THEME_TAG, 0),
+                            new OnSelectListener() {
+                                @Override
+                                public void onSelect(int position, String text) {
+                                    tvTheme.setText(text);
+                                    Hawk.put(HawkConfig.THEME_TAG,position);
+                                }
+                            })
+                    .show();
         }));
     }
 
