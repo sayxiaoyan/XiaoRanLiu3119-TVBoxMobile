@@ -2,6 +2,7 @@ package com.github.tvbox.osc.ui.fragment;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -590,12 +592,15 @@ public class ModelSettingFragment extends BaseLazyFragment {
                     }).show();
         }));
 
+        View theme = findViewById(R.id.llTheme);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+            theme.setVisibility(View.GONE);
+        }
         int oldTheme = Hawk.get(HawkConfig.THEME_TAG, 0);
         String[] themes = {"跟随系统", "浅色", "深色"};
         TextView tvTheme = findViewById(R.id.tvTheme);
         tvTheme.setText(themes[oldTheme]);
-
-        findViewById(R.id.llTheme).setOnClickListener((view -> {
+        theme.setOnClickListener((view -> {
             FastClickCheckUtil.check(view);
             ArrayList<Integer> types = new ArrayList<>();
             types.add(0);
