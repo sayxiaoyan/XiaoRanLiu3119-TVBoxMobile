@@ -160,9 +160,9 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<Integer>() {
                     @Override
                     public void click(Integer value, int pos) {
-                        SPUtils.getInstance().put(CacheConst.VIDEO_SPEED,Float.parseFloat(items[pos]));
+                        SPUtils.getInstance().put(CacheConst.VIDEO_SPEED, Float.parseFloat(items[pos]));
                         tvLongPressSpeed.setText(items[pos]);
-                        v.postDelayed(() -> dialog.dismiss(),500);
+                        v.postDelayed(() -> dialog.dismiss(), 500);
                     }
 
                     @Override
@@ -366,7 +366,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
                 int defaultPos = 0;
                 ArrayList<Integer> players = PlayerHelper.getExistPlayerTypes();
                 ArrayList<Integer> renders = new ArrayList<>();
-                for(int p = 0; p<players.size(); p++) {
+                for (int p = 0; p < players.size(); p++) {
                     renders.add(p);
                     if (players.get(p) == playerType) {
                         defaultPos = p;
@@ -585,7 +585,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
         findViewById(R.id.llIjkCachePlay).setOnClickListener((view -> onClickIjkCachePlay(view)));
         findViewById(R.id.llClearCache).setOnClickListener((view -> {
             new XPopup.Builder(mActivity)
-                    .asConfirm("提示","缓存包括本地视频播放进度等,确定清空吗？", () -> {
+                    .asConfirm("提示", "缓存包括本地视频播放进度等,确定清空吗？", () -> {
                         onClickClearCache(view);
                     }).show();
         }));
@@ -594,30 +594,49 @@ public class ModelSettingFragment extends BaseLazyFragment {
         String[] themes = {"跟随系统", "浅色", "深色"};
         TextView tvTheme = findViewById(R.id.tvTheme);
         tvTheme.setText(themes[oldTheme]);
+
         findViewById(R.id.llTheme).setOnClickListener((view -> {
-            new XPopup.Builder(getContext())
-                    .setPopupCallback(new SimpleCallback(){
-                        @Override
-                        public void onDismiss(BasePopupView popupView) {
-                            super.onDismiss(popupView);
-                            if (oldTheme!=Hawk.get(HawkConfig.THEME_TAG, 0)){
-                                Utils.initTheme();
-                                Bundle bundle = new Bundle();
-                                bundle.putBoolean("useCache", true);
-                                jumpActivity(MainActivity.class, bundle);
-                            }
-                        }
-                    })
-                    .isDarkTheme(Utils.isDarkTheme())
-                    .asBottomList("请选择一项",themes,null,Hawk.get(HawkConfig.THEME_TAG, 0),
-                            new OnSelectListener() {
-                                @Override
-                                public void onSelect(int position, String text) {
-                                    tvTheme.setText(text);
-                                    Hawk.put(HawkConfig.THEME_TAG,position);
-                                }
-                            })
-                    .show();
+            FastClickCheckUtil.check(view);
+            ArrayList<Integer> types = new ArrayList<>();
+            types.add(0);
+            types.add(1);
+            types.add(2);
+            SelectDialog<Integer> dialog = new SelectDialog<>(mActivity);
+            dialog.setTip("请选择");
+            dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<Integer>() {
+                @Override
+                public void click(Integer value, int pos) {
+                    tvTheme.setText(themes[value]);
+                    Hawk.put(HawkConfig.THEME_TAG, value);
+                }
+
+                @Override
+                public String getDisplay(Integer val) {
+                    return themes[val];
+                }
+            }, new DiffUtil.ItemCallback<Integer>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull @NotNull Integer oldItem, @NonNull @NotNull Integer newItem) {
+                    return oldItem.intValue() == newItem.intValue();
+                }
+
+                @Override
+                public boolean areContentsTheSame(@NonNull @NotNull Integer oldItem, @NonNull @NotNull Integer newItem) {
+                    return oldItem.intValue() == newItem.intValue();
+                }
+            }, types, oldTheme);
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (oldTheme != Hawk.get(HawkConfig.THEME_TAG, 0)) {
+                        Utils.initTheme();
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("useCache", true);
+                        jumpActivity(MainActivity.class, bundle);
+                    }
+                }
+            });
+            dialog.show();
         }));
     }
 
