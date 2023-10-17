@@ -54,6 +54,7 @@ public class CollectActivity extends BaseVbActivity<ActivityCollectBinding> {
                     .asConfirm("提示", "确定清空?", () -> {
                         RoomDataManger.deleteVodCollectAll();
                         collectAdapter.setNewData(new ArrayList<>());
+                        mBinding.topTip.setVisibility(View.GONE);
                     }).show();
         });
 
@@ -62,6 +63,9 @@ public class CollectActivity extends BaseVbActivity<ActivityCollectBinding> {
             if (vodInfo!=null){
                 collectAdapter.remove(position);
                 RoomDataManger.deleteVodCollect(vodInfo.getId());
+            }
+            if (collectAdapter.getData().isEmpty()){
+                mBinding.topTip.setVisibility(View.GONE);
             }
             return true;
         });
@@ -95,5 +99,8 @@ public class CollectActivity extends BaseVbActivity<ActivityCollectBinding> {
             vodInfoList.add(vodInfo);
         }
         collectAdapter.setNewData(vodInfoList);
+        if (!vodInfoList.isEmpty()){
+            mBinding.topTip.setVisibility(View.VISIBLE);
+        }
     }
 }
