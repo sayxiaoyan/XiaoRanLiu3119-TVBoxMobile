@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.bean.Subtitle;
@@ -105,6 +107,15 @@ public class SearchSubtitleDialog extends BaseDialog {
             }
         });
 
+        subtitleSearchEt.setOnEditorActionListener((v, actionId, event) -> {
+            KeyboardUtils.hideSoftInput(v);
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                String wd = subtitleSearchEt.getText().toString().trim();
+                search(wd);
+                return true;
+            }
+            return false;
+        });
         searchAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
