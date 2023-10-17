@@ -145,4 +145,19 @@ public class RoomDataManger {
     public static List<VodCollect> getAllVodCollect() {
         return AppDataManager.get().getVodCollectDao().getAll();
     }
+
+    /**
+     * 删除全部收藏
+     */
+    public static void deleteVodCollectAll() {
+        AppDataManager.get().getVodCollectDao().deleteAll();
+    }
+
+    /**
+     * 删除全部历史记录
+     */
+    public static void deleteVodRecordAll() {
+        AppDataManager.get().getVodRecordDao().deleteAll();
+    }
+
 }

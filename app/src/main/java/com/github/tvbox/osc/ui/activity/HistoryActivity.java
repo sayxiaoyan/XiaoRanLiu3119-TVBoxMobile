@@ -68,9 +68,7 @@ public class HistoryActivity extends BaseVbActivity<ActivityHistoryBinding> {
         mBinding.titleBar.getRightView().setOnClickListener(view -> {
             new XPopup.Builder(this)
                     .asConfirm("提示", "确定清空?", () -> {
-                        for (VodInfo datum : historyAdapter.getData()) {
-                            RoomDataManger.deleteVodRecord(datum.sourceKey, datum);
-                        }
+                        RoomDataManger.deleteVodRecordAll();
                         historyAdapter.setNewData(new ArrayList<>());
                     }).show();
         });

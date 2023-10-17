@@ -162,10 +162,10 @@ public class LocalVideoController extends BaseController {
     @Override
     protected void initView() {
         super.initView();
+        findViewById(R.id.cast).setVisibility(GONE);
         mMyBatteryView = findViewById(R.id.battery);
         findViewById(R.id.container_top_right_device_info).setVisibility(VISIBLE);
         findViewById(R.id.setting).setVisibility(GONE);
-        findViewById(R.id.choose_series).setVisibility(GONE);
         mCurrentTime = findViewById(R.id.curr_time);
         mTvSpeedTip = findViewById(R.id.tv_speed);
         mLlSpeed = findViewById(R.id.ll_speed);
@@ -218,7 +218,16 @@ public class LocalVideoController extends BaseController {
                 mHandler.post(myRunnable2);
             }
         });
-
+        View chooseSeries = findViewById(R.id.choose_series);
+        chooseSeries.setVisibility(VISIBLE);
+        chooseSeries.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FastClickCheckUtil.check(view);
+                hideBottom();
+                listener.chooseSeries();
+            }
+        });
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -680,6 +689,8 @@ public class LocalVideoController extends BaseController {
     }
 
     public interface VodControlListener {
+
+        void chooseSeries();
         void playNext(boolean rmProgress);
 
         void playPre();

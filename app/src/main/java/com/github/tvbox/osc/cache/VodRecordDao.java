@@ -37,4 +37,7 @@ public interface VodRecordDao {
      */
     @Query("DELETE FROM vodRecord where id NOT IN (SELECT id FROM vodRecord ORDER BY updateTime desc LIMIT :size)")
     int reserver(int size);
+
+    @Query("DELETE FROM vodRecord")
+    void deleteAll();
 }

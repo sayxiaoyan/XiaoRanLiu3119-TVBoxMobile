@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:title="收藏"
-        app:lineVisible="false"/>
+        app:lineVisible="false"
+        app:rightIcon="@drawable/ic_clear"/>
 
     <TextView
         android:layout_width="wrap_content"

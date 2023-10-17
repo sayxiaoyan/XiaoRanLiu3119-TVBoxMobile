@@ -18,6 +18,7 @@ import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.ParseBean;
 import com.github.tvbox.osc.bean.VideoInfo;
+import com.github.tvbox.osc.bean.VodInfo;
 import com.github.tvbox.osc.constant.CacheConst;
 import com.github.tvbox.osc.databinding.ActivityLocalPlayBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
@@ -29,11 +30,15 @@ import com.github.tvbox.osc.player.controller.LocalVideoController;
 import com.github.tvbox.osc.player.controller.VodController;
 import com.github.tvbox.osc.receiver.BatteryReceiver;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
+import com.github.tvbox.osc.ui.dialog.AllSeriesRightDialog;
 import com.github.tvbox.osc.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.LOG;
 import com.github.tvbox.osc.util.PlayerHelper;
 import com.google.common.reflect.TypeToken;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
+import com.lxj.xpopup.enums.PopupPosition;
 import com.orhanobut.hawk.Hawk;
 
 import org.greenrobot.eventbus.EventBus;
@@ -45,6 +50,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import xyz.doikki.videoplayer.player.AbstractPlayer;
 import xyz.doikki.videoplayer.player.ProgressManager;
@@ -59,7 +65,7 @@ public class LocalPlayActivity extends BaseVbActivity<ActivityLocalPlayBinding> 
     private List<VideoInfo> mVideoList = new ArrayList<>();
     private int mPosition;
     BatteryReceiver mBatteryReceiver = new BatteryReceiver();
-
+    private BasePopupView mAllSeriesRightDialog;
     @Override
     protected void init() {
         registerReceiver(mBatteryReceiver,new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
@@ -137,6 +143,12 @@ public class LocalPlayActivity extends BaseVbActivity<ActivityLocalPlayBinding> 
     private void initController() {
         mController = new LocalVideoController(this);
         mController.setListener(new LocalVideoController.VodControlListener() {
+
+            @Override
+            public void chooseSeries() {
+                showAllSeriesDialog();
+            }
+
             @Override
             public void playNext(boolean rmProgress) {
 //                String preProgressKey = progressKey;
@@ -272,5 +284,28 @@ public class LocalPlayActivity extends BaseVbActivity<ActivityLocalPlayBinding> 
     public void finish() {
         super.finish();
         EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_REFRESH, ""));
+    }
+
+    public void showAllSeriesDialog(){
+        mAllSeriesRightDialog = new XPopup.Builder(this)
+                .isViewMode(true)//隐藏导航栏(手势条)在dialog模式下会闪一下,改为view模式,但需处理onBackPress的隐藏,下方同理
+                .hasNavigationBar(false)
+                .popupHeight(com.blankj.utilcode.util.ScreenUtils.getScreenHeight())
+                .popupPosition(PopupPosition.Right)
+                .asCustom(new AllSeriesRightDialog(this, convertLocalVideo(), (position, text) -> {
+                    mPosition = position;
+                    play(false);
+                }));
+        mAllSeriesRightDialog.show();
+    }
+
+    private List<VodInfo.VodSeries> convertLocalVideo(){
+        List<VodInfo.VodSeries> seriesList = new ArrayList<>();
+        for (VideoInfo local : mVideoList) {
+            VodInfo.VodSeries vodSeries = new VodInfo.VodSeries(local.getDisplayName(), local.getPath());
+            vodSeries.selected = (Objects.equals(mVideoList.get(mPosition).getPath(), vodSeries.url));
+            seriesList.add(vodSeries);
+        }
+        return seriesList;
     }
 }
