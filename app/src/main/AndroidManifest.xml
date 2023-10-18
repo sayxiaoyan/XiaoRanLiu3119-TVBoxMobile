@@ -63,6 +63,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.activity.LiveActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|uiMode|screenLayout"/>
+        <activity
             android:name=".ui.activity.LivePlayActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="sensorLandscape" />
