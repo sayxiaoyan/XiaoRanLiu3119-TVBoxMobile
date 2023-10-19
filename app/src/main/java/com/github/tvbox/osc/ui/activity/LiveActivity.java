@@ -145,9 +145,11 @@ public class LiveActivity extends BaseActivity {
 
     @Override
     protected void init() {
-        ImmersionBar.hideStatusBar(getWindow());
         ImmersionBar.with(this)
+                .statusBarColor(R.color.black)
+                .statusBarDarkFont(false)
                 .navigationBarColor(R.color.black)
+                .fitsSystemWindows(true)
                 .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
                 .init();
         context = this;
@@ -162,8 +164,8 @@ public class LiveActivity extends BaseActivity {
 
         mChannelGroupView = findViewById(R.id.mGroupGridView);
         mLiveChannelView = findViewById(R.id.mChannelGridView);
-        mChannelGroupView.addItemDecoration(new LinearSpacingItemDecoration(20));
-        mLiveChannelView.addItemDecoration(new LinearSpacingItemDecoration(20));
+        mChannelGroupView.addItemDecoration(new LinearSpacingItemDecoration(20,true));
+        mLiveChannelView.addItemDecoration(new LinearSpacingItemDecoration(20,true));
 
         tvRightSettingLayout = findViewById(R.id.tvRightSettingLayout);
         mSettingGroupView = findViewById(R.id.mSettingGroupView);
@@ -171,10 +173,10 @@ public class LiveActivity extends BaseActivity {
         tvChannelInfo = findViewById(R.id.tvChannel);
 
         //EPG  findViewById  by 龍
-        tip_chname = (TextView)  findViewById(R.id.tv_channel_bar_name);//底部名称
-        tv_channelnum = (TextView) findViewById(R.id.tv_channel_bottom_number); //底部数字
+        tip_chname = findViewById(R.id.tv_channel_bar_name);//底部名称
+        tv_channelnum = findViewById(R.id.tv_channel_bottom_number); //底部数字
 
-        tv_srcinfo = (TextView) findViewById(R.id.tv_source);//线路状态
+        tv_srcinfo = findViewById(R.id.tv_source);//线路状态
 
         //源切换
         findViewById(R.id.ic_pre_source).setOnClickListener(view -> playPreSource());
@@ -209,7 +211,7 @@ public class LiveActivity extends BaseActivity {
             if (channel_Name == null || channel_Name.getSourceNum() <= 0) {
                 tv_srcinfo.setText("1/1");
             } else {
-                tv_srcinfo.setText("[线路" + (channel_Name.getSourceIndex() + 1) + "/" + channel_Name.getSourceNum() + "]");
+                tv_srcinfo.setText("线路" + (channel_Name.getSourceIndex() + 1) + "/" + channel_Name.getSourceNum());
             }
 
             Handler handler = new Handler(Looper.getMainLooper());
@@ -1070,6 +1072,7 @@ public class LiveActivity extends BaseActivity {
     public void showCastDialog() {
         if (currentLiveChannelItem!=null){
             new XPopup.Builder(this)
+                    .maxWidth(ConvertUtils.dp2px(360))
                     .asCustom(new CastListDialog(this,new CastVideo(currentLiveChannelItem.getChannelName(),currentLiveChannelItem.getUrl())))
                     .show();
         }
@@ -1133,8 +1136,8 @@ public class LiveActivity extends BaseActivity {
         }else {
             mSettingBottomDialog = new XPopup.Builder(this)
                     .isViewMode(true)
+                    .popupHeight(ScreenUtils.getScreenHeight()/2)
                     .hasNavigationBar(false)
-                    .maxHeight(ScreenUtils.getScreenHeight() - (ScreenUtils.getScreenHeight() / 4))
                     .hasShadowBg(false)
                     .asCustom(new LiveSettingDialog(this));
             mSettingBottomDialog.show();

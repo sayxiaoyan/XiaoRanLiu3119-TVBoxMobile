@@ -23,7 +23,7 @@
             android:layout_height="34dp"
             android:layout_marginEnd="10dp"
             android:padding="6dp"
-            android:src="@drawable/ic_cast_18"
+            android:src="@drawable/ic_cast"
             app:tint="@color/white"/>
 
         <androidx.appcompat.widget.AppCompatImageView

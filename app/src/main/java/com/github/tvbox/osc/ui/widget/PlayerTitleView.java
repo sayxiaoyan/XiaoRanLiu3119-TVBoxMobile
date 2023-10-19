@@ -114,7 +114,6 @@ public class PlayerTitleView extends FrameLayout implements IControlComponent {
 
     @Override
     public void onVisibilityChanged(boolean isVisible, Animation anim) {
-        if (!mControlWrapper.isFullScreen()) return;
         if (isVisible) {
             if (getVisibility() == GONE) {
                 mSysTime.setText(PlayerUtils.getCurrentSystemTime());

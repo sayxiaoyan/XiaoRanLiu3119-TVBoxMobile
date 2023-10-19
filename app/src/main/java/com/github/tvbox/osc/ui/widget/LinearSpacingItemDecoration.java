@@ -17,13 +17,29 @@ import com.owen.tvrecyclerview.widget.GridLayoutManager;
 public class LinearSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
     private final int spacing;
+    private final boolean isSpacingBeforeFirstItem;
 
-    public LinearSpacingItemDecoration(int spacing) {
+    public LinearSpacingItemDecoration(int spacing, boolean isSpacingBeforeFirstItem) {
         this.spacing = spacing;
+        this.isSpacingBeforeFirstItem = isSpacingBeforeFirstItem;
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        int position = parent.getChildAdapterPosition(view);
+        if (position == 0 && isSpacingBeforeFirstItem) {
+            if (parent.getLayoutManager() instanceof LinearLayoutManager) {
+                LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();
+                if (layoutManager.getOrientation() == LinearLayoutManager.VERTICAL) {
+                    outRect.top = spacing;
+                } else {
+                    outRect.left = spacing;
+                }
+            } else if (parent.getLayoutManager() instanceof GridLayoutManager) {
+                outRect.top = spacing;
+                outRect.left = spacing;
+            }
+        }
         if (parent.getLayoutManager() instanceof LinearLayoutManager) {
             LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();
             if (layoutManager.getOrientation() == LinearLayoutManager.VERTICAL) {

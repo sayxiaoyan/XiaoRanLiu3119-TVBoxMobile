@@ -145,7 +145,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
 
         mBinding.mGridView.setHasFixedSize(true);
         mBinding.mGridView.setLayoutManager(new V7LinearLayoutManager(this.mContext,0,false));
-        mBinding.mGridView.addItemDecoration(new LinearSpacingItemDecoration(20));
+        mBinding.mGridView.addItemDecoration(new LinearSpacingItemDecoration(20,false));
 
         seriesAdapter = new SeriesAdapter(false);
         mBinding.mGridView.setAdapter(seriesAdapter);
@@ -296,6 +296,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
 
         VodInfo.VodSeries vodSeries = vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex);
         new XPopup.Builder(this)
+                .maxWidth(ConvertUtils.dp2px(360))
                 .asCustom(new CastListDialog(this,new CastVideo(vodSeries.name
                         ,TextUtils.isEmpty(playFragment.getFinalUrl())?vodSeries.url:playFragment.getFinalUrl())))
                 .show();

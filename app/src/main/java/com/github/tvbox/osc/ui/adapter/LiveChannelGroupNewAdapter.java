@@ -37,7 +37,7 @@ public class LiveChannelGroupNewAdapter extends BaseQuickAdapter<LiveChannelGrou
             root.setBackground(mContext.getResources().getDrawable(R.drawable.bg_r_common_solid_primary));
         } else {
             tvGroupName.setTextColor(ColorUtils.getColor(R.color.text_gray));
-            root.setBackground(mContext.getResources().getDrawable(R.drawable.bg_r_common_stroke_primary));
+            root.setBackground(mContext.getResources().getDrawable(R.drawable.bg_transparent));
         }
     }
 
