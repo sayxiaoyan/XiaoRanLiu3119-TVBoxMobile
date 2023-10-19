@@ -56,8 +56,8 @@ public class MyFragment extends BaseVbFragment<FragmentMyBinding> {
                         }
                     }).show();
         });
-        mBinding.tvLive.setOnClickListener(v -> jumpActivity(LivePlayActivity.class));
-        //mBinding.tvLive.setOnClickListener(v -> jumpActivity(LiveActivity.class));
+        //mBinding.tvLive.setOnClickListener(v -> jumpActivity(LivePlayActivity.class));
+        mBinding.tvLive.setOnClickListener(v -> jumpActivity(LiveActivity.class));
 
         mBinding.tvSetting.setOnClickListener(v -> jumpActivity(SettingActivity.class));
 
