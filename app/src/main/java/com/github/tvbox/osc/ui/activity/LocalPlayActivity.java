@@ -134,7 +134,7 @@ public class LocalPlayActivity extends BaseVbActivity<ActivityLocalPlayBinding> 
         PlayerHelper.updateCfg(mVideoView, mVodPlayerCfg);
 
         if (fromSkip){
-            mVideoView.replay(false);
+            mVideoView.replay(true);
         }else {
             mVideoView.start(); //开始播放，不调用则不自动播放
         }
@@ -294,7 +294,7 @@ public class LocalPlayActivity extends BaseVbActivity<ActivityLocalPlayBinding> 
                 .popupPosition(PopupPosition.Right)
                 .asCustom(new AllSeriesRightDialog(this, convertLocalVideo(), (position, text) -> {
                     mPosition = position;
-                    play(false);
+                    play(true);
                 }));
         mAllSeriesRightDialog.show();
     }
