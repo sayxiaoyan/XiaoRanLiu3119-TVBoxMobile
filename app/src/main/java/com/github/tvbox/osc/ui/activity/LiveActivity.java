@@ -43,6 +43,7 @@ import com.github.tvbox.osc.ui.adapter.LiveChannelGroupNewAdapter;
 import com.github.tvbox.osc.ui.adapter.LiveChannelItemNewAdapter;
 import com.github.tvbox.osc.ui.adapter.LiveSettingGroupAdapter;
 import com.github.tvbox.osc.ui.adapter.LiveSettingItemAdapter;
+import com.github.tvbox.osc.ui.dialog.AllChannelsRightDialog;
 import com.github.tvbox.osc.ui.dialog.CastListDialog;
 import com.github.tvbox.osc.ui.dialog.LivePasswordDialog;
 import com.github.tvbox.osc.ui.dialog.LiveSettingDialog;
@@ -93,8 +94,8 @@ public class LiveActivity extends BaseActivity {
     private LinearLayout tvLeftChannelListLayout;
     private RecyclerView mChannelGroupView;
     private RecyclerView mLiveChannelView;
-    private LiveChannelGroupNewAdapter liveChannelGroupAdapter;
-    private LiveChannelItemNewAdapter liveChannelItemAdapter;
+    public LiveChannelGroupNewAdapter liveChannelGroupAdapter;
+    public LiveChannelItemNewAdapter liveChannelItemAdapter;
 
     private LinearLayout tvRightSettingLayout;
     private TvRecyclerView mSettingGroupView;
@@ -137,6 +138,7 @@ public class LiveActivity extends BaseActivity {
     private PlayerTitleView mPlayerTitleView;
     private BasePopupView mSettingRightDialog;
     private BasePopupView mSettingBottomDialog;
+    private BasePopupView mAllChannelRightDialog;
 
     @Override
     protected int getLayoutResID() {
@@ -174,6 +176,10 @@ public class LiveActivity extends BaseActivity {
 
         //EPG  findViewById  by 龍
         tip_chname = findViewById(R.id.tv_channel_bar_name);//底部名称
+        tip_chname.setOnClickListener(view -> {
+            mChannelGroupView.scrollToPosition(currentChannelGroupIndex);
+            mLiveChannelView.scrollToPosition(currentLiveChannelIndex);
+        });
         tv_channelnum = findViewById(R.id.tv_channel_bottom_number); //底部数字
 
         tv_srcinfo = findViewById(R.id.tv_source);//线路状态
@@ -232,7 +238,9 @@ public class LiveActivity extends BaseActivity {
             mSettingBottomDialog.dismiss();
         } else if(mSettingRightDialog!=null && mSettingRightDialog.isShow()){
             mSettingRightDialog.dismiss();
-        }  else if (!mVideoView.onBackPressed()) {
+        }  else if(mAllChannelRightDialog!=null && mAllChannelRightDialog.isShow()){
+            mAllChannelRightDialog.dismiss();
+        } else if (!mVideoView.onBackPressed()) {
             super.onBackPressed();
         }
     }
@@ -490,18 +498,7 @@ public class LiveActivity extends BaseActivity {
 
     private void initVideoView() {
         LiveNewController controller = new LiveNewController(this);
-        PlayerMenuView playerMenuView = new PlayerMenuView(this);
-        playerMenuView.setOnPlayerMenuClickListener(new PlayerMenuView.OnPlayerMenuClickListener() {
-            @Override
-            public void onSetting() {
-                showSettingDialog(true);
-            }
-
-            @Override
-            public void onCast() {
-                showCastDialog();
-            }
-        });
+        PlayerMenuView playerMenuView = getPlayerMenuView();
         controller.addControlComponent(playerMenuView); //菜单栏,设置投屏等
         controller.addControlComponent(new LiveControlView(this)); //直播控制条
         //标题栏
@@ -554,6 +551,28 @@ public class LiveActivity extends BaseActivity {
         controller.setDoubleTapTogglePlayEnabled(false);
         mVideoView.setVideoController(controller);
         mVideoView.setProgressManager(null);
+    }
+
+    @NonNull
+    private PlayerMenuView getPlayerMenuView() {
+        PlayerMenuView playerMenuView = new PlayerMenuView(this);
+        playerMenuView.setOnPlayerMenuClickListener(new PlayerMenuView.OnPlayerMenuClickListener() {
+            @Override
+            public void expand() {
+                showAllChannelDialog();
+            }
+
+            @Override
+            public void onSetting() {
+                showSettingDialog(true);
+            }
+
+            @Override
+            public void onCast() {
+                showCastDialog();
+            }
+        });
+        return playerMenuView;
     }
 
     private Runnable mConnectTimeoutChangeSourceRun = new Runnable() {
@@ -1077,6 +1096,17 @@ public class LiveActivity extends BaseActivity {
             }
         }
         return result;
+    }
+
+    public void showAllChannelDialog() {
+        mAllChannelRightDialog = new XPopup.Builder(this)
+                .isViewMode(true)
+                .hasNavigationBar(false)
+                .hasShadowBg(false)
+                .popupHeight(ScreenUtils.getScreenHeight())
+                .popupPosition(PopupPosition.Right)
+                .asCustom(new AllChannelsRightDialog(this));
+        mAllChannelRightDialog.show();
     }
 
     public void showCastDialog() {

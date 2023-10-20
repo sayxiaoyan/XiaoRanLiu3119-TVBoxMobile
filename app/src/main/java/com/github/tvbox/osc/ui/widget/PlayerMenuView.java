@@ -35,6 +35,7 @@ public class PlayerMenuView extends FrameLayout implements IControlComponent {
     public interface OnPlayerMenuClickListener{
         void onSetting();
         void onCast();
+        void expand();
     }
 
     private OnPlayerMenuClickListener mOnPlayerMenuClickListener;
@@ -64,6 +65,11 @@ public class PlayerMenuView extends FrameLayout implements IControlComponent {
         findViewById(R.id.setting).setOnClickListener(view -> {
             if (mOnPlayerMenuClickListener!=null){
                 mOnPlayerMenuClickListener.onSetting();
+            }
+        });
+        findViewById(R.id.expand).setOnClickListener(view -> {
+            if (mOnPlayerMenuClickListener!=null){
+                mOnPlayerMenuClickListener.expand();
             }
         });
     }
