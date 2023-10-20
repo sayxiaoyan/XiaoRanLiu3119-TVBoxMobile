@@ -81,44 +81,10 @@
 			android:layout_marginRight="@dimen/dp_5"
 			android:gravity="center"
 			android:orientation="vertical">
-			<TextView
-				android:id="@+id/tv_channel_bottom_number"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:layout_marginStart="20dp"
-				android:layout_marginTop="5dp"
-				android:layout_marginBottom="-14dp"
-				android:ellipsize="marquee"
-				android:gravity="center"
-				android:marqueeRepeatLimit="marquee_forever"
-				android:shadowColor="#CC000000"
-				android:shadowDx="5.0"
-				android:shadowRadius="5.0"
-				android:singleLine="true"
-				android:text="10"
-				android:visibility="gone"
-				tools:visibility="visible"
-				android:textColor="@color/color_FFFFFF"
-				android:textStyle="bold" />
-			<ImageView
-				android:id="@+id/img_live_icon"
-				android:layout_width="40dp"
-				android:layout_height="40dp"
-				android:layout_gravity="center"
-				android:src="@drawable/app_banner"
-				android:scaleType="centerInside"
-				android:visibility="gone"/>
-
 			<com.github.tvbox.osc.ui.tv.widget.MarqueeTextView
 				android:id="@+id/tv_channel_bar_name"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginStart="5dp"
-				android:layout_marginLeft="5dp"
-				android:layout_marginEnd="5dp"
-				android:layout_marginRight="5dp"
-				android:layout_marginTop="@dimen/dp_0"
 				android:ellipsize="marquee"
 				android:gravity="center"
 				android:paddingTop="0dp"
@@ -126,6 +92,23 @@
 				android:text="中央 HD"
 				android:textStyle="bold"
 				android:textSize="16sp" />
+
+			<TextView
+				android:id="@+id/tv_channel_bottom_number"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:ellipsize="marquee"
+				android:gravity="center"
+				android:marqueeRepeatLimit="marquee_forever"
+				android:singleLine="true"
+				tools:text="10"
+				android:visibility="gone"
+				tools:visibility="visible"
+				android:textSize="16sp"
+				android:textStyle="bold"
+				android:layout_marginTop="6dp"/>
+
 		</LinearLayout>
 
 		<LinearLayout
