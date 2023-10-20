@@ -318,9 +318,14 @@ public class LiveActivity extends BaseActivity {
         }
         //重新载入上一次状态
         liveChannelItemAdapter.setNewData(getLiveChannels(currentChannelGroupIndex));
-        if (currentLiveChannelIndex > -1)
-            mLiveChannelView.scrollToPosition(currentLiveChannelIndex);
-        mChannelGroupView.scrollToPosition(currentChannelGroupIndex);
+        if (currentLiveChannelIndex > -1){
+            mLiveChannelView.smoothScrollToPosition(currentLiveChannelIndex);
+            if (currentChannelGroupIndex==0){
+                mChannelGroupView.scrollToPosition(currentChannelGroupIndex);
+            }else {
+                mChannelGroupView.smoothScrollToPosition(currentChannelGroupIndex);
+            }
+        }
     }
 
     private void showChannelInfo() {
@@ -416,8 +421,8 @@ public class LiveActivity extends BaseActivity {
             loadCurrentSourceList();
             liveSettingGroupAdapter.setNewData(liveSettingGroupList);
             selectSettingGroup(0, false);
-            mSettingGroupView.scrollToPosition(0);
-            mSettingItemView.scrollToPosition(currentLiveChannelItem.getSourceIndex());
+            mSettingGroupView.smoothScrollToPosition(0);
+            mSettingItemView.smoothScrollToPosition(currentLiveChannelItem.getSourceIndex());
             mHandler.postDelayed(mFocusAndShowSettingGroup, 200);
         } else {
             mHandler.removeCallbacks(mHideSettingLayoutRun);
@@ -665,9 +670,9 @@ public class LiveActivity extends BaseActivity {
                 liveSettingItemAdapter.selectItem(livePlayerManager.getLivePlayerType(), true, true);
                 break;
         }
-        int scrollToPosition = liveSettingItemAdapter.getSelectedItemIndex();
-        if (scrollToPosition < 0) scrollToPosition = 0;
-        mSettingItemView.scrollToPosition(scrollToPosition);
+        int smoothScrollToPosition = liveSettingItemAdapter.getSelectedItemIndex();
+        if (smoothScrollToPosition < 0) smoothScrollToPosition = 0;
+        mSettingItemView.smoothScrollToPosition(smoothScrollToPosition);
         mHandler.removeCallbacks(mHideSettingLayoutRun);
         mHandler.postDelayed(mHideSettingLayoutRun, 5000);
     }
@@ -922,18 +927,23 @@ public class LiveActivity extends BaseActivity {
         liveChannelItemAdapter.setNewData(getLiveChannels(groupIndex));
         if (groupIndex == currentChannelGroupIndex) {
             if (currentLiveChannelIndex > -1)
-                mLiveChannelView.scrollToPosition(currentLiveChannelIndex);
+                mLiveChannelView.smoothScrollToPosition(currentLiveChannelIndex);
             liveChannelItemAdapter.setSelectedChannelIndex(currentLiveChannelIndex);
         }
         else {
-            mLiveChannelView.scrollToPosition(0);
+            mLiveChannelView.smoothScrollToPosition(0);
             liveChannelItemAdapter.setSelectedChannelIndex(-1);
         }
 
         if (liveChannelIndex > -1) {
             clickLiveChannel(liveChannelIndex);
-            mChannelGroupView.scrollToPosition(groupIndex);
-            mLiveChannelView.scrollToPosition(liveChannelIndex);
+            if (groupIndex==0){//部分手机smoothScrollToPosition向上划出屏幕
+                mChannelGroupView.scrollToPosition(groupIndex);
+            }else {
+                mChannelGroupView.smoothScrollToPosition(groupIndex);
+            }
+
+            mLiveChannelView.smoothScrollToPosition(liveChannelIndex);
             playChannel(groupIndex, liveChannelIndex, false);
         }
     }
