@@ -965,7 +965,6 @@ public class VodController extends BaseController {
             case VideoView.STATE_PLAYING:
                 initLandscapePortraitBtnInfo();
                 startProgress();
-                LogUtils.d("STATE_PLAYING");
                 mIvPlayStatus.setImageResource(R.drawable.ic_pause);
                 break;
             case VideoView.STATE_PAUSED:
