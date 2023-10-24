@@ -140,7 +140,7 @@ public class VodController extends BaseController {
     TextView mVideoSize;
     public SimpleSubtitleView mSubtitleView;
     public TextView mZimuBtn;
-    TextView mAudioTrackBtn;
+    public TextView mAudioTrackBtn;
     public TextView mLandscapePortraitBtn;
     private ImageView mIvPlayStatus;
     private View mChooseSeries;

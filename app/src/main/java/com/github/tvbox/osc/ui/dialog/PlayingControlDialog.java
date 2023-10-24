@@ -46,6 +46,7 @@ public class PlayingControlDialog extends BottomPopupView {
         mBinding.playTimeEnd.setText(mController.mPlayerTimeSkipBtn.getText());
         mBinding.player.setText(mController.mPlayerBtn.getText());
         mBinding.decode.setText(mController.mPlayerIJKBtn.getText());
+        updateAboutIjkVisible();
         updateSpeedUi();
     }
 
@@ -67,6 +68,7 @@ public class PlayingControlDialog extends BottomPopupView {
         mBinding.replay.setOnClickListener(view -> changeAndUpdateText(null,mController.mPlayRetry));
         mBinding.refresh.setOnClickListener(view -> changeAndUpdateText(null,mController.mPlayRefresh));
         mBinding.subtitle.setOnClickListener(view -> dismissWith(() -> changeAndUpdateText(null,mController.mZimuBtn)));
+        mBinding.voice.setOnClickListener(view -> dismissWith(() -> changeAndUpdateText(null,mController.mAudioTrackBtn)));
     }
 
     /**
@@ -78,6 +80,9 @@ public class PlayingControlDialog extends BottomPopupView {
         targetView.performClick();
         if (view!=null){
             view.setText(targetView.getText());
+            if (view == mBinding.player){
+                updateAboutIjkVisible();
+            }
         }
     }
 
@@ -97,6 +102,11 @@ public class PlayingControlDialog extends BottomPopupView {
                 tv.setTextColor(ColorUtils.getColor(R.color.text_gray));
             }
         }
+    }
+
+    public void updateAboutIjkVisible(){
+        mBinding.decode.setVisibility(mController.mPlayerIJKBtn.getVisibility());
+        mBinding.voice.setVisibility(mController.mAudioTrackBtn.getVisibility());
     }
 
     /**
