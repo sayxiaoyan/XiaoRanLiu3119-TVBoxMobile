@@ -128,12 +128,22 @@ public class ModelSettingFragment extends BaseLazyFragment {
         tvRender.setText(PlayerHelper.getRenderName(Hawk.get(HawkConfig.PLAY_RENDER, 0)));
         tvIjkCachePlay.setText(Hawk.get(HawkConfig.IJK_CACHE_PLAY, false) ? "开启" : "关闭");
 
+        //隐私浏览
         SwitchMaterial switchPrivate = findViewById(R.id.switchPrivateBrowsing);
         switchPrivate.setChecked(Hawk.get(HawkConfig.PRIVATE_BROWSING, false));
         switchPrivate.setOnClickListener(view -> {
             boolean newConfig = !Hawk.get(HawkConfig.PRIVATE_BROWSING, false);
             switchPrivate.setChecked(newConfig);
             Hawk.put(HawkConfig.PRIVATE_BROWSING, newConfig);
+        });
+
+        //后台播放
+        SwitchMaterial switchBgPlay = findViewById(R.id.switchBackgroundPlay);
+        switchBgPlay.setChecked(Hawk.get(HawkConfig.BACKGROUND_PLAY, false));
+        switchBgPlay.setOnClickListener(view -> {
+            boolean newConfig = !Hawk.get(HawkConfig.BACKGROUND_PLAY, false);
+            switchBgPlay.setChecked(newConfig);
+            Hawk.put(HawkConfig.BACKGROUND_PLAY, newConfig);
         });
 
         findViewById(R.id.llDebug).setOnClickListener(new View.OnClickListener() {

@@ -47,4 +47,8 @@ public class HawkConfig {
      * 主题,跟随系统0,浅1,深2
      */
     public static final String THEME_TAG = "theme_tag";
+    /**
+     * 后台播放
+     */
+    public static final String BACKGROUND_PLAY = "background_play";
 }

@@ -7,8 +7,6 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,29 +14,21 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.content.ClipboardManager;
-import android.content.ClipData;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
-import com.blankj.utilcode.util.SpanUtils;
+import com.blankj.utilcode.util.ServiceUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
-import com.ctetin.expandabletextviewlibrary.ExpandableTextView;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.App;
-import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.AbsXml;
 import com.github.tvbox.osc.bean.CastVideo;
@@ -49,6 +39,7 @@ import com.github.tvbox.osc.cache.RoomDataManger;
 import com.github.tvbox.osc.databinding.ActivityDetailBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.receiver.BatteryReceiver;
+import com.github.tvbox.osc.service.PlayService;
 import com.github.tvbox.osc.ui.adapter.SeriesAdapter;
 import com.github.tvbox.osc.ui.adapter.SeriesFlagAdapter;
 import com.github.tvbox.osc.ui.dialog.AllSeriesDialog;
@@ -71,14 +62,11 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.enums.PopupPosition;
-import com.lxj.xpopup.interfaces.OnConfirmListener;
-import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
-import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -97,8 +85,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import android.graphics.Paint;
 
 /**
  * @author pj567
@@ -123,7 +109,6 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     //改为view模式无法自动响应返回键操作,onBackPress时手动dismiss
     private BasePopupView mAllSeriesRightDialog;
     private BasePopupView mAllSeriesBottomDialog;
-
     @Override
     protected void init() {
         initView();
@@ -136,6 +121,14 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 .fitsSystemWindows(true)
                 .statusBarDarkFont(false)
                 .init();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ServiceUtils.isServiceRunning(PlayService.class)){
+            PlayService.stop();
+        }
     }
 
     private void initView() {
@@ -686,6 +679,14 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         }
         RoomDataManger.insertVodRecord(sourceKey, vodInfo);
         EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_HISTORY_REFRESH));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (Hawk.get(HawkConfig.BACKGROUND_PLAY, false)){
+            PlayService.start(playFragment.getPlayer());
+        }
     }
 
     @Override
