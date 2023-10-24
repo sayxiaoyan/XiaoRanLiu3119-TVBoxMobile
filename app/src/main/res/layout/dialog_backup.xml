@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/shape_bottom_dialog_bg_gray">
+        android:background="@drawable/bg_bottom_dialog">
 
         <LinearLayout
             android:id="@+id/backup_buttons"
@@ -46,7 +46,7 @@
             android:padding="20dp"
             android:singleLine="true"
             android:text="点击下方数据还原"
-            android:textColor="@color/color_CC000000"
+            android:textColor="@color/text_gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"

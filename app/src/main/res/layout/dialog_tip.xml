@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/shape_bottom_dialog_bg_gray"
+        android:background="@drawable/bg_bottom_dialog"
         android:orientation="vertical"
         android:padding="20dp">
 
@@ -39,7 +39,7 @@
             android:lineSpacingExtra="30dp"
             android:lineSpacingMultiplier="0"
             android:textAlignment="gravity"
-            android:textColor="@color/color_CC000000"
+            android:textColor="@color/text_gray"
             tools:text="解析失败解析失败解析失败解析失败解析失败解析失败解析失败解析失败" />
 
         <LinearLayout

@@ -24,12 +24,9 @@
     <color name="red">#ff4444</color>
 
     <color name="disable_text">#b3b3b3</color>
-    <color name="bg_popup">#ececec</color>
 
-    <!--    带点透明度(e6 90/100不透明)的pop弹窗背景颜色-->
-    <color name="bg_popup_alpha_95">#f2ececec</color>
-    <!--    带点透明度(e6 90/100不透明)的pop白色-->
-    <color name="white_alpha_95">#f2FFFFFF</color>
+    <!--    带点透明度(e6 90/100不透明)的pop-->
+    <color name="bg_popup">#f2FFFFFF</color>
 
     <!--    制定颜色-->
     <!--    页面背景色,activity.fragment等-->
@@ -58,7 +55,6 @@
     <color name="color_6CFFFFFF">#6CFFFFFF</color>
     <color name="color_66000000">#66000000</color>
     <color name="color_99000000">#99000000</color>
-    <color name="color_CC000000">#CC000000</color>
     <color name="color_02F8E1">#02F8E1</color>
     <color name="color_353744">#353744</color>
     <color name="color_CC353744">#CC353744</color>

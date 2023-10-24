@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
-    android:background="@drawable/shape_bottom_dialog_bg_gray"
+    android:background="@drawable/bg_bottom_dialog"
     android:orientation="vertical"
     android:paddingHorizontal="20dp"
     android:paddingTop="20dp"
@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="订阅模块使用"
-                android:textColor="@color/color_CC000000"
+                android:textColor="@color/text_gray"
                 android:textStyle="bold"
                 android:textSize="16sp"/>
 
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="6dp"
                 android:text="@string/subs_use_tip"
-                android:textColor="@color/color_CC000000"
+                android:textColor="@color/text_gray"
                 android:layout_marginTop="10dp"
                 />
 
@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="免责说明"
-                android:textColor="@color/color_CC000000"
+                android:textColor="@color/text_gray"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:layout_marginTop="20dp"/>
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="6dp"
                 android:text="@string/subs_tip"
-                android:textColor="@color/color_CC000000"
+                android:textColor="@color/text_gray"
                 android:layout_marginTop="10dp"
                 />
         </LinearLayout>

@@ -11,7 +11,7 @@
     <item android:state_focused="false">
         <shape>
             <corners android:radius="25dp" />
-            <solid android:color="@color/color_CC353744" />
+            <solid android:color="@color/colorPrimary" />
         </shape>
     </item>
 </selector>

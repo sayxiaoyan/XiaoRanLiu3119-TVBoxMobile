@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="请选择要导入的仓库"
-                android:textColor="@color/color_CC000000"
+                android:textColor="@color/text_gray"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginLeft="6dp"

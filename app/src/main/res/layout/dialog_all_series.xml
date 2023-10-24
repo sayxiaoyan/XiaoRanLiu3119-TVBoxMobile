@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
-    android:background="@drawable/bg_gray_trans_top_r25"
+    android:background="@drawable/bg_bottom_dialog"
     android:orientation="vertical"
     android:paddingTop="20dp"
     android:paddingBottom="10dp"

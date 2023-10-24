@@ -45,7 +45,7 @@ public class AllSeriesRightDialog extends DrawerPopupView {
     protected void onCreate() {
         super.onCreate();
         View bg = findViewById(R.id.bg);
-        bg.setBackgroundColor(ColorUtils.getColor(R.color.bg_popup_alpha_95));
+        bg.setBackgroundColor(ColorUtils.getColor(R.color.bg_popup));
         findViewById(R.id.v_gesture_line).setVisibility(GONE);
         RecyclerView rv = findViewById(R.id.rv);
 

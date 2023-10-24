@@ -6,7 +6,7 @@
     android:orientation="vertical"
     app:hl_cornerRadius_leftTop="6dp"
     app:hl_cornerRadius_rightTop="6dp"
-    app:hl_layoutBackground="@color/bg_popup_alpha_95">
+    app:hl_layoutBackground="@color/bg_popup">
 
     <LinearLayout
         android:layout_width="match_parent"

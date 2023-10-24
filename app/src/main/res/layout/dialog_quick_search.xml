@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/shape_bottom_dialog_bg_gray"
+    android:background="@drawable/bg_bottom_dialog"
     >
 
     <LinearLayout

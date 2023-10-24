@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
-    android:background="@drawable/shape_bottom_dialog_bg_gray"
+    android:background="@drawable/bg_bottom_dialog"
     android:orientation="vertical"
     android:paddingHorizontal="20dp"
     android:paddingTop="20dp"
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="关于"
-            android:textColor="@color/color_CC000000"
+            android:textColor="@color/text_gray"
             android:textStyle="bold"
             android:textSize="18sp"/>
 
@@ -43,7 +43,7 @@
         android:layout_marginTop="10dp"
         android:lineSpacingExtra="10dp"
         android:text="@string/about"
-        android:textColor="@color/color_CC000000"
+        android:textColor="@color/text_gray"
          />
 
 <!--    地址单拿出来以便复制-->
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="项目地址"
-        android:textColor="@color/color_CC000000"
+        android:textColor="@color/text_gray"
         />
 
     <TextView
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="修改自"
-        android:textColor="@color/color_CC000000"
+        android:textColor="@color/text_gray"
         />
 
     <TextView

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="@drawable/bg_gray_trans_top_r25"
+        android:background="@drawable/bg_bottom_dialog"
         android:orientation="vertical">
 
         <LinearLayout

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/shape_bottom_dialog_bg_gray"
+        android:background="@drawable/bg_bottom_dialog"
         android:orientation="vertical"
         android:padding="@dimen/dp_30">
 
@@ -71,7 +71,7 @@
                     android:layout_marginHorizontal="10dp"
                     android:text="16"
                     android:textStyle="bold"
-                    android:textColor="@color/color_CC000000" />
+                    android:textColor="@color/text_gray" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/subtitleSizePlus"
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:focusable="true"
                     android:text="样式一"
-                    android:shadowColor="@color/color_CC000000"
+                    android:shadowColor="@color/text_gray"
                     android:shadowRadius="2"
                     android:shadowDx="1"
                     android:shadowDy="1"/>
@@ -176,7 +176,7 @@
                     android:layout_marginHorizontal="10dp"
                     android:text="0"
                     android:textStyle="bold"
-                    android:textColor="@color/color_CC000000"/>
+                    android:textColor="@color/text_gray"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/subtitleTimePlus"
