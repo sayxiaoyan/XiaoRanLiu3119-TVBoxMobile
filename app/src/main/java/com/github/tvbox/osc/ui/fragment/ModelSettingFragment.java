@@ -209,12 +209,12 @@ public class ModelSettingFragment extends BaseLazyFragment {
             @Override
             public void onClick(View v) {
                 FastClickCheckUtil.check(v);
-                if (XXPermissions.isGranted(getContext(), Permission.Group.STORAGE)) {
+                if (XXPermissions.isGranted(mActivity, Permission.MANAGE_EXTERNAL_STORAGE)) {
                     BackupDialog dialog = new BackupDialog(mActivity);
                     dialog.show();
                 } else {
                     XXPermissions.with(mActivity)
-                            .permission(Permission.Group.STORAGE)
+                            .permission(Permission.MANAGE_EXTERNAL_STORAGE)
                             .request(new OnPermissionCallback() {
                                 @Override
                                 public void onGranted(List<String> permissions, boolean all) {
