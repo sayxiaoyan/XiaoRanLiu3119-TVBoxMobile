@@ -44,17 +44,19 @@ import com.github.tvbox.osc.receiver.BatteryReceiver;
 import com.github.tvbox.osc.service.PlayService;
 import com.github.tvbox.osc.ui.adapter.SeriesAdapter;
 import com.github.tvbox.osc.ui.adapter.SeriesFlagAdapter;
-import com.github.tvbox.osc.ui.dialog.AllSeriesDialog;
-import com.github.tvbox.osc.ui.dialog.AllSeriesRightDialog;
+import com.github.tvbox.osc.ui.dialog.AllVodSeriesBottomDialog;
+import com.github.tvbox.osc.ui.dialog.AllVodSeriesRightDialog;
 import com.github.tvbox.osc.ui.dialog.CastListDialog;
 import com.github.tvbox.osc.ui.dialog.QuickSearchDialog;
 import com.github.tvbox.osc.ui.dialog.VideoDetailDialog;
 import com.github.tvbox.osc.ui.fragment.PlayFragment;
+import com.github.tvbox.osc.ui.widget.GridSpacingItemDecoration;
 import com.github.tvbox.osc.ui.widget.LinearSpacingItemDecoration;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.SearchHelper;
 import com.github.tvbox.osc.util.SubtitleHelper;
+import com.github.tvbox.osc.util.Utils;
 import com.github.tvbox.osc.viewmodel.SourceViewModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -99,8 +101,8 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     private SourceViewModel sourceViewModel;
     private Movie.Video mVideo;
     private VodInfo vodInfo;
-    private SeriesFlagAdapter seriesFlagAdapter;
-    private SeriesAdapter seriesAdapter;
+    public SeriesFlagAdapter seriesFlagAdapter;
+    public SeriesAdapter seriesAdapter;
     public String vodId;
     public String sourceKey;
     private View seriesFlagFocus = null;
@@ -183,15 +185,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
-                if (vodInfo != null && vodInfo.seriesMap.size() > 0) {
-                    vodInfo.reverseSort = !vodInfo.reverseSort;
-                    isReverse = !isReverse;
-                    vodInfo.reverse();
-                    vodInfo.playIndex=(vodInfo.seriesMap.get(vodInfo.playFlag).size()-1)-vodInfo.playIndex;
-//                    insertVod(sourceKey, vodInfo);
-
-                    seriesAdapter.notifyDataSetChanged();
-                }
+                sortSeries();
             }
         });
         mBinding.tvCast.setOnClickListener(v -> {
@@ -212,48 +206,30 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 }
             }
         });
-        mBinding.mGridViewFlag.setOnItemListener(new TvRecyclerView.OnItemListener() {
-            private void refresh(View itemView, int position) {
-                String newFlag = seriesFlagAdapter.getData().get(position).name;
-                if (vodInfo != null && !vodInfo.playFlag.equals(newFlag)) {
-                    for (int i = 0; i < vodInfo.seriesFlags.size(); i++) {
-                        VodInfo.VodSeriesFlag flag = vodInfo.seriesFlags.get(i);
-                        if (flag.name.equals(vodInfo.playFlag)) {
-                            flag.selected = false;
-                            seriesFlagAdapter.notifyItemChanged(i);
-                            break;
-                        }
+
+        seriesFlagAdapter.setOnItemClickListener((adapter, view, position) -> {
+            String newFlag = seriesFlagAdapter.getData().get(position).name;
+            if (vodInfo != null && !vodInfo.playFlag.equals(newFlag)) {
+                for (int i = 0; i < vodInfo.seriesFlags.size(); i++) {
+                    VodInfo.VodSeriesFlag flag = vodInfo.seriesFlags.get(i);
+                    if (flag.name.equals(vodInfo.playFlag)) {
+                        flag.selected = false;
+                        seriesFlagAdapter.notifyItemChanged(i);
+                        break;
                     }
-                    VodInfo.VodSeriesFlag flag = vodInfo.seriesFlags.get(position);
-                    flag.selected = true;
-                    // clean pre flag select status
-                    if (vodInfo.seriesMap.get(vodInfo.playFlag).size() > vodInfo.playIndex) {
-                        vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex).selected = false;
-                    }
-                    vodInfo.playFlag = newFlag;
-                    seriesFlagAdapter.notifyItemChanged(position);
-                    refreshList();
                 }
-                seriesFlagFocus = itemView;
-            }
-
-            @Override
-            public void onItemPreSelected(TvRecyclerView parent, View itemView, int position) {
-//                seriesSelect = false;
-            }
-
-            @Override
-            public void onItemSelected(TvRecyclerView parent, View itemView, int position) {
-                refresh(itemView, position);
-//                if(isReverse)vodInfo.reverse();
-            }
-
-            @Override
-            public void onItemClick(TvRecyclerView parent, View itemView, int position) {
-                refresh(itemView, position);
-//                if(isReverse)vodInfo.reverse();
+                VodInfo.VodSeriesFlag flag = vodInfo.seriesFlags.get(position);
+                flag.selected = true;
+                // clean pre flag select status
+                if (vodInfo.seriesMap.get(vodInfo.playFlag).size() > vodInfo.playIndex) {
+                    vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex).selected = false;
+                }
+                vodInfo.playFlag = newFlag;
+                seriesFlagAdapter.notifyItemChanged(position);
+                refreshList();
             }
         });
+
         seriesAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -321,6 +297,21 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         }
     }
 
+    /**
+     * 排序(倒序)
+     */
+    public void sortSeries() {
+        if (vodInfo != null && vodInfo.seriesMap.size() > 0) {
+            vodInfo.reverseSort = !vodInfo.reverseSort;
+            isReverse = !isReverse;
+            vodInfo.reverse();
+            vodInfo.playIndex=(vodInfo.seriesMap.get(vodInfo.playFlag).size()-1)-vodInfo.playIndex;
+//                    insertVod(sourceKey, vodInfo);
+
+            seriesAdapter.notifyDataSetChanged();
+        }
+    }
+
     public void showCastDialog() {
 
         VodInfo.VodSeries vodSeries = vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex);
@@ -338,16 +329,15 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                     .hasNavigationBar(false)
                     .popupHeight(ScreenUtils.getScreenHeight())
                     .popupPosition(PopupPosition.Right)
-                    .asCustom(new AllSeriesRightDialog(this, seriesAdapter.getData(), (position, text) -> {
-                        chooseSeries(position);
-                    }));
+                    .enableDrag(false)//禁用拖拽,内部有横向rv
+                    .asCustom(new AllVodSeriesRightDialog(this));
             mAllSeriesRightDialog.show();
         }else {
             mAllSeriesBottomDialog = new XPopup.Builder(this)
                     .isViewMode(true)
                     .hasNavigationBar(false)
                     .maxHeight(ScreenUtils.getScreenHeight() - (ScreenUtils.getScreenHeight() / 4))
-                    .asCustom(new AllSeriesDialog(this, seriesAdapter.getData(), (position, text) -> {
+                    .asCustom(new AllVodSeriesBottomDialog(this, seriesAdapter.getData(), (position, text) -> {
                         chooseSeries(position);
                     }));
             mAllSeriesBottomDialog.show();

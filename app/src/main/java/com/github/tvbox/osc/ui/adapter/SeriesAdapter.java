@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * @description:
  */
 public class SeriesAdapter extends BaseQuickAdapter<VodInfo.VodSeries, BaseViewHolder> {
-    private final boolean isGird;
+    private boolean isGird;
 
     public SeriesAdapter(boolean isGird) {
         super(R.layout.item_series, new ArrayList<>());
@@ -42,4 +42,9 @@ public class SeriesAdapter extends BaseQuickAdapter<VodInfo.VodSeries, BaseViewH
             sl.setLayoutParams(layoutParams);
         }
     }
+
+    public void setGird(boolean gird) {
+        isGird = gird;
+    }
+
 }

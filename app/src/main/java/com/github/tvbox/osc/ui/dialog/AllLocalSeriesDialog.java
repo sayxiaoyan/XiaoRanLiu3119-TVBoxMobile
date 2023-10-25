@@ -2,42 +2,43 @@ package com.github.tvbox.osc.ui.dialog;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ColorUtils;
-import com.blankj.utilcode.util.ResourceUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.bean.VodInfo;
 import com.github.tvbox.osc.ui.adapter.SeriesAdapter;
 import com.github.tvbox.osc.ui.widget.GridSpacingItemDecoration;
 import com.github.tvbox.osc.util.Utils;
-import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.core.DrawerPopupView;
-import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class AllSeriesRightDialog extends DrawerPopupView {
+/**
+ * @Author : Liu XiaoRan
+ * @Email : 592923276@qq.com
+ * @Date : on 2023/10/25 10:43.
+ * @Description : 本地视频全集弹窗
+ */
+public class AllLocalSeriesDialog extends DrawerPopupView {
 
     List<VodInfo.VodSeries> mList;
     private final OnSelectListener mSelectListener;
 
-    public AllSeriesRightDialog(@NonNull @NotNull Context context, List<VodInfo.VodSeries> list, OnSelectListener selectListener) {
+    public AllLocalSeriesDialog(@NonNull @NotNull Context context, List<VodInfo.VodSeries> list, OnSelectListener selectListener) {
         super(context);
         mList = list;
         mSelectListener = selectListener;
     }
 
     @Override
-    protected int getImplLayoutId() {
+    protected int getImplLayoutId() {//复用点播全集底部弹窗ui
         return R.layout.dialog_all_series;
     }
 
@@ -49,7 +50,7 @@ public class AllSeriesRightDialog extends DrawerPopupView {
         findViewById(R.id.v_gesture_line).setVisibility(GONE);
         RecyclerView rv = findViewById(R.id.rv);
 
-        rv.setLayoutManager(new GridLayoutManager(getContext(),Utils.getSeriesSpanCount(mList)));
+        rv.setLayoutManager(new GridLayoutManager(getContext(), Utils.getSeriesSpanCount(mList)));
         rv.addItemDecoration(new GridSpacingItemDecoration(Utils.getSeriesSpanCount(mList), 20, true));
 
 
