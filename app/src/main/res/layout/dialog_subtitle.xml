@@ -5,192 +5,206 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/bg_bottom_dialog"
-        android:orientation="vertical"
-        android:padding="@dimen/dp_30">
-
+        android:scrollbars="none">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/selectInternal"
-                style="@style/mbSolid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="选择内置字幕"
-                android:visibility="gone"
-                tools:visibility="visible"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/selectLocal"
-                style="@style/mbSolid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:focusable="true"
-                android:text="选择本地字幕" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/selectRemote"
-                style="@style/mbSolid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:text="在线搜索字幕" />
+            android:background="@drawable/bg_large_round_gray"
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <LinearLayout
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/subtitleSizeMinus"
-                    style="@style/mbSolid"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:text="字号减小" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/subtitleSizeText"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="60dp"
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginHorizontal="10dp"
-                    android:text="16"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_gray" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/subtitleSizePlus"
-                    style="@style/mbSolid"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:text="字号增大" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/subtitleStyleOne"
-                    style="@style/mbSolid"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:text="样式一"
-                    android:shadowColor="@color/text_gray"
-                    android:shadowRadius="2"
-                    android:shadowDx="1"
-                    android:shadowDy="1"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginHorizontal="10dp"
-                    tools:text="在这"
-                    android:textSize="18sp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/subtitleStyleTwo"
-                    style="@style/mbSolid"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:text="样式二"
-                    android:textStyle="bold"
-                    android:textColor="@color/color_FFB6C1"
-                    android:shadowColor="@color/color_FFFFFF"
-                    android:shadowRadius="2"
-                    android:shadowDx="1"
-                    android:shadowDy="1" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40">
-
-                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/subtitleSizeMinus"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:text="字号减小" />
+
+                    <TextView
+                        android:id="@+id/subtitleSizeText"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="10dp"
+                        android:text="16"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_gray" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/subtitleSizePlus"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:text="字号增大" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="字幕延时仅对外挂字幕有效"
-                    android:textColor="@color/color_6C3D3D3D"
-                    android:textSize="16sp" />
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/subtitleStyleOne"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:text="样式一"
+                        android:shadowColor="@color/text_gray"
+                        android:shadowRadius="2"
+                        android:shadowDx="1"
+                        android:shadowDy="1"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="10dp"
+                        tools:text="在这"
+                        android:textSize="16sp" />
 
-            <LinearLayout
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/subtitleTimeMinus"
-                    style="@style/mbSolid"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:text="字幕提前" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/subtitleStyleTwo"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:text="样式二"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_FFB6C1"
+                        android:shadowColor="@color/color_FFFFFF"
+                        android:shadowRadius="2"
+                        android:shadowDx="1"
+                        android:shadowDy="1" />
 
-                <TextView
-                    android:id="@+id/subtitleTimeText"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginHorizontal="10dp"
-                    android:text="0"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_gray"/>
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_40">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/subtitleTimePlus"
-                    style="@style/mbSolid"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="字幕延时仅对外挂字幕有效"
+                        android:textColor="@color/color_6C3D3D3D" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/subtitleTimeMinus"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:text="字幕提前" />
+
+                    <TextView
+                        android:id="@+id/subtitleTimeText"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="10dp"
+                        android:text="0"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_gray"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/subtitleTimePlus"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:text="字幕推迟" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:text="字幕推迟" />
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/selectLocal"
+                        style="@style/mbOutline"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="33dp"
+                        android:focusable="true"
+                        android:text="本地字幕" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/selectInternal"
+                        style="@style/mbOutline"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="33dp"
+                        android:text="内置字幕"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_marginLeft="20dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/selectRemote"
+                        style="@style/mbOutline"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="33dp"
+                        android:text="搜索字幕"
+                        android:layout_marginLeft="20dp"/>
+                </LinearLayout>
+
 
             </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
+    </ScrollView>
 </FrameLayout>

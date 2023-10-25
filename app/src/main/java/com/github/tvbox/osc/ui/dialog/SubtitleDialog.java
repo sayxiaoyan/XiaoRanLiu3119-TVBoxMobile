@@ -2,12 +2,17 @@ package com.github.tvbox.osc.ui.dialog;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.blankj.utilcode.util.ConvertUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.SubtitleHelper;
@@ -39,6 +44,18 @@ public class SubtitleDialog extends BaseDialog {
         }
         setContentView(R.layout.dialog_subtitle);
         initView(context);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(getWindow().getAttributes());
+        lp.gravity = Gravity.CENTER;
+        lp.width = ConvertUtils.dp2px(330);
+
+        getWindow().setAttributes(lp);
+        getWindow().setWindowAnimations(R.style.DialogFadeAnimation); // Set the animation style
     }
 
     private void initView(Context context) {
