@@ -7,7 +7,3 @@
 
 * [CatVodTVOfficial](https://github.com/CatVodTVOfficial)/[TVBoxOSC](https://github.com/CatVodTVOfficial/TVBoxOSC)
 * [q215613905](https://github.com/q215613905)/[TVBoxOS](https://github.com/q215613905/TVBoxOS)
-
-
-后续版本可能先进行小范围测试再打包,正在筹备交流内测Q群
-  363453382
