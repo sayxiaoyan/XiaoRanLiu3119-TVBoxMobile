@@ -10,18 +10,22 @@ import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.databinding.DialogPlayingControlBinding;
 import com.github.tvbox.osc.player.MyVideoView;
 import com.github.tvbox.osc.player.controller.VodController;
+import com.github.tvbox.osc.ui.activity.DetailActivity;
 import com.lxj.xpopup.core.BottomPopupView;
 
 import org.jetbrains.annotations.NotNull;
 
 public class PlayingControlDialog extends BottomPopupView {
 
+    @NonNull
+    private final DetailActivity mDetailActivity;
     private final VodController mController;
     MyVideoView mPlayer;
     private com.github.tvbox.osc.databinding.DialogPlayingControlBinding mBinding;
 
     public PlayingControlDialog(@NonNull @NotNull Context context, VodController controller, MyVideoView videoView) {
         super(context);
+        mDetailActivity = (DetailActivity) context;
         mController = controller;
         mPlayer = videoView;
     }
@@ -51,6 +55,7 @@ public class PlayingControlDialog extends BottomPopupView {
     }
 
     private void initListener(){
+        //倍速
         mBinding.speed0.setOnClickListener(view -> setSpeed(mBinding.speed0));
         mBinding.speed1.setOnClickListener(view -> setSpeed(mBinding.speed1));
         mBinding.speed2.setOnClickListener(view -> setSpeed(mBinding.speed2));
@@ -58,17 +63,20 @@ public class PlayingControlDialog extends BottomPopupView {
         mBinding.speed4.setOnClickListener(view -> setSpeed(mBinding.speed4));
         mBinding.speed5.setOnClickListener(view -> setSpeed(mBinding.speed5));
 
+        //播放器
         mBinding.scale.setOnClickListener(view -> changeAndUpdateText(mBinding.scale,mController.mPlayerScaleBtn));
         mBinding.playTimeStart.setOnClickListener(view -> changeAndUpdateText(mBinding.playTimeStart,mController.mPlayerTimeStartBtn));
         mBinding.playTimeEnd.setOnClickListener(view -> changeAndUpdateText(mBinding.playTimeEnd,mController.mPlayerTimeSkipBtn));
         mBinding.player.setOnClickListener(view -> changeAndUpdateText(mBinding.player,mController.mPlayerBtn));
         mBinding.decode.setOnClickListener(view -> changeAndUpdateText(mBinding.decode,mController.mPlayerIJKBtn));
 
+        //其他
         mBinding.startEndReset.setOnClickListener(view -> resetSkipStartEnd());
         mBinding.replay.setOnClickListener(view -> changeAndUpdateText(null,mController.mPlayRetry));
         mBinding.refresh.setOnClickListener(view -> changeAndUpdateText(null,mController.mPlayRefresh));
         mBinding.subtitle.setOnClickListener(view -> dismissWith(() -> changeAndUpdateText(null,mController.mZimuBtn)));
         mBinding.voice.setOnClickListener(view -> dismissWith(() -> changeAndUpdateText(null,mController.mAudioTrackBtn)));
+        mBinding.download.setOnClickListener(view -> dismissWith(mDetailActivity::use1DMDownload));
     }
 
     /**
@@ -104,6 +112,9 @@ public class PlayingControlDialog extends BottomPopupView {
         }
     }
 
+    /**
+     * 如切换/使用的是ijk,解码和音轨按钮才显示
+     */
     public void updateAboutIjkVisible(){
         mBinding.decode.setVisibility(mController.mPlayerIJKBtn.getVisibility());
         mBinding.voice.setVisibility(mController.mAudioTrackBtn.getVisibility());

@@ -66,17 +66,5 @@ public class AllSeriesRightDialog extends DrawerPopupView {
             seriesAdapter.notifyItemChanged(position);
             mSelectListener.onSelect(position,"");
         });
-
-        seriesAdapter.setOnItemLongClickListener((adapter, view, position) -> {
-            VodInfo.VodSeries vodSeries = seriesAdapter.getData().get(position);
-            new XPopup.Builder(getContext())
-                    .hasShadowBg(false)
-                    .atView(view)
-                    .popupPosition(PopupPosition.Top)
-                    .asAttachList(new String[]{vodSeries.name},null,null)
-                    .show()
-                    .delayDismiss(3000);
-            return true;
-        });
     }
 }

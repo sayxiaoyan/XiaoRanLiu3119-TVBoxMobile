@@ -1,6 +1,7 @@
 package com.github.tvbox.osc.ui.dialog;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.databinding.DialogPlayingControlBinding;
 import com.github.tvbox.osc.player.MyVideoView;
 import com.github.tvbox.osc.player.controller.VodController;
+import com.github.tvbox.osc.ui.activity.DetailActivity;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.core.DrawerPopupView;
 
@@ -17,12 +19,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class PlayingControlRightDialog extends DrawerPopupView {
 
+    @NonNull
+    private final DetailActivity mDetailActivity;
     private final VodController mController;
     MyVideoView mPlayer;
     private DialogPlayingControlBinding mBinding;
 
     public PlayingControlRightDialog(@NonNull @NotNull Context context, VodController controller, MyVideoView videoView) {
         super(context);
+        mDetailActivity = (DetailActivity) context;
         mController = controller;
         mPlayer = videoView;
     }
@@ -47,11 +52,15 @@ public class PlayingControlRightDialog extends DrawerPopupView {
         mBinding.playTimeEnd.setText(mController.mPlayerTimeSkipBtn.getText());
         mBinding.player.setText(mController.mPlayerBtn.getText());
         mBinding.decode.setText(mController.mPlayerIJKBtn.getText());
+        //全屏的设置弹窗显示
+        mBinding.landscapePortrait.setVisibility(View.VISIBLE);
+        mBinding.download.setVisibility(View.VISIBLE);
         updateAboutIjkVisible();
         updateSpeedUi();
     }
 
     private void initListener(){
+        //倍速
         mBinding.speed0.setOnClickListener(view -> setSpeed(mBinding.speed0));
         mBinding.speed1.setOnClickListener(view -> setSpeed(mBinding.speed1));
         mBinding.speed2.setOnClickListener(view -> setSpeed(mBinding.speed2));
@@ -59,17 +68,21 @@ public class PlayingControlRightDialog extends DrawerPopupView {
         mBinding.speed4.setOnClickListener(view -> setSpeed(mBinding.speed4));
         mBinding.speed5.setOnClickListener(view -> setSpeed(mBinding.speed5));
 
+        //播放器
         mBinding.scale.setOnClickListener(view -> changeAndUpdateText(mBinding.scale,mController.mPlayerScaleBtn));
         mBinding.playTimeStart.setOnClickListener(view -> changeAndUpdateText(mBinding.playTimeStart,mController.mPlayerTimeStartBtn));
         mBinding.playTimeEnd.setOnClickListener(view -> changeAndUpdateText(mBinding.playTimeEnd,mController.mPlayerTimeSkipBtn));
         mBinding.player.setOnClickListener(view -> changeAndUpdateText(mBinding.player,mController.mPlayerBtn));
         mBinding.decode.setOnClickListener(view -> changeAndUpdateText(mBinding.decode,mController.mPlayerIJKBtn));
 
+        //其他
+        mBinding.landscapePortrait.setOnClickListener(view -> dismissWith(() ->changeAndUpdateText(null,mController.mLandscapePortraitBtn)));
         mBinding.startEndReset.setOnClickListener(view -> resetSkipStartEnd());
         mBinding.replay.setOnClickListener(view -> changeAndUpdateText(null,mController.mPlayRetry));
         mBinding.refresh.setOnClickListener(view -> changeAndUpdateText(null,mController.mPlayRefresh));
         mBinding.subtitle.setOnClickListener(view -> dismissWith(() -> changeAndUpdateText(null,mController.mZimuBtn)));
         mBinding.voice.setOnClickListener(view -> dismissWith(() -> changeAndUpdateText(null,mController.mAudioTrackBtn)));
+        mBinding.download.setOnClickListener(view -> dismissWith(mDetailActivity::use1DMDownload));
     }
 
     /**
@@ -105,6 +118,9 @@ public class PlayingControlRightDialog extends DrawerPopupView {
         }
     }
 
+    /**
+     * 如切换/使用的是ijk,解码和音轨按钮才显示
+     */
     public void updateAboutIjkVisible(){
         mBinding.decode.setVisibility(mController.mPlayerIJKBtn.getVisibility());
         mBinding.voice.setVisibility(mController.mAudioTrackBtn.getVisibility());

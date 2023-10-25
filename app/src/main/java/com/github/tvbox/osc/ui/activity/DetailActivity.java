@@ -1,6 +1,8 @@
 package com.github.tvbox.osc.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -109,8 +111,17 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     //改为view模式无法自动响应返回键操作,onBackPress时手动dismiss
     private BasePopupView mAllSeriesRightDialog;
     private BasePopupView mAllSeriesBottomDialog;
+    /**
+     * Home键广播,用于触发后台服务
+     */
+    private BroadcastReceiver mHomeKeyReceiver;
+    /**
+     * 是否开启后台播放标记,不在广播开启,onPause根据标记开启
+     */
+    boolean openBackgroundPlay;
     @Override
     protected void init() {
+        initReceiver();
         initView();
         initViewModel();
         initData();
@@ -126,6 +137,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     @Override
     protected void onResume() {
         super.onResume();
+        openBackgroundPlay = false;
         if (ServiceUtils.isServiceRunning(PlayService.class)){
             PlayService.stop();
         }
@@ -283,6 +295,30 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
             });
         });
         setLoadSir(mBinding.llLayout);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (openBackgroundPlay){
+            PlayService.start(playFragment.getPlayer());
+        }
+    }
+
+    private void initReceiver(){
+        // 注册广播接收器
+        if (mHomeKeyReceiver == null) {
+            mHomeKeyReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    String action = intent.getAction();
+                    if (action != null && action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
+                        openBackgroundPlay = Hawk.get(HawkConfig.BACKGROUND_PLAY, false) && playFragment.getPlayer() != null && playFragment.getPlayer().isPlaying();
+                    }
+                }
+            };
+            registerReceiver(mHomeKeyReceiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+        }
     }
 
     public void showCastDialog() {
@@ -682,17 +718,15 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if (Hawk.get(HawkConfig.BACKGROUND_PLAY, false)){
-            PlayService.start(playFragment.getPlayer());
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mBatteryReceiver);
+        // 注销广播接收器
+        if (mHomeKeyReceiver != null) {
+            unregisterReceiver(mHomeKeyReceiver);
+            mHomeKeyReceiver = null;
+        }
+
         try {
             if (searchExecutorService != null) {
                 searchExecutorService.shutdownNow();
@@ -794,7 +828,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_SUBTITLE_SIZE_CHANGE, subtitleTextSize));
     }
 
-    private void use1DMDownload() {
+    public void use1DMDownload() {
         if (vodInfo != null && vodInfo.seriesMap.get(vodInfo.playFlag).size() > 0){
             VodInfo.VodSeries vod = vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex);
             String url = TextUtils.isEmpty(playFragment.getFinalUrl())?vod.url:playFragment.getFinalUrl();

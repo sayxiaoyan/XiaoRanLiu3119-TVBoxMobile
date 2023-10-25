@@ -64,7 +64,6 @@ public class PlayService extends Service {
 
         Notification notification = builder.build();
         startForeground(NOTIFICATION_ID, notification);
-
         videoView.start();
         return START_NOT_STICKY;
     }
