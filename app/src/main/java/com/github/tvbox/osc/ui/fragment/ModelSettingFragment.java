@@ -2,36 +2,44 @@ package com.github.tvbox.osc.ui.fragment;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.DiffUtil;
 
-import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
+import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.base.BaseLazyFragment;
 import com.github.tvbox.osc.bean.IJKCode;
+import com.github.tvbox.osc.bean.LiveChannelGroup;
+import com.github.tvbox.osc.bean.Source;
+import com.github.tvbox.osc.bean.Subscription;
 import com.github.tvbox.osc.constant.CacheConst;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.player.thirdparty.RemoteTVBox;
 
 import com.github.tvbox.osc.ui.activity.MainActivity;
 import com.github.tvbox.osc.ui.activity.SettingActivity;
+import com.github.tvbox.osc.ui.activity.SubscriptionActivity;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.ui.dialog.BackupDialog;
+import com.github.tvbox.osc.ui.dialog.ChooseSourceDialog;
+import com.github.tvbox.osc.ui.dialog.LiveApiDialog;
 import com.github.tvbox.osc.ui.dialog.SearchRemoteTvDialog;
 import com.github.tvbox.osc.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.ui.dialog.XWalkInitDialog;
+import com.github.tvbox.osc.util.DefaultConfig;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.FileUtils;
 import com.github.tvbox.osc.util.HawkConfig;
@@ -40,17 +48,22 @@ import com.github.tvbox.osc.util.OkGoHelper;
 import com.github.tvbox.osc.util.PlayerHelper;
 import com.github.tvbox.osc.util.Utils;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.google.common.base.Strings;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.hjq.bar.TitleBar;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.core.BasePopupView;
-import com.lxj.xpopup.interfaces.OnSelectListener;
-import com.lxj.xpopup.interfaces.SimpleCallback;
+import com.lxj.xpopup.interfaces.OnInputConfirmListener;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.AbsCallback;
+import com.lzy.okgo.model.Response;
 import com.orhanobut.hawk.Hawk;
 
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
@@ -135,6 +148,13 @@ public class ModelSettingFragment extends BaseLazyFragment {
             boolean newConfig = !Hawk.get(HawkConfig.PRIVATE_BROWSING, false);
             switchPrivate.setChecked(newConfig);
             Hawk.put(HawkConfig.PRIVATE_BROWSING, newConfig);
+        });
+
+        findViewById(R.id.llLiveApi).setOnClickListener(view -> {
+            new XPopup.Builder(mContext)
+                    .autoFocusEditText(false)
+                    .asCustom(new LiveApiDialog(mActivity))
+                    .show();
         });
 
         //后台播放

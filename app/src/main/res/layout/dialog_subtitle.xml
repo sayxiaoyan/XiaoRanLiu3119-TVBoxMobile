@@ -178,7 +178,7 @@
                         android:layout_weight="1"
                         android:layout_height="33dp"
                         android:focusable="true"
-                        android:text="本地字幕" />
+                        android:text="本地" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/selectInternal"
@@ -186,10 +186,10 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="33dp"
-                        android:text="内置字幕"
+                        android:text="内置"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:layout_marginLeft="20dp"/>
+                        android:layout_marginLeft="10dp"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/selectRemote"
@@ -197,7 +197,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="33dp"
-                        android:text="搜索字幕"
+                        android:text="搜索"
                         android:layout_marginLeft="20dp"/>
                 </LinearLayout>
 

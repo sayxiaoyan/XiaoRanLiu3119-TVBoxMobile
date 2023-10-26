@@ -46,7 +46,7 @@ public class SettingActivity extends BaseVbActivity<ActivitySettingBinding> {
     private String homeSourceKey;
     private int homeRec;
     private int dnsOpt;
-
+    private String currentLiveApi;
 
     @Override
     protected void init() {
@@ -100,6 +100,7 @@ public class SettingActivity extends BaseVbActivity<ActivitySettingBinding> {
     }
 
     private void initData() {
+        currentLiveApi = Hawk.get(HawkConfig.LIVE_URL, "");
         homeSourceKey = ApiConfig.get().getHomeSourceBean().getKey();
         homeRec = Hawk.get(HawkConfig.HOME_REC, 0);
         dnsOpt = Hawk.get(HawkConfig.DOH_URL, 0);
@@ -172,11 +173,15 @@ public class SettingActivity extends BaseVbActivity<ActivitySettingBinding> {
     public void onBackPressed() {
         if ((homeSourceKey != null && !homeSourceKey.equals(Hawk.get(HawkConfig.HOME_API, "")))||
                 homeRec != Hawk.get(HawkConfig.HOME_REC, 0) ||
-                dnsOpt != Hawk.get(HawkConfig.DOH_URL, 0)) {// 有配置项更改
+                dnsOpt != Hawk.get(HawkConfig.DOH_URL, 0)|| !currentLiveApi.equals(Hawk.get(HawkConfig.LIVE_URL, ""))) {// 任意项有更改
             AppManager.getInstance().finishAllActivity();
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("useCache", true);
-            jumpActivity(MainActivity.class, bundle);
+            if (currentLiveApi.equals(Hawk.get(HawkConfig.LIVE_URL, ""))) {//未更改直播源
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("useCache", true);
+                jumpActivity(MainActivity.class, bundle);
+            } else {
+                jumpActivity(MainActivity.class);
+            }
         } else {
             super.onBackPressed();
         }

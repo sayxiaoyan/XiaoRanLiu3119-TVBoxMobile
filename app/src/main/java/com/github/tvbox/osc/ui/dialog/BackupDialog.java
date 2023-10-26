@@ -1,6 +1,5 @@
 package com.github.tvbox.osc.ui.dialog;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
@@ -14,11 +13,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.data.AppDataManager;
-import com.github.tvbox.osc.ui.adapter.BackupAdapter;
+import com.github.tvbox.osc.ui.adapter.TitleWithDelAdapter;
 import com.github.tvbox.osc.util.FileUtils;
-import com.hjq.permissions.OnPermissionCallback;
-import com.hjq.permissions.Permission;
-import com.hjq.permissions.XXPermissions;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +35,7 @@ public class BackupDialog extends BaseDialog {
         super(context);
         setContentView(R.layout.dialog_backup);
         TvRecyclerView tvRecyclerView = ((TvRecyclerView) findViewById(R.id.list));
-        BackupAdapter adapter = new BackupAdapter();
+        TitleWithDelAdapter adapter = new TitleWithDelAdapter();
         tvRecyclerView.setAdapter(adapter);
         adapter.setNewData(allBackup());
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {

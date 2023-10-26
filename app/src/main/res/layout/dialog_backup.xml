@@ -68,7 +68,7 @@
             app:tv_verticalSpacingWithMargins="@dimen/dp_10"
             app:layout_constraintTop_toBottomOf="@+id/restore_tip"
             android:paddingBottom="10dp"
-            tools:listitem="@layout/item_dialog_backup"
+            tools:listitem="@layout/item_stroke_button"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

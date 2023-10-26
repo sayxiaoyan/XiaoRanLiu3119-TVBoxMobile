@@ -6,9 +6,9 @@ import com.github.tvbox.osc.R;
 
 import java.util.ArrayList;
 
-public class BackupAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-    public BackupAdapter() {
-        super(R.layout.item_dialog_backup, new ArrayList<>());
+public class TitleWithDelAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+    public TitleWithDelAdapter() {
+        super(R.layout.item_stroke_button, new ArrayList<>());
     }
 
     @Override
