@@ -651,7 +651,7 @@ public class PlayFragment extends BaseLazyFragment {
         TrackInfo trackInfo = null;
         if (mVideoView.getMediaPlayer() instanceof IjkMediaPlayer) {
             trackInfo = ((IjkMediaPlayer) (mVideoView.getMediaPlayer())).getTrackInfo();
-            if (trackInfo != null && trackInfo.getSubtitle().size() > 0) {
+            if (trackInfo != null && trackInfo.getSubtitle().size() > 0) {//如有则设置内置字幕
                 mController.mSubtitleView.hasInternal = true;
             }
             ((IjkMediaPlayer) (mVideoView.getMediaPlayer())).setOnTimedTextListener(new IMediaPlayer.OnTimedTextListener() {
@@ -674,7 +674,7 @@ public class PlayFragment extends BaseLazyFragment {
             if (playSubtitle != null && playSubtitle.length() > 0) {
                 mController.mSubtitleView.setSubtitlePath(playSubtitle);
             } else {
-                if (mController.mSubtitleView.hasInternal) {
+                if (mController.mSubtitleView.hasInternal) {//有则使用内置字幕
                     mController.mSubtitleView.isInternal = true;
                     if (trackInfo != null) {
                         List<TrackInfoBean> subtitleTrackList = trackInfo.getSubtitle();
