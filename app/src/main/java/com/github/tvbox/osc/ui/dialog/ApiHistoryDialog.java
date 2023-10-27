@@ -1,6 +1,7 @@
 package com.github.tvbox.osc.ui.dialog;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.github.tvbox.osc.databinding.DialogTitleListBinding;
 import com.github.tvbox.osc.ui.adapter.TitleWithDelAdapter;
 import com.github.tvbox.osc.ui.widget.LinearSpacingItemDecoration;
 import com.github.tvbox.osc.util.HawkConfig;
+import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.interfaces.OnInputConfirmListener;
 import com.orhanobut.hawk.Hawk;
@@ -44,7 +46,14 @@ public class ApiHistoryDialog extends BottomPopupView {
     protected void onCreate() {
         super.onCreate();
         DialogTitleListBinding binding = DialogTitleListBinding.bind(getPopupImplView());
-        binding.title.setText("历史记录");
+        binding.title.setText("历史直播源");
+
+        binding.ivUseTip.setOnClickListener(view -> {
+            new XPopup.Builder(getContext())
+                    .asConfirm("使用帮助","订阅的内置直播源会被解析并存到历史记录,即使未使用,最多20条,按需选择!","","知道了",null,null,true)
+                    .show();
+        });
+
         binding.rv.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rv.addItemDecoration(new LinearSpacingItemDecoration(20, true));
         TitleWithDelAdapter adapter = new TitleWithDelAdapter();

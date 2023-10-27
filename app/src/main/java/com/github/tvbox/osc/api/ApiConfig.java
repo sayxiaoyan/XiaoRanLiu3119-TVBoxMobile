@@ -406,9 +406,7 @@ public class ApiConfig {
                         System.out.println("Live URL :" + extUrlFix);
                         putLiveHistory(extUrlFix);
                         // Overwrite with Live URL from Settings
-                        if (StringUtils.isBlank(liveURL)) {
-                            Hawk.put(HawkConfig.LIVE_URL, extUrlFix);
-                        } else {
+                        if (!StringUtils.isBlank(liveURL)) {
                             extUrlFix = liveURL;
                         }
 
@@ -467,9 +465,7 @@ public class ApiConfig {
                                 System.out.println("Live URL :" + url);
                                 putLiveHistory(url);
                                 // Overwrite with Live URL from Settings
-                                if (StringUtils.isBlank(liveURL)) {
-                                    Hawk.put(HawkConfig.LIVE_URL, url);
-                                } else {
+                                if (!StringUtils.isBlank(liveURL)) {
                                     url = liveURL;
                                 }
 
