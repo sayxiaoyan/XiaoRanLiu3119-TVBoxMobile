@@ -617,7 +617,8 @@ public class ModelSettingFragment extends BaseLazyFragment {
         findViewById(R.id.llIjkCachePlay).setOnClickListener((view -> onClickIjkCachePlay(view)));
         findViewById(R.id.llClearCache).setOnClickListener((view -> {
             new XPopup.Builder(mActivity)
-                    .asConfirm("提示", "缓存包括本地视频播放进度等,确定清空吗？", () -> {
+                    .isDarkTheme(Utils.isDarkTheme())
+                    .asConfirm("提示", "确定清空吗？", () -> {
                         onClickClearCache(view);
                     }).show();
         }));
@@ -684,9 +685,6 @@ public class ModelSettingFragment extends BaseLazyFragment {
     private void onClickClearCache(View v) {
         FastClickCheckUtil.check(v);
 
-        SPUtils.getInstance(CacheConst.VIDEO_DURATION_SP).clear();
-        SPUtils.getInstance(CacheConst.VIDEO_PROGRESS_SP).clear();
-
         String cachePath = FileUtils.getCachePath();
         File cacheDir = new File(cachePath);
         if (!cacheDir.exists()) return;
@@ -698,7 +696,6 @@ public class ModelSettingFragment extends BaseLazyFragment {
             }
         }).start();
         Toast.makeText(getContext(), "缓存已清空", Toast.LENGTH_LONG).show();
-        return;
     }
 
 

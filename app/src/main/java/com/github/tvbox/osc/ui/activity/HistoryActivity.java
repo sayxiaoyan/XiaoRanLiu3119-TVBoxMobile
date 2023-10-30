@@ -20,6 +20,7 @@ import com.github.tvbox.osc.databinding.ActivityHistoryBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.ui.adapter.HistoryAdapter;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
+import com.github.tvbox.osc.util.Utils;
 import com.hjq.bar.TitleBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnConfirmListener;
@@ -70,6 +71,7 @@ public class HistoryActivity extends BaseVbActivity<ActivityHistoryBinding> {
 
         mBinding.titleBar.getRightView().setOnClickListener(view -> {
             new XPopup.Builder(this)
+                    .isDarkTheme(Utils.isDarkTheme())
                     .asConfirm("提示", "确定清空?", () -> {
                         RoomDataManger.deleteVodRecordAll();
                         historyAdapter.setNewData(new ArrayList<>());

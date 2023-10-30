@@ -20,6 +20,7 @@ import com.github.tvbox.osc.databinding.ActivityCollectBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.ui.adapter.CollectAdapter;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
+import com.github.tvbox.osc.util.Utils;
 import com.lxj.xpopup.XPopup;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
@@ -51,6 +52,7 @@ public class CollectActivity extends BaseVbActivity<ActivityCollectBinding> {
 
         mBinding.titleBar.getRightView().setOnClickListener(view -> {
             new XPopup.Builder(this)
+                    .isDarkTheme(Utils.isDarkTheme())
                     .asConfirm("提示", "确定清空?", () -> {
                         RoomDataManger.deleteVodCollectAll();
                         collectAdapter.setNewData(new ArrayList<>());

@@ -6,7 +6,7 @@
     android:paddingHorizontal="30dp"
     android:orientation="vertical"
     android:paddingVertical="20dp"
-    android:background="@drawable/bg_large_round_gray">
+    android:background="@drawable/bg_large_round_popup">
 
     <RelativeLayout
         android:layout_width="match_parent"

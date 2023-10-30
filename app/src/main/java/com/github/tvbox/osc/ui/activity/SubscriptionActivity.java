@@ -32,6 +32,7 @@ import com.github.tvbox.osc.ui.dialog.ChooseSourceDialog;
 import com.github.tvbox.osc.ui.dialog.SubsTipDialog;
 import com.github.tvbox.osc.ui.dialog.SubsciptionDialog;
 import com.github.tvbox.osc.util.HawkConfig;
+import com.github.tvbox.osc.util.Utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -187,6 +188,7 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
 
     private void showPermissionTipPopup() {
         new XPopup.Builder(SubscriptionActivity.this)
+                .isDarkTheme(Utils.isDarkTheme())
                 .asConfirm("提示", "这将访问您设备文件的读取权限", () -> {
                     XXPermissions.with(this)
                             .permission(Permission.MANAGE_EXTERNAL_STORAGE)

@@ -20,6 +20,7 @@ import com.github.tvbox.osc.ui.activity.SettingActivity;
 import com.github.tvbox.osc.ui.activity.SubscriptionActivity;
 import com.github.tvbox.osc.ui.dialog.AboutDialog;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
+import com.github.tvbox.osc.util.Utils;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -84,6 +85,7 @@ public class MyFragment extends BaseVbFragment<FragmentMyBinding> {
 
     private void showPermissionTipPopup(){
         new XPopup.Builder(mActivity)
+                .isDarkTheme(Utils.isDarkTheme())
                 .asConfirm("提示","为了播放视频、音频等,我们需要访问您设备文件的读写权限", () -> {
                     getPermission();
                 }).show();

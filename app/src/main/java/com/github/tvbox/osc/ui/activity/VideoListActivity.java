@@ -95,6 +95,7 @@ public class VideoListActivity extends BaseVbActivity<ActivityMovieFoldersBindin
         mBinding.tvDelete.setOnClickListener(view -> {
             FastClickCheckUtil.check(view);
             new XPopup.Builder(this)
+                    .isDarkTheme(Utils.isDarkTheme())
                     .asConfirm("提示","确定删除所选视频吗？",() -> {
                         List<VideoInfo> data = mLocalVideoAdapter.getData();
                         List<VideoInfo> deleteList = new ArrayList<>();

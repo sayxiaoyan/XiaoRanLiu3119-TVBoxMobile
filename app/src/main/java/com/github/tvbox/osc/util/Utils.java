@@ -1,5 +1,6 @@
 package com.github.tvbox.osc.util;
 
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.provider.MediaStore;
 
@@ -95,7 +96,8 @@ public class Utils {
     }
 
     public static boolean isDarkTheme(){
-        return AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+        int currentNightMode = App.getInstance().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES || AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES;
     }
 
     public static void initTheme(){
