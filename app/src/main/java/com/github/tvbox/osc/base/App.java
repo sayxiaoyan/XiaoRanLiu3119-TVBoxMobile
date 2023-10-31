@@ -72,12 +72,14 @@ public class App extends MultiDexApplication {
         // Hawk
         Hawk.init(this).build();
         Hawk.put(HawkConfig.DEBUG_OPEN, false);
-        if (!Hawk.contains(HawkConfig.PLAY_TYPE)) {
-            Hawk.put(HawkConfig.PLAY_TYPE, 2);
-        }
-        if (!Hawk.contains(HawkConfig.IJK_CODEC)) {
-            Hawk.put(HawkConfig.IJK_CODEC, "硬解码");
-        }
+
+        putDefault(HawkConfig.HOME_REC, 0);                  //推荐: 0=豆瓣热播, 1=站点推荐
+        putDefault(HawkConfig.PLAY_TYPE, 2);                 //播放器: 0=系统, 1=IJK, 2=Exo
+        putDefault(HawkConfig.IJK_CODEC, "硬解码");           //IJK解码: 软解码, 硬解码
+        putDefault(HawkConfig.BACKGROUND_PLAY,false);           //后台播放: true=开启, false=关闭
+        putDefault(HawkConfig.PARSE_WEBVIEW, true);          //嗅探Webview: true=系统自带, false=XWalkView
+        putDefault(HawkConfig.DOH_URL, 0);                   //安全DNS: 0=关闭, 1=腾讯, 2=阿里, 3=360, 4=Google, 5=AdGuard, 6=Quad9
+        putDefault(HawkConfig.PLAY_SCALE, 0);                //画面缩放: 0=默认, 1=16:9, 2=4:3, 3=填充, 4=原始, 5=裁剪
     }
 
     public static App getInstance() {
@@ -88,6 +90,12 @@ public class App extends MultiDexApplication {
     public void onTerminate() {
         super.onTerminate();
         JSEngine.getInstance().destroy();
+    }
+
+    private void putDefault(String key, Object value) {
+        if (!Hawk.contains(key)) {
+            Hawk.put(key, value);
+        }
     }
 
 
