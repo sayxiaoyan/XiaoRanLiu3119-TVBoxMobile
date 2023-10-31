@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.http.SslError;
@@ -349,6 +350,30 @@ public class PlayFragment extends BaseLazyFragment {
      */
     public void changedLandscape(boolean fullWindows) {
         mFullWindows = fullWindows;
+        if (fullWindows){
+            int[] size = mVideoView.getVideoSize();
+            int width = size[0];
+            int height = size[1];
+            if (width>height){//根据视频尺寸判断是否横屏,小视频则只在activity改了预览尺寸(全屏预览)
+                //横屏(传感器)
+                mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+            }
+
+            ImmersionBar.with(mActivity)
+                    .hideBar(BarHide.FLAG_HIDE_BAR)
+                    .navigationBarColor(R.color.black)//即使隐藏部分时候还是会显示
+                    .fitsSystemWindows(false)
+                    .init();
+        }else {//非全屏统一设置竖屏,activity处理为小的预览尺寸
+            mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+            ImmersionBar.with(mActivity)
+                    .hideBar(BarHide.FLAG_SHOW_BAR)
+                    .navigationBarColor(R.color.white)
+                    .fitsSystemWindows(true)
+                    .init();
+        }
+
         mController.changedLandscape(fullWindows);
     }
 

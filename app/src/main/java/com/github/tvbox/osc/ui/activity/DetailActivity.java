@@ -772,34 +772,14 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         if (windowsPreview == null) {
             windowsPreview = mBinding.previewPlayer.getLayoutParams();
         }
-        if (windowsFull == null) {
+        if (windowsFull == null) {//全屏尺寸
             windowsFull = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
         fullWindows = !fullWindows;
 
-        if (fullWindows){
-            //横屏(传感器)
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-
-            ImmersionBar.with(this)
-                    .hideBar(BarHide.FLAG_HIDE_BAR)
-                    .navigationBarColor(R.color.black)//即使隐藏部分时候还是会显示
-                    .fitsSystemWindows(false)
-                    .init();
-
-            playFragment.changedLandscape(true);
-        }else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-            ImmersionBar.with(this)
-                    .hideBar(BarHide.FLAG_SHOW_BAR)
-                    .navigationBarColor(R.color.white)
-                    .fitsSystemWindows(true)
-                    .init();
-
-            playFragment.changedLandscape(false);
-        }
-
+        //交由fragment处理播放器全屏逻辑
+        playFragment.changedLandscape(fullWindows);
+        //activity处理预览尺寸(全屏/非全屏预览)
         mBinding.previewPlayer.setLayoutParams(fullWindows ? windowsFull : windowsPreview);
         mBinding.mGridView.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
         mBinding.mGridViewFlag.setVisibility(fullWindows ? View.GONE : View.VISIBLE);
