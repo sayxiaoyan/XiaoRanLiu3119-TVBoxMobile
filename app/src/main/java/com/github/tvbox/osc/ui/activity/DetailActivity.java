@@ -925,6 +925,9 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         } else {
             unregisterReceiver(mPipActionReceiver);
             mPipActionReceiver = null;
+            if (playFragment.getPlayer().isPlaying()){// 退出画中画时,暂停播放(画中画的全屏也会触发,但全屏后会自动播放)
+                playFragment.getController().togglePlay();
+            }
         }
     }
 
