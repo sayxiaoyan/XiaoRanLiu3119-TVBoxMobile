@@ -250,7 +250,6 @@
                         android:id="@+id/tvPlay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         />
 
                     <ImageView
@@ -325,17 +324,18 @@
                         android:layout_weight="1" />
 
                     <TextView
+                        android:id="@+id/tvBackgroundPlayType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Beta"
-                        android:layout_marginEnd="4dp"
-                        android:textColor="@color/red"
-                        android:textSize="10sp"
                         />
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switchBackgroundPlay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="center"
+                        android:alpha="0.75"
+                        android:src="@drawable/icon_pre"
+                        app:tint="@color/text_gray"/>
                 </LinearLayout>
 
                 <LinearLayout

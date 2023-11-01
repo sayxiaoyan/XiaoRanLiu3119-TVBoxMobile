@@ -2,11 +2,8 @@ package com.github.tvbox.osc.ui.fragment;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Base64;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,32 +11,23 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
-import com.github.tvbox.osc.base.BaseActivity;
 import com.github.tvbox.osc.base.BaseLazyFragment;
 import com.github.tvbox.osc.bean.IJKCode;
-import com.github.tvbox.osc.bean.LiveChannelGroup;
-import com.github.tvbox.osc.bean.Source;
-import com.github.tvbox.osc.bean.Subscription;
 import com.github.tvbox.osc.constant.CacheConst;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.player.thirdparty.RemoteTVBox;
 
 import com.github.tvbox.osc.ui.activity.MainActivity;
 import com.github.tvbox.osc.ui.activity.SettingActivity;
-import com.github.tvbox.osc.ui.activity.SubscriptionActivity;
 import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.ui.dialog.BackupDialog;
-import com.github.tvbox.osc.ui.dialog.ChooseSourceDialog;
 import com.github.tvbox.osc.ui.dialog.LiveApiDialog;
 import com.github.tvbox.osc.ui.dialog.SearchRemoteTvDialog;
 import com.github.tvbox.osc.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.ui.dialog.XWalkInitDialog;
-import com.github.tvbox.osc.util.DefaultConfig;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.FileUtils;
 import com.github.tvbox.osc.util.HawkConfig;
@@ -48,22 +36,13 @@ import com.github.tvbox.osc.util.OkGoHelper;
 import com.github.tvbox.osc.util.PlayerHelper;
 import com.github.tvbox.osc.util.Utils;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.hjq.bar.TitleBar;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.interfaces.OnInputConfirmListener;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.AbsCallback;
-import com.lzy.okgo.model.Response;
 import com.orhanobut.hawk.Hawk;
 
-import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
@@ -158,12 +137,42 @@ public class ModelSettingFragment extends BaseLazyFragment {
         });
 
         //后台播放
-        SwitchMaterial switchBgPlay = findViewById(R.id.switchBackgroundPlay);
-        switchBgPlay.setChecked(Hawk.get(HawkConfig.BACKGROUND_PLAY, false));
-        switchBgPlay.setOnClickListener(view -> {
-            boolean newConfig = !Hawk.get(HawkConfig.BACKGROUND_PLAY, false);
-            switchBgPlay.setChecked(newConfig);
-            Hawk.put(HawkConfig.BACKGROUND_PLAY, newConfig);
+        View backgroundPlay = findViewById(R.id.llBackgroundPlay);
+        TextView tvBgPlayType = findViewById(R.id.tvBackgroundPlayType);
+        Integer defaultBgPlayTypePos = Hawk.get(HawkConfig.BACKGROUND_PLAY_TYPE, 0);
+
+        ArrayList<String> bgPlayTypes = new ArrayList<>();
+        bgPlayTypes.add("关闭");
+        bgPlayTypes.add("开启");
+        bgPlayTypes.add("画中画");
+        tvBgPlayType.setText(bgPlayTypes.get(defaultBgPlayTypePos));
+        backgroundPlay.setOnClickListener(view -> {
+            FastClickCheckUtil.check(view);
+            SelectDialog<String> dialog = new SelectDialog<>(mActivity);
+            dialog.setTip("请选择");
+            dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<String>() {
+                @Override
+                public void click(String value, int pos) {
+                    tvBgPlayType.setText(value);
+                    Hawk.put(HawkConfig.BACKGROUND_PLAY_TYPE, pos);
+                }
+
+                @Override
+                public String getDisplay(String val) {
+                    return val;
+                }
+            }, new DiffUtil.ItemCallback<String>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull @NotNull String oldItem, @NonNull @NotNull String newItem) {
+                    return oldItem.equals(newItem);
+                }
+
+                @Override
+                public boolean areContentsTheSame(@NonNull @NotNull String oldItem, @NonNull @NotNull String newItem) {
+                    return oldItem.equals(newItem);
+                }
+            }, bgPlayTypes,defaultBgPlayTypePos);
+            dialog.show();
         });
 
         findViewById(R.id.llDebug).setOnClickListener(new View.OnClickListener() {

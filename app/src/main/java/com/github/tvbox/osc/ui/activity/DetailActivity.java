@@ -1,23 +1,29 @@
 package com.github.tvbox.osc.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
+import android.app.PictureInPictureParams;
+import android.app.RemoteAction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Rational;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -50,18 +56,15 @@ import com.github.tvbox.osc.ui.dialog.CastListDialog;
 import com.github.tvbox.osc.ui.dialog.QuickSearchDialog;
 import com.github.tvbox.osc.ui.dialog.VideoDetailDialog;
 import com.github.tvbox.osc.ui.fragment.PlayFragment;
-import com.github.tvbox.osc.ui.widget.GridSpacingItemDecoration;
 import com.github.tvbox.osc.ui.widget.LinearSpacingItemDecoration;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.SearchHelper;
 import com.github.tvbox.osc.util.SubtitleHelper;
-import com.github.tvbox.osc.util.Utils;
 import com.github.tvbox.osc.viewmodel.SourceViewModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
@@ -70,7 +73,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.hawk.Hawk;
-import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -121,6 +123,14 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
      * 是否开启后台播放标记,不在广播开启,onPause根据标记开启
      */
     boolean openBackgroundPlay;
+    /**
+     * 画中画事件
+     */
+    private static final int PIP_BOARDCAST_ACTION_PREV = 0;
+    private static final int PIP_BOARDCAST_ACTION_PLAYPAUSE = 1;
+    private static final int PIP_BOARDCAST_ACTION_NEXT = 2;
+    private BroadcastReceiver mPipActionReceiver;
+
     @Override
     protected void init() {
         initReceiver();
@@ -289,7 +299,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 public void onReceive(Context context, Intent intent) {
                     String action = intent.getAction();
                     if (action != null && action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
-                        openBackgroundPlay = Hawk.get(HawkConfig.BACKGROUND_PLAY, false) && playFragment.getPlayer() != null && playFragment.getPlayer().isPlaying();
+                        openBackgroundPlay = Hawk.get(HawkConfig.BACKGROUND_PLAY_TYPE, 0) == 1 && playFragment.getPlayer() != null && playFragment.getPlayer().isPlaying();
                     }
                 }
             };
@@ -837,4 +847,85 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
             ToastUtils.showShort("资源异常,请稍后重试");
         }
     }
+
+    @Override
+    public void onUserLeaveHint() {
+
+        if (supportsPiPMode() && Hawk.get(HawkConfig.BACKGROUND_PLAY_TYPE, 0) == 2 && playFragment.getPlayer().isPlaying()) {
+            // Calculate Video Resolution
+            int vWidth = playFragment.getPlayer().getVideoSize()[0];
+            int vHeight = playFragment.getPlayer().getVideoSize()[1];
+            Rational ratio;
+            if (vWidth != 0) {
+                if ((((double) vWidth) / ((double) vHeight)) > 2.39) {
+                    vHeight = (int) (((double) vWidth) / 2.35);
+                }
+                ratio = new Rational(vWidth, vHeight);
+            } else {
+                ratio = new Rational(16, 9);
+            }
+            List<RemoteAction> actions = new ArrayList<>();
+            actions.add(generateRemoteAction(android.R.drawable.ic_media_previous, PIP_BOARDCAST_ACTION_PREV, "Prev", "Play Previous"));
+            actions.add(generateRemoteAction(android.R.drawable.ic_media_play, PIP_BOARDCAST_ACTION_PLAYPAUSE, "Play", "Play/Pause"));
+            actions.add(generateRemoteAction(android.R.drawable.ic_media_next, PIP_BOARDCAST_ACTION_NEXT, "Next", "Play Next"));
+            PictureInPictureParams params = new PictureInPictureParams.Builder()
+                    .setAspectRatio(ratio)
+                    .setActions(actions).build();
+            if (!fullWindows) {
+                toggleFullPreview();
+            }
+            enterPictureInPictureMode(params);
+            playFragment.getController().hideBottom();
+
+            playFragment.getPlayer().postDelayed(() -> {
+                if (!playFragment.getPlayer().isPlaying()){
+                    playFragment.getController().togglePlay();
+                }
+            },300);
+        }
+        super.onUserLeaveHint();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private RemoteAction generateRemoteAction(int iconResId, int actionCode, String title, String desc) {
+        final PendingIntent intent =
+                PendingIntent.getBroadcast(
+                        DetailActivity.this,
+                        actionCode,
+                        new Intent("PIP_VOD_CONTROL").putExtra("action", actionCode),
+                        0);
+        final Icon icon = Icon.createWithResource(DetailActivity.this, iconResId);
+        return (new RemoteAction(icon, title, desc, intent));
+    }
+
+    @Override
+    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode);
+        if (supportsPiPMode() && isInPictureInPictureMode) {
+            mPipActionReceiver = new BroadcastReceiver() {
+
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (intent == null || !intent.getAction().equals("PIP_VOD_CONTROL") || playFragment.getController() == null) {
+                        return;
+                    }
+
+                    int currentStatus = intent.getIntExtra("action", 1);
+                    if (currentStatus == PIP_BOARDCAST_ACTION_PREV) {
+                        playFragment.playPrevious();
+                    } else if (currentStatus == PIP_BOARDCAST_ACTION_PLAYPAUSE) {
+                        playFragment.getController().togglePlay();
+                    } else if (currentStatus == PIP_BOARDCAST_ACTION_NEXT) {
+                        playFragment.playNext(false);
+                    }
+                }
+            };
+            registerReceiver(mPipActionReceiver, new IntentFilter("PIP_VOD_CONTROL"));
+
+        } else {
+            unregisterReceiver(mPipActionReceiver);
+            mPipActionReceiver = null;
+        }
+    }
+
 }

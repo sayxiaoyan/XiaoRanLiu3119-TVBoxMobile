@@ -3,6 +3,7 @@ package com.github.tvbox.osc.base;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -229,5 +230,9 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
         if (loadingPopup != null && loadingPopup.isShow()) {
             loadingPopup.dismiss();
         }
+    }
+
+    public boolean supportsPiPMode() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 }

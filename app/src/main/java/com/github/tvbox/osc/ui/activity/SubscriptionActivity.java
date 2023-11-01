@@ -173,7 +173,7 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
             new XPopup.Builder(this)
                     .atView(view.findViewById(R.id.tv_name))
                     .hasShadowBg(false)
-                    .asAttachList(new String[]{item.isTop() ? "取消置顶" : "置顶", "复制地址", "重命名"}, null, (index, text) -> {
+                    .asAttachList(new String[]{item.isTop() ? "取消置顶" : "置顶", "重命名", "复制地址"}, null, (index, text) -> {
                         switch (index) {
                             case 0:
                                 item.setTop(!item.isTop());
@@ -181,10 +181,6 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
                                 mSubscriptionAdapter.setNewData(mSubscriptions);
                                 break;
                             case 1:
-                                ClipboardUtils.copyText(mSubscriptions.get(position).getUrl());
-                                ToastUtils.showLong("已复制");
-                                break;
-                            case 2:
                                 new XPopup.Builder(this)
                                         .asInputConfirm("更改为", "", item.getName(), "新的订阅名", new OnInputConfirmListener() {
                                             @Override
@@ -199,6 +195,10 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
                                                 }
                                             }
                                         }, null, R.layout.dialog_input).show();
+                                break;
+                            case 2:
+                                ClipboardUtils.copyText(mSubscriptions.get(position).getUrl());
+                                ToastUtils.showLong("已复制");
                                 break;
                         }
                     }).show();

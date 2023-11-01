@@ -847,6 +847,12 @@ public class PlayFragment extends BaseLazyFragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        mVideoView.pause();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (mVideoView != null) {
@@ -890,7 +896,7 @@ public class PlayFragment extends BaseLazyFragment {
     private String sourceKey;
     private SourceBean sourceBean;
 
-    private void playNext(boolean isProgress) {
+    public void playNext(boolean isProgress) {
         boolean hasNext;
         if (mVodInfo == null || mVodInfo.seriesMap.get(mVodInfo.playFlag) == null) {
             hasNext = false;
@@ -906,7 +912,7 @@ public class PlayFragment extends BaseLazyFragment {
         play(false);
     }
 
-    private void playPrevious() {
+    public void playPrevious() {
         boolean hasPre = true;
         if (mVodInfo == null || mVodInfo.seriesMap.get(mVodInfo.playFlag) == null) {
             hasPre = false;
@@ -1840,6 +1846,9 @@ public class PlayFragment extends BaseLazyFragment {
 
     public MyVideoView getPlayer() {
         return mVideoView;
+    }
+    public VodController getController() {
+        return mController;
     }
 
 }

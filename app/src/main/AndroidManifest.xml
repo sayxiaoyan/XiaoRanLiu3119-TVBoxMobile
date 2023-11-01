@@ -72,7 +72,8 @@
             android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".ui.activity.DetailActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden|uiMode" />
+            android:supportsPictureInPicture="true"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|uiMode"/>
         <activity
             android:name=".ui.activity.SearchActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
