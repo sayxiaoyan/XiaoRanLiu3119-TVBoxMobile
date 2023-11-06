@@ -21,6 +21,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.bean.Subtitle;
@@ -71,7 +73,7 @@ public class SearchSubtitleDialog extends BaseDialog {
         super.onCreate(savedInstanceState);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(getWindow().getAttributes());
-        lp.gravity = Gravity.TOP | Gravity.START | Gravity.END;
+        lp.gravity = ScreenUtils.isPortrait()?Gravity.CENTER:Gravity.TOP | Gravity.START | Gravity.END;
         lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
 
         getWindow().setAttributes(lp);
@@ -100,6 +102,10 @@ public class SearchSubtitleDialog extends BaseDialog {
                         mGridView.setVisibility(View.GONE);
                         subtitleViewModel.getSearchResultSubtitleUrls(subtitle);
                     } else {
+                        if (TextUtils.isEmpty(subtitle.getUrl())){
+                            ToastUtils.showShort("url加载失败,请重新搜索");
+                            return;
+                        }
                         loadSubtitle(subtitle);
                         dismiss();
                     }
@@ -108,7 +114,6 @@ public class SearchSubtitleDialog extends BaseDialog {
         });
 
         subtitleSearchEt.setOnEditorActionListener((v, actionId, event) -> {
-            KeyboardUtils.hideSoftInput(v);
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 String wd = subtitleSearchEt.getText().toString().trim();
                 search(wd);
@@ -148,6 +153,7 @@ public class SearchSubtitleDialog extends BaseDialog {
     }
 
     public void search(String wd) {
+        KeyboardUtils.hideSoftInput(getWindow());
         isSearchPag = true;
         searchAdapter.setNewData(new ArrayList<>());
         if (!TextUtils.isEmpty(wd)) {
@@ -179,7 +185,7 @@ public class SearchSubtitleDialog extends BaseDialog {
                 }
 
                 if (data.size() > 0) {
-                    mGridView.requestFocus();
+                    //mGridView.requestFocus();
                     if (subtitleData.getIsZip()) {
                         if (subtitleData.getIsNew()) {
                             searchAdapter.setNewData(data);
