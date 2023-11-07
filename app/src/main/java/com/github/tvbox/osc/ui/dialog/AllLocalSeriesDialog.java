@@ -58,6 +58,12 @@ public class AllLocalSeriesDialog extends DrawerPopupView {
         seriesAdapter.setNewData(mList);
         rv.setAdapter(seriesAdapter);
 
+        for (int i = 0; i < mList.size(); i++) {
+            if (mList.get(i).selected){
+                rv.scrollToPosition(i);
+            }
+        }
+
         seriesAdapter.setOnItemClickListener((adapter, view, position) -> {
             for (int j = 0; j < seriesAdapter.getData().size(); j++) {
                 seriesAdapter.getData().get(j).selected = false;

@@ -50,6 +50,14 @@ public class AllVodSeriesBottomDialog extends BottomPopupView {
         seriesAdapter.setNewData(mList);
         rv.setAdapter(seriesAdapter);
 
+        rv.postDelayed(() -> {//xpopup重写maxHeight后布局完成未滑动完毕导致定位异常,加延时可正常滑动
+            for (int i = 0; i < mList.size(); i++) {
+                if (mList.get(i).selected){
+                    rv.smoothScrollToPosition(i);
+                }
+            }
+        },500);
+
         seriesAdapter.setOnItemClickListener((adapter, view, position) -> {
             for (int j = 0; j < seriesAdapter.getData().size(); j++) {
                 seriesAdapter.getData().get(j).selected = false;

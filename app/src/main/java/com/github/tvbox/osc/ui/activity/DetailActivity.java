@@ -377,7 +377,6 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
             seriesAdapter.getData().get(vodInfo.playIndex).selected = true;
             seriesAdapter.notifyItemChanged(vodInfo.playIndex);
 
-            mBinding.mGridView.scrollToPosition(vodInfo.playIndex);
             //选集全屏 想选集不全屏的注释下面一行
             if (!showPreview || reload) {
                 jumpToPlay();
@@ -423,6 +422,9 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 App.getInstance().setVodInfo(previewVodInfo);
             }
             playFragment.setData(bundle);
+
+            //定位选集
+            mBinding.mGridView.scrollToPosition(vodInfo.playIndex);
         }
     }
 
