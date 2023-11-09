@@ -694,9 +694,7 @@
                     android:focusable="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="20dp"
-                    android:visibility="gone"
-                    tools:visibility="visible">
+                    android:paddingHorizontal="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
