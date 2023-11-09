@@ -44,6 +44,7 @@ import com.github.tvbox.osc.bean.Movie;
 import com.github.tvbox.osc.bean.SourceBean;
 import com.github.tvbox.osc.bean.VodInfo;
 import com.github.tvbox.osc.cache.RoomDataManger;
+import com.github.tvbox.osc.constant.Constants;
 import com.github.tvbox.osc.databinding.ActivityDetailBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.receiver.BatteryReceiver;
@@ -61,6 +62,7 @@ import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.SearchHelper;
 import com.github.tvbox.osc.util.SubtitleHelper;
+import com.github.tvbox.osc.util.Utils;
 import com.github.tvbox.osc.viewmodel.SourceViewModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -123,12 +125,6 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
      * 是否开启后台播放标记,不在广播开启,onPause根据标记开启
      */
     boolean openBackgroundPlay;
-    /**
-     * 画中画事件
-     */
-    private static final int PIP_BOARDCAST_ACTION_PREV = 0;
-    private static final int PIP_BOARDCAST_ACTION_PLAYPAUSE = 1;
-    private static final int PIP_BOARDCAST_ACTION_NEXT = 2;
     private BroadcastReceiver mPipActionReceiver;
 
     @Override
@@ -850,10 +846,16 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         }
     }
 
-    @Override
-    public void onUserLeaveHint() {
+    /**
+     * 画中画模式
+     */
+    public void enterPip() {
+        if (Utils.supportsPiPMode()) {
+            // 创建一个Intent对象，模拟按下Home键
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
 
-        if (supportsPiPMode() && Hawk.get(HawkConfig.BACKGROUND_PLAY_TYPE, 0) == 2 && playFragment.getPlayer().isPlaying()) {
             // Calculate Video Resolution
             int vWidth = playFragment.getPlayer().getVideoSize()[0];
             int vHeight = playFragment.getPlayer().getVideoSize()[1];
@@ -867,15 +869,17 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 ratio = new Rational(16, 9);
             }
             List<RemoteAction> actions = new ArrayList<>();
-            actions.add(generateRemoteAction(android.R.drawable.ic_media_previous, PIP_BOARDCAST_ACTION_PREV, "Prev", "Play Previous"));
-            actions.add(generateRemoteAction(android.R.drawable.ic_media_play, PIP_BOARDCAST_ACTION_PLAYPAUSE, "Play", "Play/Pause"));
-            actions.add(generateRemoteAction(android.R.drawable.ic_media_next, PIP_BOARDCAST_ACTION_NEXT, "Next", "Play Next"));
+            actions.add(generateRemoteAction(android.R.drawable.ic_media_previous, Constants.PIP_BOARDCAST_ACTION_PREV, "Prev", "Play Previous"));
+            actions.add(generateRemoteAction(android.R.drawable.ic_media_play, Constants.PIP_BOARDCAST_ACTION_PLAYPAUSE, "Play", "Play/Pause"));
+            actions.add(generateRemoteAction(android.R.drawable.ic_media_next, Constants.PIP_BOARDCAST_ACTION_NEXT, "Next", "Play Next"));
             PictureInPictureParams params = new PictureInPictureParams.Builder()
                     .setAspectRatio(ratio)
                     .setActions(actions).build();
-            if (!fullWindows) {
-                toggleFullPreview();
-            }
+            playFragment.getPlayer().postDelayed(() -> {//代码模拟home键时会立即执行,toggleFullPreview中竖屏有切换横屏操作,
+                if (!fullWindows) {
+                    toggleFullPreview();
+                }
+            },300);
             enterPictureInPictureMode(params);
             playFragment.getController().hideBottom();
 
@@ -883,7 +887,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 if (!playFragment.getPlayer().isPlaying()){
                     playFragment.getController().togglePlay();
                 }
-            },300);
+            },400);
         }
         super.onUserLeaveHint();
     }
@@ -903,7 +907,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     @Override
     public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode);
-        if (supportsPiPMode() && isInPictureInPictureMode) {
+        if (Utils.supportsPiPMode() && isInPictureInPictureMode) {
             mPipActionReceiver = new BroadcastReceiver() {
 
                 @Override
@@ -913,11 +917,11 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                     }
 
                     int currentStatus = intent.getIntExtra("action", 1);
-                    if (currentStatus == PIP_BOARDCAST_ACTION_PREV) {
+                    if (currentStatus == Constants.PIP_BOARDCAST_ACTION_PREV) {
                         playFragment.playPrevious();
-                    } else if (currentStatus == PIP_BOARDCAST_ACTION_PLAYPAUSE) {
+                    } else if (currentStatus == Constants.PIP_BOARDCAST_ACTION_PLAYPAUSE) {
                         playFragment.getController().togglePlay();
-                    } else if (currentStatus == PIP_BOARDCAST_ACTION_NEXT) {
+                    } else if (currentStatus == Constants.PIP_BOARDCAST_ACTION_NEXT) {
                         playFragment.playNext(false);
                     }
                 }

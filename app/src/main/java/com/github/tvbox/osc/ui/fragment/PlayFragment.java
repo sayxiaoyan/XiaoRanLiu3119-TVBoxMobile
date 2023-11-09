@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -328,6 +329,11 @@ public class PlayFragment extends BaseLazyFragment {
                             .asCustom(new PlayingControlDialog(activity,mController,mVideoView));
                     mPlayingControlDialog.show();
                 }
+            }
+
+            @Override
+            public void pip() {
+                activity.enterPip();
             }
         });
         mVideoView.setVideoController(mController);

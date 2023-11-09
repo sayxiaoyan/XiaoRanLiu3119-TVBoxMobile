@@ -232,7 +232,4 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
         }
     }
 
-    public boolean supportsPiPMode() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
-    }
 }

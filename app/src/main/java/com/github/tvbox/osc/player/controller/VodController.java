@@ -33,9 +33,12 @@ import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.ui.widget.MyBatteryView;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
+import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.PlayerHelper;
 import com.github.tvbox.osc.util.ScreenUtils;
 import com.github.tvbox.osc.util.SubtitleHelper;
+import com.github.tvbox.osc.util.Utils;
+import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
 
@@ -189,6 +192,8 @@ public class VodController extends BaseController {
     @Override
     protected void initView() {
         super.initView();
+        View pip = findViewById(R.id.pip);
+        pip.setVisibility((Utils.supportsPiPMode() && Hawk.get(HawkConfig.BACKGROUND_PLAY_TYPE, 0) == 2)?VISIBLE:GONE);
         mMyBatteryView = findViewById(R.id.battery);
         mTopRightDeviceInfo = findViewById(R.id.container_top_right_device_info);
         mLlSpeed = findViewById(R.id.ll_speed);
@@ -231,21 +236,18 @@ public class VodController extends BaseController {
 
         myHandle = new Handler();
 
-        mLockView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isLock = !isLock;
-                if (isLock){// 上了锁
-                    mLockView.setImageResource(R.drawable.ic_lock);
-                    hideBottom();
-                    mHandler.removeCallbacks(lockRunnable);
-                    mHandler.postDelayed(lockRunnable,dismissTimeLock);
-                }else {// 解了锁
-                    mLockView.setImageResource(R.drawable.ic_unlock);
-                    showBottom();
-                    myHandle.removeCallbacks(myRunnable);
-                    myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
-                }
+        mLockView.setOnClickListener(v -> {
+            isLock = !isLock;
+            if (isLock){// 上了锁
+                mLockView.setImageResource(R.drawable.ic_lock);
+                hideBottom();
+                mHandler.removeCallbacks(lockRunnable);
+                mHandler.postDelayed(lockRunnable,dismissTimeLock);
+            }else {// 解了锁
+                mLockView.setImageResource(R.drawable.ic_unlock);
+                showBottom();
+                myHandle.removeCallbacks(myRunnable);
+                myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
             }
         });
         View rootView = findViewById(R.id.rootView);
@@ -263,12 +265,7 @@ public class VodController extends BaseController {
             }
         });
 
-        myRunnable = new Runnable() {
-            @Override
-            public void run() {
-                hideBottom();
-            }
-        };
+        myRunnable = this::hideBottom;
 
         mPlayPauseTime.post(new Runnable() {
             @Override
@@ -279,18 +276,15 @@ public class VodController extends BaseController {
 
         mGridView.setLayoutManager(new V7LinearLayoutManager(getContext(), 0, false));
         ParseAdapter parseAdapter = new ParseAdapter();
-        parseAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ParseBean parseBean = parseAdapter.getItem(position);
-                // 当前默认解析需要刷新
-                int currentDefault = parseAdapter.getData().indexOf(ApiConfig.get().getDefaultParse());
-                parseAdapter.notifyItemChanged(currentDefault);
-                ApiConfig.get().setDefaultParse(parseBean);
-                parseAdapter.notifyItemChanged(position);
-                listener.changeParse(parseBean);
-                hideBottom();
-            }
+        parseAdapter.setOnItemClickListener((adapter, view, position) -> {
+            ParseBean parseBean = parseAdapter.getItem(position);
+            // 当前默认解析需要刷新
+            int currentDefault = parseAdapter.getData().indexOf(ApiConfig.get().getDefaultParse());
+            parseAdapter.notifyItemChanged(currentDefault);
+            ApiConfig.get().setDefaultParse(parseBean);
+            parseAdapter.notifyItemChanged(position);
+            listener.changeParse(parseBean);
+            hideBottom();
         });
         mGridView.setAdapter(parseAdapter);
         parseAdapter.setNewData(ApiConfig.get().getParseBeanList());
@@ -333,352 +327,284 @@ public class VodController extends BaseController {
         mTopRoot1.setOnClickListener(view -> listener.exit());
 
         mPlayRetry = findViewById(R.id.play_retry);
-        mPlayRetry.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.replay(true);
-                hideBottom();
-            }
+        mPlayRetry.setOnClickListener(v -> {
+            listener.replay(true);
+            hideBottom();
         });
         mPlayRefresh = findViewById(R.id.play_refresh);
-        mPlayRefresh.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mPlayRefresh.setOnClickListener(v -> {
+            listener.replay(false);
+            hideBottom();
+        });
+        mIvPlayStatus.setOnClickListener(view -> {
+            togglePlay();
+            if (videoPlayState == VideoView.STATE_PLAYING) {
+                myHandle.removeCallbacks(myRunnable);
+                myHandle.postDelayed(myRunnable, 300);
+            }
+        });
+        mNextBtn.setOnClickListener(view -> {
+            listener.playNext(false);
+            hideBottom();
+        });
+        mPreBtn.setOnClickListener(view -> {
+            listener.playPre();
+            hideBottom();
+        });
+        findViewById(R.id.setting).setOnClickListener(view -> {
+            hideBottom();
+            listener.showSetting();
+        });
+        findViewById(R.id.iv_fullscreen).setOnClickListener(view -> {
+            listener.toggleFullScreen();
+            hideBottom();
+        });
+        findViewById(R.id.cast).setOnClickListener(view -> {
+            listener.cast();
+            hideBottom();
+        });
+        pip.setOnClickListener(view -> {//画中画
+            if (isInPlaybackState()){
+                listener.pip();
+                hideBottom();
+            }
+        });
+        mPlayerScaleBtn.setOnClickListener(view -> {
+            myHandle.removeCallbacks(myRunnable);
+            myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
+            try {
+                int scaleType = mPlayerConfig.getInt("sc");
+                scaleType++;
+                if (scaleType > 5)
+                    scaleType = 0;
+                mPlayerConfig.put("sc", scaleType);
+                updatePlayerCfgView();
+                listener.updatePlayerCfg();
+                mControlWrapper.setScreenScaleType(scaleType);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        });
+        mPlayerSpeedBtn.setOnClickListener(view -> setSpeed(""));
+
+        mPlayerSpeedBtn.setOnLongClickListener(view -> {
+            try {
+                mPlayerConfig.put("sp", 1.0f);
+                updatePlayerCfgView();
+                listener.updatePlayerCfg();
+                speed_old = 1.0f;
+                mControlWrapper.setSpeed(1.0f);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return true;
+        });
+        mPlayerBtn.setOnClickListener(view -> {
+            myHandle.removeCallbacks(myRunnable);
+            myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
+            try {
+                int playerType = mPlayerConfig.getInt("pl");
+                ArrayList<Integer> exsitPlayerTypes = PlayerHelper.getExistPlayerTypes();
+                int playerTypeIdx = 0;
+                int playerTypeSize = exsitPlayerTypes.size();
+                for (int i = 0; i < playerTypeSize; i++) {
+                    if (playerType == exsitPlayerTypes.get(i)) {
+                        if (i == playerTypeSize - 1) {
+                            playerTypeIdx = 0;
+                        } else {
+                            playerTypeIdx = i + 1;
+                        }
+                    }
+                }
+                playerType = exsitPlayerTypes.get(playerTypeIdx);
+                mPlayerConfig.put("pl", playerType);
+                updatePlayerCfgView();
+                listener.updatePlayerCfg();
                 listener.replay(false);
                 hideBottom();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        });
-        mIvPlayStatus.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                togglePlay();
-                if (videoPlayState == VideoView.STATE_PLAYING) {
-                    myHandle.removeCallbacks(myRunnable);
-                    myHandle.postDelayed(myRunnable, 300);
-                }
-            }
-        });
-        mNextBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.playNext(false);
-                hideBottom();
-            }
-        });
-        mPreBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.playPre();
-                hideBottom();
-            }
-        });
-        findViewById(R.id.setting).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideBottom();
-                listener.showSetting();
-            }
-        });
-        findViewById(R.id.iv_fullscreen).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.toggleFullScreen();
-                hideBottom();
-            }
-        });
-        findViewById(R.id.cast).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.cast();
-                hideBottom();
-            }
-        });
-        mPlayerScaleBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
-                try {
-                    int scaleType = mPlayerConfig.getInt("sc");
-                    scaleType++;
-                    if (scaleType > 5)
-                        scaleType = 0;
-                    mPlayerConfig.put("sc", scaleType);
-                    updatePlayerCfgView();
-                    listener.updatePlayerCfg();
-                    mControlWrapper.setScreenScaleType(scaleType);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        mPlayerSpeedBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setSpeed("");
-            }
+            mPlayerBtn.requestFocus();
+            mPlayerBtn.requestFocusFromTouch();
         });
 
-        mPlayerSpeedBtn.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                try {
-                    mPlayerConfig.put("sp", 1.0f);
-                    updatePlayerCfgView();
-                    listener.updatePlayerCfg();
-                    speed_old = 1.0f;
-                    mControlWrapper.setSpeed(1.0f);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        });
-        mPlayerBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
-                try {
-                    int playerType = mPlayerConfig.getInt("pl");
-                    ArrayList<Integer> exsitPlayerTypes = PlayerHelper.getExistPlayerTypes();
-                    int playerTypeIdx = 0;
-                    int playerTypeSize = exsitPlayerTypes.size();
-                    for (int i = 0; i < playerTypeSize; i++) {
-                        if (playerType == exsitPlayerTypes.get(i)) {
-                            if (i == playerTypeSize - 1) {
-                                playerTypeIdx = 0;
-                            } else {
-                                playerTypeIdx = i + 1;
-                            }
-                        }
+        mPlayerBtn.setOnLongClickListener(view -> {
+            myHandle.removeCallbacks(myRunnable);
+            myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
+            FastClickCheckUtil.check(view);
+            try {
+                int playerType = mPlayerConfig.getInt("pl");
+                int defaultPos = 0;
+                ArrayList<Integer> players = PlayerHelper.getExistPlayerTypes();
+                ArrayList<Integer> renders = new ArrayList<>();
+                for (int p = 0; p < players.size(); p++) {
+                    renders.add(p);
+                    if (players.get(p) == playerType) {
+                        defaultPos = p;
                     }
-                    playerType = exsitPlayerTypes.get(playerTypeIdx);
-                    mPlayerConfig.put("pl", playerType);
-                    updatePlayerCfgView();
-                    listener.updatePlayerCfg();
-                    listener.replay(false);
-                    hideBottom();
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-                mPlayerBtn.requestFocus();
-                mPlayerBtn.requestFocusFromTouch();
-            }
-        });
-
-        mPlayerBtn.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
-                FastClickCheckUtil.check(view);
-                try {
-                    int playerType = mPlayerConfig.getInt("pl");
-                    int defaultPos = 0;
-                    ArrayList<Integer> players = PlayerHelper.getExistPlayerTypes();
-                    ArrayList<Integer> renders = new ArrayList<>();
-                    for (int p = 0; p < players.size(); p++) {
-                        renders.add(p);
-                        if (players.get(p) == playerType) {
-                            defaultPos = p;
-                        }
-                    }
-                    SelectDialog<Integer> dialog = new SelectDialog<>(mActivity);
-                    dialog.setTip("请选择播放器");
-                    dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<Integer>() {
-                        @Override
-                        public void click(Integer value, int pos) {
-                            try {
-                                dialog.cancel();
-                                int thisPlayType = players.get(pos);
-                                if (thisPlayType != playerType) {
-                                    mPlayerConfig.put("pl", thisPlayType);
-                                    updatePlayerCfgView();
-                                    listener.updatePlayerCfg();
-                                    listener.replay(false);
-                                    hideBottom();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                SelectDialog<Integer> dialog = new SelectDialog<>(mActivity);
+                dialog.setTip("请选择播放器");
+                dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<Integer>() {
+                    @Override
+                    public void click(Integer value, int pos) {
+                        try {
+                            dialog.cancel();
+                            int thisPlayType = players.get(pos);
+                            if (thisPlayType != playerType) {
+                                mPlayerConfig.put("pl", thisPlayType);
+                                updatePlayerCfgView();
+                                listener.updatePlayerCfg();
+                                listener.replay(false);
+                                hideBottom();
                             }
-                            mPlayerBtn.requestFocus();
-                            mPlayerBtn.requestFocusFromTouch();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-
-                        @Override
-                        public String getDisplay(Integer val) {
-                            Integer playerType = players.get(val);
-                            return PlayerHelper.getPlayerName(playerType);
-                        }
-                    }, new DiffUtil.ItemCallback<Integer>() {
-                        @Override
-                        public boolean areItemsTheSame(@NonNull @NotNull Integer oldItem, @NonNull @NotNull Integer newItem) {
-                            return oldItem.intValue() == newItem.intValue();
-                        }
-
-                        @Override
-                        public boolean areContentsTheSame(@NonNull @NotNull Integer oldItem, @NonNull @NotNull Integer newItem) {
-                            return oldItem.intValue() == newItem.intValue();
-                        }
-                    }, renders, defaultPos);
-                    dialog.show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        });
-        mPlayerIJKBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
-                try {
-                    String ijk = mPlayerConfig.getString("ijk");
-                    List<IJKCode> codecs = ApiConfig.get().getIjkCodes();
-                    for (int i = 0; i < codecs.size(); i++) {
-                        if (ijk.equals(codecs.get(i).getName())) {
-                            if (i >= codecs.size() - 1)
-                                ijk = codecs.get(0).getName();
-                            else {
-                                ijk = codecs.get(i + 1).getName();
-                            }
-                            break;
-                        }
+                        mPlayerBtn.requestFocus();
+                        mPlayerBtn.requestFocusFromTouch();
                     }
-                    mPlayerConfig.put("ijk", ijk);
-                    updatePlayerCfgView();
-                    listener.updatePlayerCfg();
-                    listener.replay(false);
-                    hideBottom();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                mPlayerIJKBtn.requestFocus();
-                mPlayerIJKBtn.requestFocusFromTouch();
+
+                    @Override
+                    public String getDisplay(Integer val) {
+                        Integer playerType = players.get(val);
+                        return PlayerHelper.getPlayerName(playerType);
+                    }
+                }, new DiffUtil.ItemCallback<Integer>() {
+                    @Override
+                    public boolean areItemsTheSame(@NonNull @NotNull Integer oldItem, @NonNull @NotNull Integer newItem) {
+                        return oldItem.intValue() == newItem.intValue();
+                    }
+
+                    @Override
+                    public boolean areContentsTheSame(@NonNull @NotNull Integer oldItem, @NonNull @NotNull Integer newItem) {
+                        return oldItem.intValue() == newItem.intValue();
+                    }
+                }, renders, defaultPos);
+                dialog.show();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+            return true;
+        });
+        mPlayerIJKBtn.setOnClickListener(view -> {
+            myHandle.removeCallbacks(myRunnable);
+            myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
+            try {
+                String ijk = mPlayerConfig.getString("ijk");
+                List<IJKCode> codecs = ApiConfig.get().getIjkCodes();
+                for (int i = 0; i < codecs.size(); i++) {
+                    if (ijk.equals(codecs.get(i).getName())) {
+                        if (i >= codecs.size() - 1)
+                            ijk = codecs.get(0).getName();
+                        else {
+                            ijk = codecs.get(i + 1).getName();
+                        }
+                        break;
+                    }
+                }
+                mPlayerConfig.put("ijk", ijk);
+                updatePlayerCfgView();
+                listener.updatePlayerCfg();
+                listener.replay(false);
+                hideBottom();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            mPlayerIJKBtn.requestFocus();
+            mPlayerIJKBtn.requestFocusFromTouch();
         });
 //        增加播放页面片头片尾时间重置
-        mPlayerTimeResetBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
-                try {
-                    mPlayerConfig.put("et", 0);
-                    mPlayerConfig.put("st", 0);
-                    updatePlayerCfgView();
-                    listener.updatePlayerCfg();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        mPlayerTimeResetBtn.setOnClickListener(v -> {
+            myHandle.removeCallbacks(myRunnable);
+            myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
+            try {
+                mPlayerConfig.put("et", 0);
+                mPlayerConfig.put("st", 0);
+                updatePlayerCfgView();
+                listener.updatePlayerCfg();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
-        mPlayerTimeStartBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
-                try {
-                    int current = (int) mControlWrapper.getCurrentPosition();
-                    int duration = (int) mControlWrapper.getDuration();
-                    if (current > duration / 2) return;
-                    mPlayerConfig.put("st", current / 1000);
-                    updatePlayerCfgView();
-                    listener.updatePlayerCfg();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        mPlayerTimeStartBtn.setOnClickListener(view -> {
+            myHandle.removeCallbacks(myRunnable);
+            myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
+            try {
+                int current = (int) mControlWrapper.getCurrentPosition();
+                int duration = (int) mControlWrapper.getDuration();
+                if (current > duration / 2) return;
+                mPlayerConfig.put("st", current / 1000);
+                updatePlayerCfgView();
+                listener.updatePlayerCfg();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
-        mPlayerTimeStartBtn.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                try {
-                    mPlayerConfig.put("st", 0);
-                    updatePlayerCfgView();
-                    listener.updatePlayerCfg();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return true;
+        mPlayerTimeStartBtn.setOnLongClickListener(view -> {
+            try {
+                mPlayerConfig.put("st", 0);
+                updatePlayerCfgView();
+                listener.updatePlayerCfg();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return true;
+        });
+        mPlayerTimeSkipBtn.setOnClickListener(view -> {
+            myHandle.removeCallbacks(myRunnable);
+            myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
+            try {
+                int current = (int) mControlWrapper.getCurrentPosition();
+                int duration = (int) mControlWrapper.getDuration();
+                if (current < duration / 2) return;
+                mPlayerConfig.put("et", (duration - current) / 1000);
+                updatePlayerCfgView();
+                listener.updatePlayerCfg();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
-        mPlayerTimeSkipBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                myHandle.removeCallbacks(myRunnable);
-                myHandle.postDelayed(myRunnable, dismissTimeOperationBar);
-                try {
-                    int current = (int) mControlWrapper.getCurrentPosition();
-                    int duration = (int) mControlWrapper.getDuration();
-                    if (current < duration / 2) return;
-                    mPlayerConfig.put("et", (duration - current) / 1000);
-                    updatePlayerCfgView();
-                    listener.updatePlayerCfg();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        mPlayerTimeSkipBtn.setOnLongClickListener(view -> {
+            try {
+                mPlayerConfig.put("et", 0);
+                updatePlayerCfgView();
+                listener.updatePlayerCfg();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+            return true;
         });
-        mPlayerTimeSkipBtn.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                try {
-                    mPlayerConfig.put("et", 0);
-                    updatePlayerCfgView();
-                    listener.updatePlayerCfg();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
+        mZimuBtn.setOnClickListener(view -> {
+            FastClickCheckUtil.check(view);
+            listener.selectSubtitle();
+            hideBottom();
         });
-        mZimuBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FastClickCheckUtil.check(view);
-                listener.selectSubtitle();
-                hideBottom();
-            }
+        mZimuBtn.setOnLongClickListener(view -> {
+            mSubtitleView.setVisibility(View.GONE);
+            mSubtitleView.destroy();
+            mSubtitleView.clearSubtitleCache();
+            mSubtitleView.isInternal = false;
+            hideBottom();
+            Toast.makeText(getContext(), "字幕已关闭", Toast.LENGTH_SHORT).show();
+            return true;
         });
-        mZimuBtn.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                mSubtitleView.setVisibility(View.GONE);
-                mSubtitleView.destroy();
-                mSubtitleView.clearSubtitleCache();
-                mSubtitleView.isInternal = false;
-                hideBottom();
-                Toast.makeText(getContext(), "字幕已关闭", Toast.LENGTH_SHORT).show();
-                return true;
-            }
+        mAudioTrackBtn.setOnClickListener(view -> {
+            FastClickCheckUtil.check(view);
+            listener.selectAudioTrack();
+            hideBottom();
         });
-        mAudioTrackBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FastClickCheckUtil.check(view);
-                listener.selectAudioTrack();
-                hideBottom();
-            }
-        });
-        mLandscapePortraitBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FastClickCheckUtil.check(view);
-                setLandscapePortrait();
-                hideBottom();
-            }
+        mLandscapePortraitBtn.setOnClickListener(view -> {
+            FastClickCheckUtil.check(view);
+            setLandscapePortrait();
+            hideBottom();
         });
         mNextBtn.setNextFocusLeftId(R.id.play_time_start);
-        mChooseSeries.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FastClickCheckUtil.check(view);
-                hideBottom();
-                listener.chooseSeries();
-            }
+        mChooseSeries.setOnClickListener(view -> {
+            FastClickCheckUtil.check(view);
+            hideBottom();
+            listener.chooseSeries();
         });
 
         findViewById(R.id.container_playing_setting).setOnTouchListener((v, event) -> {
@@ -863,6 +789,8 @@ public class VodController extends BaseController {
         void onHideBottom();
 
         void showSetting();
+
+        void pip();
     }
 
     public void setListener(VodControlListener listener) {

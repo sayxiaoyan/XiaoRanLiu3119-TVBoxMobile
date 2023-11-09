@@ -2,6 +2,7 @@ package com.github.tvbox.osc.util;
 
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.os.Build;
 import android.provider.MediaStore;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -23,6 +24,10 @@ import java.util.Locale;
  * @Description :
  */
 public class Utils {
+
+    public static boolean supportsPiPMode() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
 
     public static int getSeriesSpanCount(List<VodInfo.VodSeries> list) {
         int spanCount = 4;
