@@ -34,6 +34,8 @@
     <!--    不可用灰色颜色-->
     <color name="disable_gray">#cccccc</color>
 
+    <color name="orange">#ff4600</color>
+
     <color name="color_6200EE">#6200EE</color>
     <color name="color_3700B3">#3700B3</color>
     <color name="color_03DAC5">#03DAC5</color>
