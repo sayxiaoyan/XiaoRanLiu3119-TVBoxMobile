@@ -40,8 +40,10 @@ import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.event.ServerEvent;
 import com.github.tvbox.osc.ui.adapter.FastListAdapter;
 import com.github.tvbox.osc.ui.adapter.FastSearchAdapter;
+import com.github.tvbox.osc.ui.adapter.SearchWordAdapter;
 import com.github.tvbox.osc.ui.dialog.SearchCheckboxDialog;
 import com.github.tvbox.osc.ui.dialog.SearchSuggestionsDialog;
+import com.github.tvbox.osc.ui.widget.LinearSpacingItemDecoration;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.SearchHelper;
@@ -103,11 +105,11 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
     private boolean isFilterMode = false;
     private String searchFilterKey = "";    // 过滤的key
     private HashMap<String, ArrayList<Movie.Video>> resultVods; // 搜索结果
-    private List<String> quickSearchWord = new ArrayList<>();
     private static HashMap<String, String> mCheckSources = null;
     private List<Runnable> pauseRunnable = null;
     private SearchSuggestionsDialog mSearchSuggestionsDialog;
     private SearchCheckboxDialog mSearchCheckboxDialog;
+    private SearchWordAdapter mSearchWordAdapter;
 
     @Override
     protected void init() {
@@ -223,6 +225,12 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
                 }
             }
         });
+        mSearchWordAdapter = new SearchWordAdapter();
+        mBinding.rvFenci.addItemDecoration(new LinearSpacingItemDecoration(20,true));
+        mBinding.rvFenci.setAdapter(mSearchWordAdapter);
+        mSearchWordAdapter.setOnItemClickListener((adapter, view, position) -> {
+            search(mSearchWordAdapter.getData().get(position));
+        });
 
         setLoadSir(mBinding.llLayout);
     }
@@ -277,7 +285,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
     }
 
     private void fenci() {
-        if (!quickSearchWord.isEmpty()) return; // 如果经有分词了，不再进行二次分词
+        List<String> quickSearchWord = new ArrayList<>();
         // 分词
         OkGo.<String>get("http://api.pullword.com/get.php?source=" + URLEncoder.encode(searchTitle) + "&param1=0&param2=0&json=1")
                 .tag("fenci")
@@ -294,7 +302,6 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
                     @Override
                     public void onSuccess(Response<String> response) {
                         String json = response.body();
-                        quickSearchWord.clear();
                         try {
                             for (JsonElement je : new Gson().fromJson(json, JsonArray.class)) {
                                 quickSearchWord.add(je.getAsJsonObject().get("t").getAsString());
@@ -303,8 +310,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
                             th.printStackTrace();
                         }
                         quickSearchWord.addAll(SearchHelper.splitWords(searchTitle));
-                        List<String> words = new ArrayList<>(new HashSet<>(quickSearchWord));
-                        EventBus.getDefault().post(new RefreshEvent(RefreshEvent.TYPE_QUICK_SEARCH_WORD, words));
+                        mSearchWordAdapter.setNewData(quickSearchWord);
                     }
 
                     @Override

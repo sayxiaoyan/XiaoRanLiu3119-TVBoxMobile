@@ -15,7 +15,7 @@
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:paddingHorizontal="8dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="10dp"
         >
 
         <ImageView
@@ -126,7 +126,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/llSearchResult"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -134,11 +134,22 @@
         android:visibility="gone"
         tools:visibility="visible">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_fenci"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_search_word_hot"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            />
+
         <LinearLayout
             android:id="@+id/llWord"
             android:layout_width="120dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_below="@+id/rv_fenci"
             android:paddingLeft="10dp">
 
             <com.angcyo.tablayout.DslTabLayout
@@ -156,6 +167,8 @@
 
         <LinearLayout
             android:id="@+id/llLayout"
+            android:layout_below="@+id/rv_fenci"
+            android:layout_toEndOf="@+id/llWord"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -187,5 +200,5 @@
 
 
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
