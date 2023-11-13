@@ -58,6 +58,12 @@
             android:layout_marginRight="6dp"
             android:drawableRight="@drawable/ic_search_18"/>
 
+        <ImageView
+            android:id="@+id/iv_collect"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_collect_48"/>
 
         <ImageView
             android:id="@+id/iv_history"
@@ -65,13 +71,6 @@
             android:layout_height="40dp"
             android:padding="8dp"
             android:src="@drawable/ic_history_48"/>
-
-        <ImageView
-            android:id="@+id/iv_collect"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            android:src="@drawable/ic_collect_48"/>
 
     </LinearLayout>
 
