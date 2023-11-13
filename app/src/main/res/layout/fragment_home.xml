@@ -10,8 +10,8 @@
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:paddingHorizontal="20dp"
+        android:layout_marginTop="44dp"
+        android:paddingHorizontal="10dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -20,8 +20,7 @@
 
         <LinearLayout
             android:id="@+id/nameContainer"
-            android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -29,6 +28,7 @@
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="110dp"
                 android:text="@string/app_name"
                 android:textAlignment="gravity"
                 android:textColor="@color/text_gray"
@@ -44,26 +44,35 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_large_round_gray"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12sp"
+            android:hint="搜索"
+            android:drawableTint="@color/gray_darker"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="6dp"
+            android:drawableRight="@drawable/ic_search_18"/>
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-        <ImageView
-            android:id="@+id/iv_search"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="6dp"
-            android:src="@drawable/ic_search_48"/>
 
         <ImageView
             android:id="@+id/iv_history"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:padding="6dp"
-            android:layout_marginLeft="10dp"
+            android:padding="8dp"
             android:src="@drawable/ic_history_48"/>
+
+        <ImageView
+            android:id="@+id/iv_collect"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_collect_48"/>
+
     </LinearLayout>
 
     <LinearLayout

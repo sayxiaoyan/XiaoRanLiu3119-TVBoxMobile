@@ -27,6 +27,7 @@ import com.github.tvbox.osc.bean.SourceBean;
 import com.github.tvbox.osc.databinding.FragmentHomeBinding;
 import com.github.tvbox.osc.server.ControlManager;
 
+import com.github.tvbox.osc.ui.activity.CollectActivity;
 import com.github.tvbox.osc.ui.activity.FastSearchActivity;
 import com.github.tvbox.osc.ui.activity.HistoryActivity;
 import com.github.tvbox.osc.ui.activity.MainActivity;
@@ -77,8 +78,9 @@ public class HomeFragment extends BaseVbFragment<FragmentHomeBinding> {
             return true;
         });
 
-        mBinding.ivSearch.setOnClickListener(view -> jumpActivity(FastSearchActivity.class));
+        mBinding.search.setOnClickListener(view -> jumpActivity(FastSearchActivity.class));
         mBinding.ivHistory.setOnClickListener(view -> jumpActivity(HistoryActivity.class));
+        mBinding.ivCollect.setOnClickListener(view -> jumpActivity(CollectActivity.class));
         setLoadSir(mBinding.contentLayout);
 
         initViewModel();
