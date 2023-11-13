@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         app:title="搜索"
         app:leftIcon="@null"
-        app:rightIcon="@drawable/icon_filter"
+        app:rightIcon="@drawable/ic_filter_list"
         app:rightIconHeight="20dp"
         app:rightIconWidth="20dp"
         app:rightIconTint="@color/text_gray"

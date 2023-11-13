@@ -16,4 +16,17 @@
         android:paddingHorizontal="10dp"
         />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_live"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:borderWidth="0dp"
+        android:src="@drawable/ic_live_tv_48"
+        app:tint="@android:color/white"
+        />
+
 </RelativeLayout>
