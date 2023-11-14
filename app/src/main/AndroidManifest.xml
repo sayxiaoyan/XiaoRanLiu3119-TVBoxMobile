@@ -74,6 +74,7 @@
         <activity
             android:name=".ui.activity.DetailActivity"
             android:supportsPictureInPicture="true"
+            android:launchMode="singleTask"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|uiMode"/>
         <activity
             android:name=".ui.activity.SearchActivity"

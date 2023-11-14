@@ -284,6 +284,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         super.onPause();
         if (openBackgroundPlay){
             PlayService.start(playFragment.getPlayer());
+            registerActionReceiver(true);
         }
     }
 
@@ -717,6 +718,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
 
     @Override
     protected void onDestroy() {
+        registerActionReceiver(false);
         super.onDestroy();
         unregisterReceiver(mBatteryReceiver);
         // 注销广播接收器
@@ -904,10 +906,12 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         return (new RemoteAction(icon, title, desc, intent));
     }
 
-    @Override
-    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
-        super.onPictureInPictureModeChanged(isInPictureInPictureMode);
-        if (Utils.supportsPiPMode() && isInPictureInPictureMode) {
+    /**
+     * 事件接收广播(画中画/后台播放点击事件)
+     * @param isRegister 注册/注销
+     */
+    private void registerActionReceiver(boolean isRegister){
+        if (isRegister) {
             mPipActionReceiver = new BroadcastReceiver() {
 
                 @Override
@@ -917,6 +921,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                     }
 
                     int currentStatus = intent.getIntExtra("action", 1);
+                    LogUtils.d("PIP_VOD_CONTROL", "currentStatus:" + currentStatus);
                     if (currentStatus == Constants.PIP_BOARDCAST_ACTION_PREV) {
                         playFragment.playPrevious();
                     } else if (currentStatus == Constants.PIP_BOARDCAST_ACTION_PLAYPAUSE) {
@@ -927,14 +932,21 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 }
             };
             registerReceiver(mPipActionReceiver, new IntentFilter("PIP_VOD_CONTROL"));
-
         } else {
-            unregisterReceiver(mPipActionReceiver);
-            mPipActionReceiver = null;
+            if (mPipActionReceiver!=null){
+                unregisterReceiver(mPipActionReceiver);
+                mPipActionReceiver = null;
+            }
             if (playFragment.getPlayer().isPlaying()){// 退出画中画时,暂停播放(画中画的全屏也会触发,但全屏后会自动播放)
                 playFragment.getController().togglePlay();
             }
         }
+    }
+
+    @Override
+    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode);
+        registerActionReceiver(Utils.supportsPiPMode() && isInPictureInPictureMode);
     }
 
 }
