@@ -8,8 +8,8 @@ android {
         applicationId 'com.github.tvbox.osc'
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 22
-        versionName '1.0.2'
+        versionCode 21
+        versionName '1.0.1'
         multiDexEnabled true
         //设置room的Schema的位置
         javaCompileOptions {
@@ -180,5 +180,4 @@ dependencies {
     implementation project(":crash")
     //dlna投屏
     implementation 'com.github.devin1014.DLNA-Cast:dlna-dmc:V1.0.0'
-
 }
