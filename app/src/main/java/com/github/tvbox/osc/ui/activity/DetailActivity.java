@@ -949,7 +949,8 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
      */
     private void playServerSwitch(boolean open){
         if (open){
-            PlayService.start(playFragment.getPlayer());
+            VodInfo.VodSeries vod = vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex);
+            PlayService.start(playFragment.getPlayer(),vodInfo.name+"&&"+vod.name);
             registerActionReceiver(true);
         }else {
             if (ServiceUtils.isServiceRunning(PlayService.class)){
