@@ -146,9 +146,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     protected void onResume() {
         super.onResume();
         openBackgroundPlay = false;
-        if (ServiceUtils.isServiceRunning(PlayService.class)){
-            PlayService.stop();
-        }
+        playServerSwitch(false);
     }
 
     private void initView() {
@@ -283,8 +281,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
     protected void onPause() {
         super.onPause();
         if (openBackgroundPlay){
-            PlayService.start(playFragment.getPlayer());
-            registerActionReceiver(true);
+            playServerSwitch(true);
         }
     }
 
@@ -871,9 +868,9 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 ratio = new Rational(16, 9);
             }
             List<RemoteAction> actions = new ArrayList<>();
-            actions.add(generateRemoteAction(android.R.drawable.ic_media_previous, Constants.PIP_BOARDCAST_ACTION_PREV, "Prev", "Play Previous"));
-            actions.add(generateRemoteAction(android.R.drawable.ic_media_play, Constants.PIP_BOARDCAST_ACTION_PLAYPAUSE, "Play", "Play/Pause"));
-            actions.add(generateRemoteAction(android.R.drawable.ic_media_next, Constants.PIP_BOARDCAST_ACTION_NEXT, "Next", "Play Next"));
+            actions.add(generateRemoteAction(android.R.drawable.ic_media_previous, Constants.BROADCAST_ACTION_PREV, "Prev", "Play Previous"));
+            actions.add(generateRemoteAction(android.R.drawable.ic_media_play, Constants.BROADCAST_ACTION_PLAYPAUSE, "Play", "Play/Pause"));
+            actions.add(generateRemoteAction(android.R.drawable.ic_media_next, Constants.BROADCAST_ACTION_NEXT, "Next", "Play Next"));
             PictureInPictureParams params = new PictureInPictureParams.Builder()
                     .setAspectRatio(ratio)
                     .setActions(actions).build();
@@ -891,7 +888,6 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 }
             },400);
         }
-        super.onUserLeaveHint();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -900,7 +896,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                 PendingIntent.getBroadcast(
                         DetailActivity.this,
                         actionCode,
-                        new Intent("PIP_VOD_CONTROL").putExtra("action", actionCode),
+                        new Intent(Constants.BROADCAST_ACTION).putExtra("action", actionCode),
                         0);
         final Icon icon = Icon.createWithResource(DetailActivity.this, iconResId);
         return (new RemoteAction(icon, title, desc, intent));
@@ -916,22 +912,21 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
 
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    if (intent == null || !intent.getAction().equals("PIP_VOD_CONTROL") || playFragment.getController() == null) {
+                    if (intent == null || !intent.getAction().equals(Constants.BROADCAST_ACTION) || playFragment.getController() == null) {
                         return;
                     }
 
                     int currentStatus = intent.getIntExtra("action", 1);
-                    LogUtils.d("PIP_VOD_CONTROL", "currentStatus:" + currentStatus);
-                    if (currentStatus == Constants.PIP_BOARDCAST_ACTION_PREV) {
+                    if (currentStatus == Constants.BROADCAST_ACTION_PREV) {
                         playFragment.playPrevious();
-                    } else if (currentStatus == Constants.PIP_BOARDCAST_ACTION_PLAYPAUSE) {
+                    } else if (currentStatus == Constants.BROADCAST_ACTION_PLAYPAUSE) {
                         playFragment.getController().togglePlay();
-                    } else if (currentStatus == Constants.PIP_BOARDCAST_ACTION_NEXT) {
+                    } else if (currentStatus == Constants.BROADCAST_ACTION_NEXT) {
                         playFragment.playNext(false);
                     }
                 }
             };
-            registerReceiver(mPipActionReceiver, new IntentFilter("PIP_VOD_CONTROL"));
+            registerReceiver(mPipActionReceiver, new IntentFilter(Constants.BROADCAST_ACTION));
         } else {
             if (mPipActionReceiver!=null){
                 unregisterReceiver(mPipActionReceiver);
@@ -949,4 +944,18 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         registerActionReceiver(Utils.supportsPiPMode() && isInPictureInPictureMode);
     }
 
+    /**
+     * 后台播放服务开关,开启时注册操作广播,关闭时注销
+     */
+    private void playServerSwitch(boolean open){
+        if (open){
+            PlayService.start(playFragment.getPlayer());
+            registerActionReceiver(true);
+        }else {
+            if (ServiceUtils.isServiceRunning(PlayService.class)){
+                PlayService.stop();
+                registerActionReceiver(false);
+            }
+        }
+    }
 }

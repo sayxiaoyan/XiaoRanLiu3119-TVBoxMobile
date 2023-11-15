@@ -5,9 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
@@ -19,11 +17,7 @@ import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.constant.Constants;
 import com.github.tvbox.osc.player.MyVideoView;
-import com.github.tvbox.osc.player.controller.VodController;
 import com.github.tvbox.osc.ui.activity.DetailActivity;
-import com.github.tvbox.osc.ui.activity.MainActivity;
-
-import xyz.doikki.videoplayer.player.AbstractPlayer;
 
 public class PlayService extends Service {
 
@@ -64,11 +58,11 @@ public class PlayService extends Service {
 
         // 创建通知栏操作
         NotificationCompat.Action previousAction = buildNotificationAction(
-                R.drawable.ic_play_pre, "上一集", getPendingIntent(Constants.PIP_BOARDCAST_ACTION_PREV));
+                R.drawable.ic_play_pre, "上一集", getPendingIntent(Constants.BROADCAST_ACTION_PREV));
         NotificationCompat.Action pauseAction = buildNotificationAction(
-                R.drawable.ic_pause, "暂停", getPendingIntent(Constants.PIP_BOARDCAST_ACTION_PLAYPAUSE));
+                R.drawable.ic_pause, "暂停", getPendingIntent(Constants.BROADCAST_ACTION_PLAYPAUSE));
         NotificationCompat.Action nextAction = buildNotificationAction(
-                R.drawable.ic_play_next, "下一集", getPendingIntent(Constants.PIP_BOARDCAST_ACTION_NEXT));
+                R.drawable.ic_play_next, "下一集", getPendingIntent(Constants.BROADCAST_ACTION_NEXT));
 
         // 将通知栏操作添加到通知中
         builder.addAction(previousAction);
@@ -91,7 +85,7 @@ public class PlayService extends Service {
         return PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
     public static PendingIntent getPendingIntent(int actionCode) {
-        return PendingIntent.getBroadcast(App.getInstance(), actionCode, new Intent("PIP_VOD_CONTROL").putExtra("action", actionCode).setPackage(App.getInstance().getPackageName()),PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(App.getInstance(), actionCode, new Intent(Constants.BROADCAST_ACTION).putExtra("action", actionCode).setPackage(App.getInstance().getPackageName()),PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
