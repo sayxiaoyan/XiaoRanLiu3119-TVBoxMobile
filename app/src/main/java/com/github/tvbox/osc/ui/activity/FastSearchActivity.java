@@ -549,7 +549,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
         cancel();
         showLoading();
         this.searchTitle = title;
-        fenci();
+        //fenci();
         mBinding.mGridView.setVisibility(View.INVISIBLE);
         mBinding.mGridViewFilter.setVisibility(View.GONE);
         searchAdapter.setNewData(new ArrayList<>());
