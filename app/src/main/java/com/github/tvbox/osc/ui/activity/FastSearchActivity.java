@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.angcyo.tablayout.DslTabLayout;
 import com.angcyo.tablayout.DslTabLayoutConfig;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -34,6 +35,7 @@ import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.AbsXml;
 import com.github.tvbox.osc.bean.Movie;
 import com.github.tvbox.osc.bean.SourceBean;
+import com.github.tvbox.osc.bean.TmdbVodInfo;
 import com.github.tvbox.osc.constant.CacheConst;
 import com.github.tvbox.osc.databinding.ActivityFastSearchBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
@@ -43,6 +45,7 @@ import com.github.tvbox.osc.ui.adapter.FastSearchAdapter;
 import com.github.tvbox.osc.ui.adapter.SearchWordAdapter;
 import com.github.tvbox.osc.ui.dialog.SearchCheckboxDialog;
 import com.github.tvbox.osc.ui.dialog.SearchSuggestionsDialog;
+import com.github.tvbox.osc.ui.dialog.TmdbVodInfoDialog;
 import com.github.tvbox.osc.ui.widget.LinearSpacingItemDecoration;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
@@ -225,6 +228,22 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
                 }
             }
         });
+
+        searchAdapter.setOnItemLongClickListener((adapter, view, position) -> {
+            Movie.Video video = searchAdapter.getData().get(position);
+            if (!TextUtils.isEmpty(video.name)){
+                queryFromTMDB(video.name);
+            }
+            return true;
+        });
+        searchAdapterFilter.setOnItemLongClickListener((adapter, view, position) -> {
+            Movie.Video video = searchAdapterFilter.getData().get(position);
+            if (!TextUtils.isEmpty(video.name)){
+                queryFromTMDB(video.name);
+            }
+            return true;
+        });
+
         mSearchWordAdapter = new SearchWordAdapter();
         mBinding.rvFenci.addItemDecoration(new LinearSpacingItemDecoration(20,true));
         mBinding.rvFenci.setAdapter(mSearchWordAdapter);
@@ -708,6 +727,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
 
     private void cancel() {
         OkGo.getInstance().cancelTag("search");
+        OkGo.getInstance().cancelTag("queryFromTMDB");
     }
 
     @Override
@@ -743,5 +763,52 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
         }else {
             getSuggest(text);
         }
+    }
+
+    /**
+     * 查询影片在TMDB的信息
+     * @param vodName
+     */
+    private void queryFromTMDB(String vodName){
+        OkGo.getInstance().cancelTag("queryFromTMDB");
+
+        String token = Hawk.get(HawkConfig.TOKEN_TMDB, "");
+        if (TextUtils.isEmpty(token)){
+            return;
+        }
+        showLoadingDialog();
+        OkGo.<String>get("https://api.themoviedb.org/3/search/movie?query="+vodName+"&include_adult=false&language=zh-ZH&page=1")
+                .headers("Authorization","Bearer "+token)
+                .tag("queryFromTMDB")
+                .execute(new AbsCallback<String>() {
+                    @Override
+                    public String convertResponse(okhttp3.Response response) throws Throwable {
+                        if (response.body() != null) {
+                            return response.body().string();
+                        } else {
+                            throw new IllegalStateException("网络请求错误");
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        dismissLoadingDialog();
+                        String json = response.body();
+                        TmdbVodInfo tmdbVodInfo = GsonUtils.fromJson(json, TmdbVodInfo.class);
+                        if (!tmdbVodInfo.getResults().isEmpty()){
+                            new XPopup.Builder(FastSearchActivity.this)
+                                    .asCustom(new TmdbVodInfoDialog(FastSearchActivity.this,tmdbVodInfo.getResults().get(0)))
+                                    .show();
+                        }else {
+                            ToastUtils.showShort("未查询到相关信息");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        dismissLoadingDialog();
+                    }
+                });
     }
 }

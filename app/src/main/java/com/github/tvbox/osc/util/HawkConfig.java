@@ -53,4 +53,8 @@ public class HawkConfig {
      * 后台播放模式 0 关闭,1 开启,2 画中画
      */
     public static final String BACKGROUND_PLAY_TYPE = "background_play_type";
+    /**
+     * TMDB请求token
+     */
+    public static final String TOKEN_TMDB = "token_tmdb";
 }

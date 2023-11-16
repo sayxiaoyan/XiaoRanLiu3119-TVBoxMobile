@@ -688,6 +688,36 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llTMDB"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_60"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TMDB配置"
+                        android:textColor="@color/text_gray"
+                        android:textSize="16sp"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="center"
+                        android:alpha="0.75"
+                        android:src="@drawable/icon_pre"
+                        app:tint="@color/text_gray"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/llHistoryNum"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_60"
