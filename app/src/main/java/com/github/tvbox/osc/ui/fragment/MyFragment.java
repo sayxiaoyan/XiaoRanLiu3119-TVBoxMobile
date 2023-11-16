@@ -1,9 +1,11 @@
 package com.github.tvbox.osc.ui.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.ClipboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.BaseLazyFragment;
@@ -27,6 +29,7 @@ import com.hjq.permissions.XXPermissions;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnInputConfirmListener;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,20 +45,16 @@ public class MyFragment extends BaseVbFragment<FragmentMyBinding> {
         mBinding.tvVersion.setText("v"+ AppUtils.getAppVersionName());
 
         mBinding.addrPlay.setOnClickListener(v ->{
-
             new XPopup.Builder(getContext())
-                    .asInputConfirm("播放", "", "地址", new OnInputConfirmListener() {
-                        @Override
-                        public void onConfirm(String text) {
-                            if (!TextUtils.isEmpty(text)){
-                                Intent newIntent = new Intent(mContext, DetailActivity.class);
-                                newIntent.putExtra("id", text);
-                                newIntent.putExtra("sourceKey", "push_agent");
-                                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(newIntent);
-                            }
+                    .asInputConfirm("播放", "", isPush(ClipboardUtils.getText().toString())?ClipboardUtils.getText():"", "地址", text -> {
+                        if (!TextUtils.isEmpty(text)){
+                            Intent newIntent = new Intent(mContext, DetailActivity.class);
+                            newIntent.putExtra("id", text);
+                            newIntent.putExtra("sourceKey", "push_agent");
+                            newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(newIntent);
                         }
-                    }).show();
+                    }, null, R.layout.dialog_input).show();
         });
         //mBinding.tvLive.setOnClickListener(v -> jumpActivity(LivePlayActivity.class));
         mBinding.tvLive.setOnClickListener(v -> jumpActivity(LiveActivity.class));
@@ -117,4 +116,9 @@ public class MyFragment extends BaseVbFragment<FragmentMyBinding> {
                     }
                 });
     }
+
+    private boolean isPush(String text) {
+        return !TextUtils.isEmpty(text) && Arrays.asList("smb", "http", "https", "thunder", "magnet", "ed2k", "mitv", "jianpian").contains(Uri.parse(text).getScheme());
+    }
+
 }
