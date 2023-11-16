@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.github.tvbox.osc.BuildConfig;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.BaseLazyFragment;
@@ -687,6 +688,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
             dialog.show();
         }));
 
+        findViewById(R.id.llTMDB).setVisibility(BuildConfig.DEBUG?View.VISIBLE:View.GONE);
         findViewById(R.id.llTMDB).setOnClickListener(view -> {
             String token = Hawk.get(HawkConfig.TOKEN_TMDB, "");
             new XPopup.Builder(mActivity)
