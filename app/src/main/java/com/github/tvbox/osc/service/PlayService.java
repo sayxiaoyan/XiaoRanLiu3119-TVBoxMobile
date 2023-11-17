@@ -109,12 +109,6 @@ public class PlayService extends Service {
         return builder.build();
     }
 
-    private NotificationCompat.Action buildNotificationAction(int iconResId, String title, PendingIntent intent) {
-        final IconCompat icon = IconCompat.createWithResource(App.getInstance(), iconResId);
-        // 创建通知栏操作
-        return new NotificationCompat.Action.Builder(icon, title, intent).build();
-    }
-
     private PendingIntent getPendingIntentActivity() {
         Intent intent = new Intent(this, DetailActivity.class);
         return PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
