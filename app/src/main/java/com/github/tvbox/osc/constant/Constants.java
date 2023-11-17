@@ -15,4 +15,5 @@ public class Constants {
     public static final int BROADCAST_ACTION_PREV = 0;
     public static final int BROADCAST_ACTION_PLAYPAUSE = 1;
     public static final int BROADCAST_ACTION_NEXT = 2;
+    public static final int BROADCAST_ACTION_CLOSE = 3;
 }

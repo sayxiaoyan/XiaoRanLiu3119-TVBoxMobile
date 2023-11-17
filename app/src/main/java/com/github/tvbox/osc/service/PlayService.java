@@ -90,6 +90,7 @@ public class PlayService extends Service {
         remoteViews.setOnClickPendingIntent(R.id.iv_previous, getPendingIntent(Constants.BROADCAST_ACTION_PREV));
         remoteViews.setOnClickPendingIntent(R.id.iv_play_pause, getPendingIntent(Constants.BROADCAST_ACTION_PLAYPAUSE));
         remoteViews.setOnClickPendingIntent(R.id.iv_next, getPendingIntent(Constants.BROADCAST_ACTION_NEXT));
+        remoteViews.setOnClickPendingIntent(R.id.iv_close, getPendingIntent(Constants.BROADCAST_ACTION_CLOSE));
 
         // 普通布局
         RemoteViews remoteViewsSmall = new RemoteViews(getPackageName(), R.layout.notification_player_small);

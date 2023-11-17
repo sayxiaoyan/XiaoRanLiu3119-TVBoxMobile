@@ -30,6 +30,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.NotificationUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ServiceUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -923,6 +924,10 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                         playFragment.getController().togglePlay();
                     } else if (currentStatus == Constants.BROADCAST_ACTION_NEXT) {
                         playFragment.playNext(false);
+                    } else if (currentStatus == Constants.BROADCAST_ACTION_CLOSE) {
+                        playServerSwitch(false);
+                        finish();
+                        NotificationUtils.cancelAll();
                     }
                 }
             };
