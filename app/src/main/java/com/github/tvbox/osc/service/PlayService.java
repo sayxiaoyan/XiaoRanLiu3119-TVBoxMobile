@@ -78,22 +78,32 @@ public class PlayService extends Service {
     }
 
     private Notification buildNotification(){
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_player);
 
-        remoteViews.setTextViewText(R.id.tv_title, videoInfo.split("&&")[0]);
-        remoteViews.setTextViewText(R.id.tv_subtitle, "正在播放: "+videoInfo.split("&&")[1]);
+        String title = videoInfo.split("&&")[0];
+        String episodes = videoInfo.split("&&")[1];
+        // 展开布局
+        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_player);
+        remoteViews.setTextViewText(R.id.tv_title, title);
+        remoteViews.setTextViewText(R.id.tv_subtitle, "正在播放: "+episodes);
         remoteViews.setImageViewResource(R.id.iv_play_pause,videoView.isPlaying()?R.drawable.ic_notify_pause:R.drawable.ic_notify_play);
         // 创建通知栏操作
         remoteViews.setOnClickPendingIntent(R.id.iv_previous, getPendingIntent(Constants.BROADCAST_ACTION_PREV));
         remoteViews.setOnClickPendingIntent(R.id.iv_play_pause, getPendingIntent(Constants.BROADCAST_ACTION_PLAYPAUSE));
         remoteViews.setOnClickPendingIntent(R.id.iv_next, getPendingIntent(Constants.BROADCAST_ACTION_NEXT));
 
+        // 普通布局
+        RemoteViews remoteViewsSmall = new RemoteViews(getPackageName(), R.layout.notification_player_small);
+        remoteViewsSmall.setTextViewText(R.id.tv_title, title);
+        remoteViewsSmall.setTextViewText(R.id.tv_subtitle, "正在播放: "+episodes);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.app_icon)
                 .setContent(remoteViews)
-                .setCustomContentView(remoteViews)
+                .setCustomContentView(remoteViewsSmall)
+                .setCustomBigContentView(remoteViews)
                 .setContentIntent(getPendingIntentActivity())
-                .setOngoing(true);
+                .setOngoing(true)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText("默认展开"));
 
         return builder.build();
     }
