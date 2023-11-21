@@ -45,7 +45,7 @@ public class BaseDialog extends Dialog {
     public void show() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         super.show();
-        hideSysBar();
+        //hideSysBar();
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
     }
 
