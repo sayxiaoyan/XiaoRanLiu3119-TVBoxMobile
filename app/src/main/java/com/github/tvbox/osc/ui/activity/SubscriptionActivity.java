@@ -1,27 +1,10 @@
 package com.github.tvbox.osc.ui.activity;
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.OpenableColumns;
 import android.text.TextUtils;
-import android.view.View;
-
-import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.ClipboardUtils;
-import com.blankj.utilcode.util.ConvertUtils;
-import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.PathUtils;
-import com.blankj.utilcode.util.ShellUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.blankj.utilcode.util.UriUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.github.gzuliyujiang.filepicker.ExplorerConfig;
-import com.github.gzuliyujiang.filepicker.FilePicker;
-import com.github.gzuliyujiang.filepicker.annotation.ExplorerMode;
-import com.github.gzuliyujiang.filepicker.contract.OnFilePickedListener;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.Source;
@@ -33,7 +16,6 @@ import com.github.tvbox.osc.ui.dialog.SubsTipDialog;
 import com.github.tvbox.osc.ui.dialog.SubsciptionDialog;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.Utils;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -42,11 +24,11 @@ import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.interfaces.OnInputConfirmListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.Response;
+import com.obsez.android.lib.filechooser.ChooserDialog;
 import com.orhanobut.hawk.Hawk;
 
 import java.io.File;
@@ -238,20 +220,19 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
     }
 
     private void pickFile() {
-        ExplorerConfig config = new ExplorerConfig(SubscriptionActivity.this);
-        config.setAllowExtensions(new String[]{".txt", ".json", ".jar"});
-        config.setExplorerMode(ExplorerMode.FILE);
-        config.setOnFilePickedListener(file -> {
-            //返回:storage/emulated/0/Download/wuge/wuge/wuge.json
-            //期望:clan://localhost/Download/wuge/wuge/wuge.json
-            LogUtils.d(file.getAbsolutePath());
-            String clanPath = file.getAbsolutePath().replace("/storage/emulated/0", "clan://localhost");
-            addSubscription(file.getName(), clanPath);
-        });
-        FilePicker picker = new FilePicker(SubscriptionActivity.this);
-        picker.setExplorerConfig(config);
-        picker.getOkView().setText("选择");
-        picker.show();
+        new ChooserDialog(SubscriptionActivity.this)
+                .withFilter(false, false, "txt", "json")
+                .withStartFile(TextUtils.isEmpty(Hawk.get("before_selected_path"))?"/storage/emulated/0/Download":Hawk.get("before_selected_path"))
+                .withChosenListener(new ChooserDialog.Result() {
+                    @Override
+                    public void onChoosePath(String path, File pathFile) {
+                        Hawk.put("before_selected_path",pathFile.getParent());
+                        String clanPath = pathFile.getAbsolutePath().replace("/storage/emulated/0", "clan://localhost");
+                        addSubscription(pathFile.getName(), clanPath);
+                    }
+                })
+                .build()
+                .show();
     }
 
     private void addSubscription(String name, String url) {
