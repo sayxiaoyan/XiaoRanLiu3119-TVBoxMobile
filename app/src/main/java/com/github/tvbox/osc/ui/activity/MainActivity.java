@@ -88,7 +88,9 @@ public class MainActivity extends BaseVbActivity<ActivityMainBinding> {
         if (fragment instanceof GridFragment) {// 首页数据源动态加载的tab
             GridFragment item = (GridFragment) fragment;
             if (!item.restoreView()) {// 有回退的view,先回退(AList等文件夹列表),没有可回退的,返到主页tab
-                homeFragment.scrollToFirstTab();
+                if (!homeFragment.scrollToFirstTab()){
+                    confirmExit();
+                }
             }
         } else {
             confirmExit();
