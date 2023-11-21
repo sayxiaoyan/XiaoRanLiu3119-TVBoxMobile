@@ -66,6 +66,7 @@ public class ApiHistoryDialog extends BottomPopupView {
             if (view.getId() == R.id.tvDel) {
                 mLiveHistory.remove(position);
                 adapter1.notifyDataSetChanged();
+                Hawk.put(HawkConfig.LIVE_HISTORY, mLiveHistory);
             }else {
                 mOnInputConfirmListener.onConfirm(mLiveHistory.get(position));
                 dismiss();
