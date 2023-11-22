@@ -118,4 +118,53 @@
 
     </style>
 
+<!--文件选择器样式,在此只改变了背景和基本颜色-->
+    <style name="FileChooser" parent="FileChooserStyle">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/material_deep_teal_200</item>
+        <item name="fileChooserDialogStyle">@style/FileChooserDialogStyle1</item>
+        <item name="fileChooserListItemStyle">@style/FileChooserListItemStyle1</item>
+        <item name="fileChooserPathViewStyle">@style/FileChooserPathViewStyle1</item>
+    </style>
+
+<!--选择器弹窗样式-->
+    <style name="FileChooserDialogStyle1" parent="FileChooserDialogStyle">
+        <item name="android:windowBackground">@drawable/bg_large_round_popup</item>
+        <item name="android:buttonBarButtonStyle">@style/FileChooserButtonStyle1</item>
+        <item name="buttonBarButtonStyle">@style/FileChooserButtonStyle1</item>
+    </style>
+    <style name="FileChooserButtonStyle1" parent="FileChooserButtonStyle">
+        <item name="android:textColor">@color/black</item>
+    </style>
+<!--    选择器弹窗样式结束-->
+
+<!--文件选择器条目样式开始-->
+    <style name="FileChooserListItemStyle1" parent="FileChooserListItemStyle">
+        <item name="fileChooserTextNameStyle">@style/FileChooserTextNameStyle1</item>
+        <item name="fileChooserTextSizeStyle">@style/FileChooserTextSizeStyle1</item>
+        <item name="fileChooserTextDateStyle">@style/FileChooserTextDateStyle1</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <style name="FileChooserTextNameStyle1" parent="FileChooserTextNameStyle">
+        <item name="android:textColor">@color/text_gray</item>
+    </style>
+    <style name="FileChooserTextSizeStyle1" parent="FileChooserTextSizeStyle">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+    <style name="FileChooserTextDateStyle1" parent="FileChooserTextDateStyle">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+<!--    文件选择器条目样式结束-->
+
+    <!-- 选择器文件路径样式   -->
+    <style name="FileChooserPathViewStyle1" parent="FileChooserPathViewStyle">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@color/text_gray</item>
+    </style>
+
+
 </resources>

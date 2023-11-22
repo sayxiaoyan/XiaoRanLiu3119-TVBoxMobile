@@ -220,7 +220,7 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
     }
 
     private void pickFile() {
-        new ChooserDialog(SubscriptionActivity.this)
+        new ChooserDialog(SubscriptionActivity.this,R.style.FileChooser)
                 .withFilter(false, false, "txt", "json")
                 .withStartFile(TextUtils.isEmpty(Hawk.get("before_selected_path"))?"/storage/emulated/0/Download":Hawk.get("before_selected_path"))
                 .withChosenListener(new ChooserDialog.Result() {

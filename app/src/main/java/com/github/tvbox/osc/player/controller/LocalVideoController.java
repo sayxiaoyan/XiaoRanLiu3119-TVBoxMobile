@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.VibrateUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
@@ -916,7 +915,6 @@ public class LocalVideoController extends BaseController {
             mControlWrapper.setSpeed(speed);
             mLlSpeed.setVisibility(VISIBLE);
             mTvSpeedTip.setText(speed + "x");
-            VibrateUtils.vibrate(200);
         }
     }
 
