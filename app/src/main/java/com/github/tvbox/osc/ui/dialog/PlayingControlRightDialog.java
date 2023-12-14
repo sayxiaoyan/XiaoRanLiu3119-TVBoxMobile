@@ -72,6 +72,22 @@ public class PlayingControlRightDialog extends DrawerPopupView {
         mBinding.scale.setOnClickListener(view -> changeAndUpdateText(mBinding.scale,mController.mPlayerScaleBtn));
         mBinding.playTimeStart.setOnClickListener(view -> changeAndUpdateText(mBinding.playTimeStart,mController.mPlayerTimeStartBtn));
         mBinding.playTimeEnd.setOnClickListener(view -> changeAndUpdateText(mBinding.playTimeEnd,mController.mPlayerTimeSkipBtn));
+        mBinding.increaseStart.setOnClickListener(view -> {
+            mController.increaseTime("st");
+            updateSkipText(true);
+        });
+        mBinding.decreaseStart.setOnClickListener(view -> {
+            mController.decreaseTime("st");
+            updateSkipText(true);
+        });
+        mBinding.increaseEnd.setOnClickListener(view -> {
+            mController.increaseTime("et");
+            updateSkipText(false);
+        });
+        mBinding.decreaseEnd.setOnClickListener(view -> {
+            mController.decreaseTime("et");
+            updateSkipText(false);
+        });
         mBinding.player.setOnClickListener(view -> changeAndUpdateText(mBinding.player,mController.mPlayerBtn));
         mBinding.decode.setOnClickListener(view -> changeAndUpdateText(mBinding.decode,mController.mPlayerIJKBtn));
 
@@ -87,6 +103,14 @@ public class PlayingControlRightDialog extends DrawerPopupView {
             mController.hideSubtitle();
             return true;
         });
+    }
+
+    private void updateSkipText(boolean start){
+        if (start){
+            mBinding.playTimeStart.setText(mController.mPlayerTimeStartBtn.getText());
+        }else {
+            mBinding.playTimeEnd.setText(mController.mPlayerTimeSkipBtn.getText());
+        }
     }
 
     /**

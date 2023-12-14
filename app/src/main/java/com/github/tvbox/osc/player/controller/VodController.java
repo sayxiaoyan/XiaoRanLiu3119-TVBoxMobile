@@ -1059,4 +1059,35 @@ public class VodController extends BaseController {
         hideBottom();
         Toast.makeText(getContext(), "字幕已关闭", Toast.LENGTH_SHORT).show();
     }
+
+
+    public void increaseTime(String type) {
+        try {
+            int step = Hawk.get(HawkConfig.PLAY_TIME_STEP, 1);
+            int time = mPlayerConfig.getInt(type);
+            time += step;
+            if (time > 30 * 10)
+                time = 0;
+            mPlayerConfig.put(type, time);
+            updatePlayerCfgView();
+            listener.updatePlayerCfg();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void decreaseTime(String type) {
+        try {
+            int step = Hawk.get(HawkConfig.PLAY_TIME_STEP, 1);
+            int time = mPlayerConfig.getInt(type);
+            time -= step;
+            if (time < 0)
+                time = (30 * 10);
+            mPlayerConfig.put(type, time);
+            updatePlayerCfgView();
+            listener.updatePlayerCfg();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

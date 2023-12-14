@@ -156,13 +156,21 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
+                <ImageView
+                    android:id="@+id/decrease_start"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/icon_back"
+                    app:tint="@color/text_gray"
+                    />
                 <TextView
                     android:id="@+id/play_time_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginHorizontal="8dp"
                     android:background="@drawable/bg_r_common_stroke_primary"
                     android:gravity="center"
                     android:singleLine="true"
@@ -170,12 +178,27 @@
                     android:paddingVertical="4dp"
                     android:paddingHorizontal="10dp"
                     tools:text="片头" />
+                <ImageView
+                    android:id="@+id/increase_start"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/icon_pre"
+                    app:tint="@color/text_gray"
+                    />
 
+                <ImageView
+                    android:id="@+id/decrease_end"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/icon_back"
+                    app:tint="@color/text_gray"
+                    android:layout_marginStart="10dp"
+                    />
                 <TextView
                     android:id="@+id/play_time_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginHorizontal="8dp"
                     android:background="@drawable/bg_r_common_stroke_primary"
                     android:gravity="center"
                     android:singleLine="true"
@@ -183,6 +206,13 @@
                     android:paddingVertical="4dp"
                     android:paddingHorizontal="10dp"
                     tools:text="片尾" />
+                <ImageView
+                    android:id="@+id/increase_end"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/icon_pre"
+                    app:tint="@color/text_gray"
+                    />
 
                 <TextView
                     android:id="@+id/start_end_reset"
@@ -195,6 +225,7 @@
                     android:textColor="@color/text_gray"
                     android:paddingVertical="4dp"
                     android:paddingHorizontal="10dp"
+                    android:layout_marginStart="10dp"
                     android:text="重置" />
             </LinearLayout>
 

@@ -68,6 +68,22 @@ public class PlayingControlDialog extends BottomPopupView {
         mBinding.scale.setOnClickListener(view -> changeAndUpdateText(mBinding.scale,mController.mPlayerScaleBtn));
         mBinding.playTimeStart.setOnClickListener(view -> changeAndUpdateText(mBinding.playTimeStart,mController.mPlayerTimeStartBtn));
         mBinding.playTimeEnd.setOnClickListener(view -> changeAndUpdateText(mBinding.playTimeEnd,mController.mPlayerTimeSkipBtn));
+        mBinding.increaseStart.setOnClickListener(view -> {
+            mController.increaseTime("st");
+            updateSkipText(true);
+        });
+        mBinding.decreaseStart.setOnClickListener(view -> {
+            mController.decreaseTime("st");
+            updateSkipText(true);
+        });
+        mBinding.increaseEnd.setOnClickListener(view -> {
+            mController.increaseTime("et");
+            updateSkipText(false);
+        });
+        mBinding.decreaseEnd.setOnClickListener(view -> {
+            mController.decreaseTime("et");
+            updateSkipText(false);
+        });
         mBinding.player.setOnClickListener(view -> changeAndUpdateText(mBinding.player,mController.mPlayerBtn));
         mBinding.decode.setOnClickListener(view -> changeAndUpdateText(mBinding.decode,mController.mPlayerIJKBtn));
 
@@ -84,6 +100,13 @@ public class PlayingControlDialog extends BottomPopupView {
         });
     }
 
+    private void updateSkipText(boolean start){
+        if (start){
+            mBinding.playTimeStart.setText(mController.mPlayerTimeStartBtn.getText());
+        }else {
+            mBinding.playTimeEnd.setText(mController.mPlayerTimeSkipBtn.getText());
+        }
+    }
     /**
      * 点击直接调用controller里面声明好的点击事件,(不改动原逻辑,隐藏controller里的设置view,全由弹窗设置)
      * @param view 不为空变更配置文字,如更换播放器/缩放, 为空只操作点击之间,不需改变文字,如刷新/重播
