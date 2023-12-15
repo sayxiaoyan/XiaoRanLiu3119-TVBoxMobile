@@ -234,6 +234,9 @@ public class SourceViewModel extends ViewModel {
     }
     // categoryContent
     public void getList(MovieSort.SortData sortData, int page) {
+        if(sortData == null){
+            return;
+        }
         SourceBean homeSourceBean = ApiConfig.get().getHomeSourceBean();
         int type = homeSourceBean.getType();
         if (type == 3) {
