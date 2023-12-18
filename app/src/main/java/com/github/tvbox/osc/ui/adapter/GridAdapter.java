@@ -51,6 +51,7 @@ public class GridAdapter extends BaseQuickAdapter<Movie.Video, BaseViewHolder> {
         ImageView ivThumb = helper.getView(R.id.ivThumb);
         //由于部分电视机使用glide报错
         if (!TextUtils.isEmpty(item.pic)) {
+            item.pic=item.pic.trim();
             Picasso.get()
                     .load(DefaultConfig.checkReplaceProxy(item.pic))
                     .placeholder(R.drawable.img_loading_placeholder)

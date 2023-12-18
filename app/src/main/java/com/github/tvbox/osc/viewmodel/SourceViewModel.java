@@ -6,6 +6,7 @@ import android.util.Base64;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.github.catvod.crawler.Spider;
 import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.base.App;
@@ -235,6 +236,7 @@ public class SourceViewModel extends ViewModel {
     // categoryContent
     public void getList(MovieSort.SortData sortData, int page) {
         if(sortData == null){
+            ToastUtils.showLong("首页数据丢失,请切换站点");
             return;
         }
         SourceBean homeSourceBean = ApiConfig.get().getHomeSourceBean();
