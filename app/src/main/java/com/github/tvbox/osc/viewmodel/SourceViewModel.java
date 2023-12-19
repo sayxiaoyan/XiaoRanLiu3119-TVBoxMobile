@@ -235,10 +235,6 @@ public class SourceViewModel extends ViewModel {
     }
     // categoryContent
     public void getList(MovieSort.SortData sortData, int page) {
-        if(sortData == null){
-            ToastUtils.showLong("首页数据丢失,请切换站点");
-            return;
-        }
         SourceBean homeSourceBean = ApiConfig.get().getHomeSourceBean();
         int type = homeSourceBean.getType();
         if (type == 3) {

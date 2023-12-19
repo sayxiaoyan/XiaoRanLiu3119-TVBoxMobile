@@ -5,10 +5,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.GsonUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
@@ -78,13 +81,28 @@ public class GridFragment extends BaseLazyFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            String json = savedInstanceState.getString("sortDataJson");
+            this.sortData = GsonUtils.fromJson(json, MovieSort.SortData.class);
+        }
+    }
+
+    @Override
     protected void init() {
         initView();
         initViewModel();
         initData();
     }
 
-    private void changeView(String id,Boolean isFolder){
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("sortDataJson", GsonUtils.toJson(sortData));
+    }
+
+    private void changeView(String id, Boolean isFolder){
         if(isFolder){
             this.sortData.flag ="1"; // 修改sortData.flag
         }else {
