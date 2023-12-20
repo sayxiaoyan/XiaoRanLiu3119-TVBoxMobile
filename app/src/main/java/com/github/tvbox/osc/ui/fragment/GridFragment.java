@@ -84,8 +84,11 @@ public class GridFragment extends BaseLazyFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            String json = savedInstanceState.getString("sortDataJson");
-            this.sortData = GsonUtils.fromJson(json, MovieSort.SortData.class);
+            //activity销毁再进入,会直接恢复fragment,从而直接getList,导致sortData为空闪退
+            this.sortData = GsonUtils.fromJson(savedInstanceState.getString("sortDataJson"), MovieSort.SortData.class);
+            //后台杀进程再进入,会直接恢复fragment,从而直接getList,导致ApiConfig的mHomeSource为空闪退
+            SourceBean homeSourceBean = GsonUtils.fromJson(savedInstanceState.getString("homeSourceBean"), SourceBean.class);
+            ApiConfig.get().setSourceBean(homeSourceBean);
         }
     }
 
@@ -100,6 +103,7 @@ public class GridFragment extends BaseLazyFragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("sortDataJson", GsonUtils.toJson(sortData));
+        outState.putString("homeSourceBean", GsonUtils.toJson(ApiConfig.get().getHomeSourceBean()));
     }
 
     private void changeView(String id, Boolean isFolder){
