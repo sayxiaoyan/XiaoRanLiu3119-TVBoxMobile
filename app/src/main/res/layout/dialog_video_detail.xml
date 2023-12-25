@@ -68,19 +68,10 @@
         android:id="@+id/tv_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/tv_lang"
+        app:layout_constraintBottom_toTopOf="@+id/tv_type"
         app:layout_constraintLeft_toLeftOf="@+id/tv_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_year"
         tools:text="地区: 中国" />
-
-    <TextView
-        android:id="@+id/tv_lang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/tv_type"
-        app:layout_constraintLeft_toLeftOf="@+id/tv_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_area"
-        tools:text="语言: 中" />
 
     <TextView
         android:id="@+id/tv_type"
@@ -88,7 +79,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/tv_actor"
         app:layout_constraintLeft_toLeftOf="@+id/tv_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_lang"
+        app:layout_constraintTop_toBottomOf="@+id/tv_area"
         app:layout_constraintRight_toRightOf="parent"
         android:maxLines="2"
         android:ellipsize="end"
@@ -112,17 +103,51 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="2"
-        app:layout_constraintBottom_toTopOf="@+id/tv_des"
+        app:layout_constraintBottom_toTopOf="@+id/v_url"
         app:layout_constraintLeft_toLeftOf="@+id/tv_name"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_actor"
         tools:text="导演: 中" />
 
+    <RelativeLayout
+        android:id="@+id/v_url"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        app:layout_constraintBottom_toTopOf="@+id/tv_des"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_name"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_director">
+        <TextView
+            android:id="@+id/tv_link_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="链接："/>
+        <TextView
+            android:id="@+id/url"
+            android:layout_toRightOf="@+id/tv_link_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="middle"
+            android:singleLine="true"
+            android:text="http://"
+            android:layout_toLeftOf="@+id/tv_link_copy"/>
+        <TextView
+            android:id="@+id/tv_link_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="复制"
+            android:textColor="@color/color_1890FF"
+            android:paddingLeft="10dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
     <com.ctetin.expandabletextviewlibrary.ExpandableTextView
         android:id="@+id/tv_des"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_director"
+        app:layout_constraintTop_toBottomOf="@+id/v_url"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
