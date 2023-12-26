@@ -34,8 +34,9 @@ public class Subscription {
         return isChecked;
     }
 
-    public void setChecked(boolean checked) {
+    public Subscription setChecked(boolean checked) {
         isChecked = checked;
+        return this;
     }
 
     public String getName() {

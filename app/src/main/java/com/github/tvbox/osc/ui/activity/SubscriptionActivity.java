@@ -97,22 +97,22 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
                     .autoFocusEditText(false)
                     .asCustom(new SubsciptionDialog(this, "订阅: " + (mSubscriptions.size() + 1), new SubsciptionDialog.OnSubsciptionListener() {
                         @Override
-                        public void onConfirm(String name, String url) {
+                        public void onConfirm(String name, String url,boolean checked) {//只有addSub2List用到,看注释,单线路才生效,其余方法仅作为参数继续传递
                             for (Subscription item : mSubscriptions) {
                                 if (item.getUrl().equals(url)) {
                                     ToastUtils.showLong("订阅地址与" + item.getName() + "相同");
                                     return;
                                 }
                             }
-                            addSubscription(name, url);
+                            addSubscription(name, url, checked);
                         }
 
                         @Override
-                        public void chooseLocal() {//本地导入
+                        public void chooseLocal(boolean checked) {//本地导入
                             if (!XXPermissions.isGranted(mContext, Permission.MANAGE_EXTERNAL_STORAGE)) {
-                                showPermissionTipPopup();
+                                showPermissionTipPopup(checked);
                             } else {
-                                pickFile();
+                                pickFile(checked);
                             }
                         }
                     })).show();
@@ -188,7 +188,7 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
         });
     }
 
-    private void showPermissionTipPopup() {
+    private void showPermissionTipPopup(boolean checked) {
         new XPopup.Builder(SubscriptionActivity.this)
                 .isDarkTheme(Utils.isDarkTheme())
                 .asConfirm("提示", "这将访问您设备文件的读取权限", () -> {
@@ -198,7 +198,7 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
                                 @Override
                                 public void onGranted(List<String> permissions, boolean all) {
                                     if (all) {
-                                        pickFile();
+                                        pickFile(checked);
                                     } else {
                                         ToastUtils.showLong("部分权限未正常授予,请授权");
                                     }
@@ -212,14 +212,18 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
                                         XXPermissions.startPermissionActivity(SubscriptionActivity.this, permissions);
                                     } else {
                                         ToastUtils.showShort("获取权限失败");
-                                        showPermissionTipPopup();
+                                        showPermissionTipPopup(checked);
                                     }
                                 }
                             });
                 }).show();
     }
 
-    private void pickFile() {
+    /**
+     *
+     * @param checked 与showPermissionTipPopup一样,只记录并传递选中状态
+     */
+    private void pickFile(boolean checked) {
         new ChooserDialog(SubscriptionActivity.this,R.style.FileChooser)
                 .withFilter(false, false, "txt", "json")
                 .withStartFile(TextUtils.isEmpty(Hawk.get("before_selected_path"))?"/storage/emulated/0/Download":Hawk.get("before_selected_path"))
@@ -228,17 +232,23 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
                     public void onChoosePath(String path, File pathFile) {
                         Hawk.put("before_selected_path",pathFile.getParent());
                         String clanPath = pathFile.getAbsolutePath().replace("/storage/emulated/0", "clan://localhost");
-                        addSubscription(pathFile.getName(), clanPath);
+                        for (Subscription item : mSubscriptions) {
+                            if (item.getUrl().equals(clanPath)) {
+                                ToastUtils.showLong("订阅地址与" + item.getName() + "相同");
+                                return;
+                            }
+                        }
+                        addSubscription(pathFile.getName(), clanPath,checked);
                     }
                 })
                 .build()
                 .show();
     }
 
-    private void addSubscription(String name, String url) {
+    private void addSubscription(String name, String url,boolean checked) {
         if (url.startsWith("clan://")) {
-            mSubscriptions.add(new Subscription(name, url));
-            mSubscriptionAdapter.notifyDataSetChanged();
+            addSub2List(name, url, checked);
+            mSubscriptionAdapter.setNewData(mSubscriptions);
         } else if (url.startsWith("http")) {
             showLoadingDialog();
             OkGo.<String>get(url)
@@ -253,6 +263,9 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
                                 // 多仓?
                                 JsonElement storeHouse = json.get("storeHouse");
                                 if (urls != null && urls.isJsonArray()) {// 多线路
+                                    if (checked){
+                                        ToastUtils.showLong("多条线路请主动选择");
+                                    }
                                     JsonArray urlList = urls.getAsJsonArray();
                                     if (urlList != null && urlList.size() > 0
                                             && urlList.get(0).isJsonObject()
@@ -281,15 +294,15 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
                                         new XPopup.Builder(SubscriptionActivity.this)
                                                 .asCustom(new ChooseSourceDialog(SubscriptionActivity.this, mSources, (position, url1) -> {
                                                     // 再根据多线路格式获取配置,如果仓内是正常多线路模式,name没用,直接使用线路的命名
-                                                    addSubscription(mSources.get(position).getSourceName(), mSources.get(position).getSourceUrl());
+                                                    addSubscription(mSources.get(position).getSourceName(), mSources.get(position).getSourceUrl(),checked);
                                                 }))
                                                 .show();
                                     }
                                 } else {// 单线路/其余
-                                    mSubscriptions.add(new Subscription(name, url));
+                                    addSub2List(name, url, checked);
                                 }
                             } catch (Throwable th) {
-                                mSubscriptions.add(new Subscription(name, url));
+                                addSub2List(name, url, checked);
                             }
                             mSubscriptionAdapter.setNewData(mSubscriptions);
                         }
@@ -311,6 +324,25 @@ public class SubscriptionActivity extends BaseVbActivity<ActivitySubscriptionBin
         }
     }
 
+    /**
+     * 仅当选中本地文件和添加的为单线路时,使用此订阅生效。多线路会直接解析全部并添加,多仓会展开并选择,最后也按多线路处理,直接添加
+     * @param name
+     * @param url
+     * @param checkNewest
+     */
+    private void addSub2List(String name,String url,boolean checkNewest){
+        if (checkNewest){//选中最新的,清除以前的选中订阅
+            for (Subscription subscription : mSubscriptions) {
+                if (subscription.isChecked()){
+                    subscription.setChecked(false);
+                }
+            }
+            mSelectedUrl = url;
+            mSubscriptions.add(new Subscription(name, url).setChecked(true));
+        }else {
+            mSubscriptions.add(new Subscription(name, url).setChecked(false));
+        }
+    }
 
     @Override
     protected void onPause() {

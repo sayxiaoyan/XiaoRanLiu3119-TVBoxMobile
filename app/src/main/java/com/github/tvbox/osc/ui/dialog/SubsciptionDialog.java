@@ -18,8 +18,8 @@ import com.lxj.xpopup.core.CenterPopupView;
 public class SubsciptionDialog extends CenterPopupView {
 
     public interface OnSubsciptionListener {
-        void onConfirm(String name,String url);
-        void chooseLocal();
+        void onConfirm(String name,String url,boolean check);
+        void chooseLocal(boolean check);
     }
 
     private final String mDefaultName;
@@ -55,13 +55,13 @@ public class SubsciptionDialog extends CenterPopupView {
                 return;
             }
             if (listener != null) {
-                listener.onConfirm(name,url);
+                listener.onConfirm(name,url,binding.cbCheck.isChecked());
             }
             dismiss();
         });
 
         binding.tvLocal.setOnClickListener(view -> {
-            dismissWith(() -> listener.chooseLocal());
+            dismissWith(() -> listener.chooseLocal(binding.cbCheck.isChecked()));
         });
     }
 }
