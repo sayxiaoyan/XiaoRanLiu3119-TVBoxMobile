@@ -7,7 +7,7 @@ import static okhttp3.ConnectionSpec.RESTRICTED_TLS;
 
 import android.graphics.Bitmap;
 
-import com.github.catvod.net.SSLSocketFactoryCompat;
+import com.github.catvod.net.SSLCompat;
 import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.picasso.MyOkhttpDownLoader;
 import com.github.tvbox.osc.util.urlhttp.BrotliInterceptor;
@@ -181,8 +181,8 @@ public class OkGoHelper {
     private static synchronized void setOkHttpSsl(OkHttpClient.Builder builder) {
         try {
 
-            final SSLSocketFactory sslSocketFactory = new SSLSocketFactoryCompat();
-            builder.sslSocketFactory(sslSocketFactory, SSLSocketFactoryCompat.trustAllCert);
+            final SSLSocketFactory sslSocketFactory = new SSLCompat();
+            builder.sslSocketFactory(sslSocketFactory, SSLCompat.TM);
             builder.hostnameVerifier(HttpsUtils.UnSafeHostnameVerifier);
         } catch (Exception e) {
             throw new RuntimeException(e);

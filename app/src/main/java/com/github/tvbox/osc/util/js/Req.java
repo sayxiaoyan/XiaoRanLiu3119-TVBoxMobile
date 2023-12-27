@@ -70,6 +70,10 @@ public class Req {
         return Json.toMap(getHeaders());
     }
 
+    public boolean isRedirect() {
+        return getRedirect() == 1;
+    }
+
     public String getCharset() {
         Map<String, String> header = getHeader();
         List<String> keys = Arrays.asList("Content-Type", "content-type");

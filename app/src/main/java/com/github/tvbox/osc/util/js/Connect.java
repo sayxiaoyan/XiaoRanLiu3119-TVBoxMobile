@@ -30,11 +30,7 @@ public class Connect {
     static OkHttpClient client;
 
     public static Call to(String url, Req req) {
-        client = req.getRedirect() == 1 ? OkHttp.client() : OkHttp.noRedirect();
-        client = client.newBuilder()
-                .connectTimeout(req.getTimeout(), TimeUnit.MILLISECONDS)
-                .readTimeout(req.getTimeout(), TimeUnit.MILLISECONDS)
-                .writeTimeout(req.getTimeout(), TimeUnit.MILLISECONDS).build();
+        OkHttpClient client = OkHttp.client(req.isRedirect(), req.getTimeout());
         return client.newCall(getRequest(url, req, Headers.of(req.getHeader())));
     }
 
