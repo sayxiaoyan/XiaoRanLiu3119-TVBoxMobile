@@ -1,4 +1,4 @@
-package com.github.tvbox.quickjs;
+package com.github.tvbox.osc.util;
 
 
 import java.lang.reflect.Array;
@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class JSUtils {
+public class StringUtils {
 
     public static boolean isEmpty( CharSequence str) {
         return str == null || str.length() == 0;

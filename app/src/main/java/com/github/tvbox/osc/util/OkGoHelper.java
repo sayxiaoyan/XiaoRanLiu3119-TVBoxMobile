@@ -1,10 +1,16 @@
 package com.github.tvbox.osc.util;
 
+import static okhttp3.ConnectionSpec.CLEARTEXT;
+import static okhttp3.ConnectionSpec.COMPATIBLE_TLS;
+import static okhttp3.ConnectionSpec.MODERN_TLS;
+import static okhttp3.ConnectionSpec.RESTRICTED_TLS;
+
 import android.graphics.Bitmap;
 
+import com.github.catvod.net.SSLSocketFactoryCompat;
 import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.picasso.MyOkhttpDownLoader;
-import com.github.tvbox.osc.util.SSL.SSLSocketFactoryCompat;
+import com.github.tvbox.osc.util.urlhttp.BrotliInterceptor;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
@@ -13,18 +19,19 @@ import com.orhanobut.hawk.Hawk;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Cache;
+import okhttp3.ConnectionSpec;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.dnsoverhttps.DnsOverHttps;
+import okhttp3.internal.Util;
 import okhttp3.internal.Version;
 import xyz.doikki.videoplayer.exo.ExoMediaSourceHelper;
 
@@ -42,12 +49,11 @@ public class OkGoHelper {
             loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.NONE);
             loggingInterceptor.setColorLevel(Level.OFF);
         }
-        builder.addInterceptor(loggingInterceptor);
-
+        builder.connectionSpecs(getConnectionSpec());
+        builder.addInterceptor(new BrotliInterceptor());
         builder.retryOnConnectionFailure(true);
         builder.followRedirects(true);
         builder.followSslRedirects(true);
-
 
         try {
             setOkHttpSsl(builder);
@@ -63,6 +69,9 @@ public class OkGoHelper {
 
     public static ArrayList<String> dnsHttpsList = new ArrayList<>();
 
+    public static List<ConnectionSpec> getConnectionSpec() {
+        return Util.immutableList(RESTRICTED_TLS, MODERN_TLS, COMPATIBLE_TLS, CLEARTEXT);
+    }
 
     public static String getDohUrl(int type) {
         switch (type) {
@@ -93,19 +102,18 @@ public class OkGoHelper {
             loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.NONE);
             loggingInterceptor.setColorLevel(Level.OFF);
         }
-        builder.addInterceptor(loggingInterceptor);
+        builder.addInterceptor(new BrotliInterceptor());
         try {
             setOkHttpSsl(builder);
         } catch (Throwable th) {
             th.printStackTrace();
         }
+        builder.connectionSpecs(getConnectionSpec());
         builder.cache(new Cache(new File(App.getInstance().getCacheDir().getAbsolutePath(), "dohcache"), 10 * 1024 * 1024));
         OkHttpClient dohClient = builder.build();
         String dohUrl = getDohUrl(Hawk.get(HawkConfig.DOH_URL, 0));
         dnsOverHttps = new DnsOverHttps.Builder().client(dohClient).url(dohUrl.isEmpty() ? null : HttpUrl.get(dohUrl)).build();
     }
-
-
     static OkHttpClient defaultClient = null;
     static OkHttpClient noRedirectClient = null;
 
@@ -132,14 +140,12 @@ public class OkGoHelper {
         }
 
         //builder.retryOnConnectionFailure(false);
-
-        builder.addInterceptor(loggingInterceptor);
-
-        builder.readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
-        builder.writeTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
-        builder.connectTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
-
-        builder.dns(dnsOverHttps);
+        builder.connectionSpecs(getConnectionSpec());
+        builder.addInterceptor(new BrotliInterceptor());
+        builder.readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .writeTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .connectTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .dns(dnsOverHttps);
         try {
             setOkHttpSsl(builder);
         } catch (Throwable th) {
@@ -162,10 +168,11 @@ public class OkGoHelper {
     }
 
     static void initPicasso(OkHttpClient client) {
-        client.dispatcher().setMaxRequestsPerHost(10);
+        client.dispatcher().setMaxRequestsPerHost(32);
         MyOkhttpDownLoader downloader = new MyOkhttpDownLoader(client);
         Picasso picasso = new Picasso.Builder(App.getInstance())
                 .downloader(downloader)
+                .executor(HeavyTaskUtil.getBigTaskExecutorService())
                 .defaultBitmapConfig(Bitmap.Config.RGB_565)
                 .build();
         Picasso.setSingletonInstance(picasso);
@@ -173,27 +180,14 @@ public class OkGoHelper {
 
     private static synchronized void setOkHttpSsl(OkHttpClient.Builder builder) {
         try {
-            // 自定义一个信任所有证书的TrustManager，添加SSLSocketFactory的时候要用到
-            final X509TrustManager trustAllCert =
-                    new X509TrustManager() {
-                        @Override
-                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
 
-                        @Override
-                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-
-                        @Override
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                            return new java.security.cert.X509Certificate[]{};
-                        }
-                    };
-            final SSLSocketFactory sslSocketFactory = new SSLSocketFactoryCompat(trustAllCert);
-            builder.sslSocketFactory(sslSocketFactory, trustAllCert);
+            final SSLSocketFactory sslSocketFactory = new SSLSocketFactoryCompat();
+            builder.sslSocketFactory(sslSocketFactory, SSLSocketFactoryCompat.trustAllCert);
             builder.hostnameVerifier(HttpsUtils.UnSafeHostnameVerifier);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+
 }
