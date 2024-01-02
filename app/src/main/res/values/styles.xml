@@ -10,6 +10,11 @@
         <item name="android:windowBackground">@color/windowBackground</item>
     </style>
 
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="android:windowActionBar">false</item>
