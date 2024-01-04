@@ -10,6 +10,6 @@ class SplashActivity : BaseVbActivity<ActivitySplashBinding>() {
         mBinding.root.postDelayed({
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             finish()
-        },500)
+        },400)
     }
 }

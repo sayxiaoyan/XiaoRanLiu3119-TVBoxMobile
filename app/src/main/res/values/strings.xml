@@ -35,4 +35,8 @@
         <item>https://dns.alidns.com/dns-query</item>
         <item>https://doh.360.cn/dns-query</item>
     </string-array>
+
+    <string-array name="api">
+        <item />
+    </string-array>
 </resources>

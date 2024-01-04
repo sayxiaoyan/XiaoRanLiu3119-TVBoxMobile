@@ -1,9 +1,12 @@
 package com.github.tvbox.osc.base;
 
+import android.text.TextUtils;
+
 import androidx.multidex.MultiDexApplication;
 
 import com.github.catvod.crawler.JsLoader;
 import com.github.tvbox.osc.R;
+import com.github.tvbox.osc.bean.Subscription;
 import com.github.tvbox.osc.bean.VodInfo;
 import com.github.tvbox.osc.callback.EmptyCallback;
 import com.github.tvbox.osc.callback.LoadingCallback;
@@ -21,6 +24,9 @@ import com.kingja.loadsir.core.LoadSir;
 import com.orhanobut.hawk.Hawk;
 import com.p2p.P2PClass;
 import com.whl.quickjs.android.QuickJSLoader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import me.jessyan.autosize.AutoSizeConfig;
@@ -80,6 +86,23 @@ public class App extends MultiDexApplication {
         putDefault(HawkConfig.DOH_URL, 0);                   //安全DNS: 0=关闭, 1=腾讯, 2=阿里, 3=360, 4=Google, 5=AdGuard, 6=Quad9
         putDefault(HawkConfig.PLAY_SCALE, 0);                //画面缩放: 0=默认, 1=16:9, 2=4:3, 3=填充, 4=原始, 5=裁剪
         putDefault(HawkConfig.HISTORY_NUM, 2);                //历史记录数量: 0=30, 1=50, 2=70
+        putDefaultApi();
+    }
+
+    private void putDefaultApi() {
+        String[] apis = getResources().getStringArray(R.array.api);
+        if(!Hawk.contains(HawkConfig.API_URL) && !Hawk.contains(HawkConfig.SUBSCRIPTIONS) && !TextUtils.isEmpty(apis[0])){
+            List<Subscription> subscriptions = new ArrayList<>();
+            for (int i = 0; i < apis.length; i++) {
+                if (i==0){
+                    subscriptions.add(new Subscription("订阅: 1", apis[0]).setChecked(true));
+                    Hawk.put(HawkConfig.API_URL,apis[0]);
+                }else {
+                    subscriptions.add(new Subscription("订阅: "+(i+1), apis[i]));
+                }
+            }
+            Hawk.put(HawkConfig.SUBSCRIPTIONS,subscriptions);
+        }
     }
 
     public static App getInstance() {
