@@ -29,12 +29,13 @@ android {
 }
 
 dependencies {
+    def exoplayerVersion = "2.16.0"
     implementation "androidx.annotation:annotation:1.3.0"
-    api "com.google.android.exoplayer:exoplayer-core:2.14.2"
-    api "com.google.android.exoplayer:exoplayer-dash:2.14.2"
-    api "com.google.android.exoplayer:exoplayer-hls:2.14.2"
-    api "com.google.android.exoplayer:exoplayer-rtsp:2.14.2"
-    api "com.google.android.exoplayer:extension-rtmp:2.14.2"
-    api "com.google.android.exoplayer:extension-okhttp:2.14.2"
+    api "com.google.android.exoplayer:exoplayer-core:$exoplayerVersion"
+    api "com.google.android.exoplayer:exoplayer-dash:$exoplayerVersion"
+    api "com.google.android.exoplayer:exoplayer-hls:$exoplayerVersion"
+    api "com.google.android.exoplayer:exoplayer-rtsp:$exoplayerVersion"
+    api "com.google.android.exoplayer:extension-rtmp:$exoplayerVersion"
+    implementation 'com.squareup.okhttp3:okhttp:3.12.11'
     api 'xyz.doikki.android.dkplayer:dkplayer-ui:3.3.5'
 }

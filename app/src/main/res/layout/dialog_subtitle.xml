@@ -187,8 +187,6 @@
                         android:layout_weight="1"
                         android:layout_height="match_parent"
                         android:text="内置"
-                        android:visibility="gone"
-                        tools:visibility="visible"
                         android:layout_marginLeft="10dp"/>
 
                     <com.google.android.material.button.MaterialButton

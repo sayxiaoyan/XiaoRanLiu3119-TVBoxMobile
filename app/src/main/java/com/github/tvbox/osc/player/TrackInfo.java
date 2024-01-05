@@ -27,7 +27,7 @@ public class TrackInfo {
     public int getSelected(List<TrackInfoBean> list, boolean track) {
         int i = 0;
         for (TrackInfoBean trackInfoBean : list) {
-            if (trackInfoBean.selected) return track ? trackInfoBean.index : i;
+            if (trackInfoBean.selected) return track ? trackInfoBean.trackId : i;
             i++;
         }
         return 99999;
