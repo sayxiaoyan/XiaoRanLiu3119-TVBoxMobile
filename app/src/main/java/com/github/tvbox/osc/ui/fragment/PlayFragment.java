@@ -85,6 +85,7 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.enums.PopupPosition;
+import com.lxj.xpopup.interfaces.OnConfirmListener;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.model.HttpHeaders;
@@ -149,7 +150,10 @@ public class PlayFragment extends BaseLazyFragment {
      * 全屏下的设置弹窗
      */
     private BasePopupView mPlayingControlRightDialog;
-
+    /**
+     * 视频播放出错时,自动切换另一个播放器,这个开关避免多次切换
+     */
+    boolean retriedSwitchPlayer = false;
     @Override
     protected int getLayoutResID() {
         return R.layout.activity_play;
@@ -653,6 +657,11 @@ public class PlayFragment extends BaseLazyFragment {
                     if (finish) {
                         Toast.makeText(mContext, err, Toast.LENGTH_SHORT).show();
                     } else {
+                        if (err.equals("视频播放出错") && !retriedSwitchPlayer){
+                            ToastUtils.showShort("播放出错,正在尝试切换播放器");
+                            retriedSwitchPlayer = true;
+                            mController.mPlayerBtn.performClick();
+                        }
                         setTip(err, false, true);
                     }
                 }
