@@ -136,7 +136,10 @@ public class PlayFragment extends BaseLazyFragment {
     private Handler mHandler;
 
     private final long videoDuration = -1;
-    private String mFinalUrl;
+    /**
+     * 记录当前播放url
+     */
+    private String mCurrentUrl;
     private boolean mFullWindows;
     /**
      * 非全屏下的设置弹窗
@@ -730,6 +733,7 @@ public class PlayFragment extends BaseLazyFragment {
     }
 
     void playUrl(String url, HashMap<String, String> headers) {
+        mCurrentUrl = url;
         if (!Hawk.get(HawkConfig.VIDEO_PURIFY, true)) {
             startPlayUrl(url, headers);
             return;
@@ -850,42 +854,39 @@ public class PlayFragment extends BaseLazyFragment {
         if (autoRetryCount > 0 && url.contains(".m3u8")) {
             url = "http://home.jundie.top:666/unBom.php?m3u8=" + url;//尝试去bom头再次播放
         }
-        mFinalUrl = url;
+        String finalUrl = url;
         if (mActivity == null || !isAdded()) return;
-        requireActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                stopParse();
-                if (mVideoView != null) {
-                    mVideoView.release();
+        requireActivity().runOnUiThread(() -> {
+            stopParse();
+            if (mVideoView != null) {
+                mVideoView.release();
 
-                    if (mFinalUrl != null) {
-                        try {
-                            int playerType = mVodPlayerCfg.getInt("pl");
-                            if (playerType >= 10) {
-                                VodInfo.VodSeries vs = mVodInfo.seriesMap.get(mVodInfo.playFlag).get(mVodInfo.playIndex);
-                                String playTitle = mVodInfo.name + " " + vs.name;
-                                setTip("调用外部播放器" + PlayerHelper.getPlayerName(playerType) + "进行播放", true, false);
-                                boolean callResult = false;
-                                long progress = getSavedProgress(progressKey);
-                                callResult = PlayerHelper.runExternalPlayer(playerType, requireActivity(), mFinalUrl, playTitle, playSubtitle, headers, progress);
-                                setTip("调用外部播放器" + PlayerHelper.getPlayerName(playerType) + (callResult ? "成功" : "失败"), callResult, !callResult);
-                                return;
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                if (finalUrl != null) {
+                    try {
+                        int playerType = mVodPlayerCfg.getInt("pl");
+                        if (playerType >= 10) {
+                            VodInfo.VodSeries vs = mVodInfo.seriesMap.get(mVodInfo.playFlag).get(mVodInfo.playIndex);
+                            String playTitle = mVodInfo.name + " " + vs.name;
+                            setTip("调用外部播放器" + PlayerHelper.getPlayerName(playerType) + "进行播放", true, false);
+                            boolean callResult = false;
+                            long progress = getSavedProgress(progressKey);
+                            callResult = PlayerHelper.runExternalPlayer(playerType, requireActivity(), finalUrl, playTitle, playSubtitle, headers, progress);
+                            setTip("调用外部播放器" + PlayerHelper.getPlayerName(playerType) + (callResult ? "成功" : "失败"), callResult, !callResult);
+                            return;
                         }
-                        hideTip();
-                        PlayerHelper.updateCfg(mVideoView, mVodPlayerCfg);
-                        mVideoView.setProgressKey(progressKey);
-                        if (headers != null) {
-                            mVideoView.setUrl(mFinalUrl, headers);
-                        } else {
-                            mVideoView.setUrl(mFinalUrl);
-                        }
-                        mVideoView.start();
-                        mController.resetSpeed();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                    hideTip();
+                    PlayerHelper.updateCfg(mVideoView, mVodPlayerCfg);
+                    mVideoView.setProgressKey(progressKey);
+                    if (headers != null) {
+                        mVideoView.setUrl(finalUrl, headers);
+                    } else {
+                        mVideoView.setUrl(finalUrl);
+                    }
+                    mVideoView.start();
+                    mController.resetSpeed();
                 }
             }
         });
@@ -1675,7 +1676,7 @@ public class PlayFragment extends BaseLazyFragment {
     }
 
     public String getFinalUrl(){
-        return TextUtils.isEmpty(mFinalUrl)?"":mFinalUrl;
+        return TextUtils.isEmpty(mCurrentUrl)?"":mCurrentUrl;
     }
 
     boolean checkVideoFormat(String url) {
