@@ -57,4 +57,8 @@ public class HawkConfig {
      * TMDB请求token
      */
     public static final String TOKEN_TMDB = "token_tmdb";
+    /**
+     * 广告过滤
+     */
+    public static final String VIDEO_PURIFY = "video_purify";
 }

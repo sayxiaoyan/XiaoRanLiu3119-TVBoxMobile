@@ -262,6 +262,42 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llVideoPurify"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="广告过滤"
+                        android:textColor="@color/text_gray"
+                        android:textSize="16sp"/>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tvVideoPurifyText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="开启" />
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="center"
+                        android:alpha="0.75"
+                        android:src="@drawable/icon_pre"
+                        app:tint="@color/text_gray"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/llPressSpeed"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_60"

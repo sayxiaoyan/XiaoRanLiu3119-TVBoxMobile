@@ -76,6 +76,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
     private TextView tvFastSearchText;
     private TextView tvIjkCachePlay;
     TextView tvLongPressSpeed;
+    private TextView tvVideoPurifyText;
 
     public static ModelSettingFragment newInstance() {
         return new ModelSettingFragment().setArguments();
@@ -699,6 +700,15 @@ public class ModelSettingFragment extends BaseLazyFragment {
                             ToastUtils.showShort("设置成功");
                         }
                     }, null, R.layout.dialog_input).show();
+        });
+
+        tvVideoPurifyText = findViewById(R.id.tvVideoPurifyText);
+        tvVideoPurifyText.setText(Hawk.get(HawkConfig.VIDEO_PURIFY, true) ? "开启" : "关闭");
+        // toggle purify video -------------------------------------
+        findViewById(R.id.llVideoPurify).setOnClickListener(v -> {
+            FastClickCheckUtil.check(v);
+            Hawk.put(HawkConfig.VIDEO_PURIFY, !Hawk.get(HawkConfig.VIDEO_PURIFY, true));
+            tvVideoPurifyText.setText(Hawk.get(HawkConfig.VIDEO_PURIFY, true) ? "开启" : "关闭");
         });
     }
 
