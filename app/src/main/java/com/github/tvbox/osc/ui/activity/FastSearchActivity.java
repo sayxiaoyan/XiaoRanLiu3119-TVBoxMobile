@@ -794,9 +794,10 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
                         dismissLoadingDialog();
                         String json = response.body();
                         TmdbVodInfo tmdbVodInfo = GsonUtils.fromJson(json, TmdbVodInfo.class);
-                        if (!tmdbVodInfo.getResults().isEmpty()){
+                        List<TmdbVodInfo.ResultsDTO> results = tmdbVodInfo.getResults();
+                        if (results!=null && !results.isEmpty()){
                             new XPopup.Builder(FastSearchActivity.this)
-                                    .asCustom(new TmdbVodInfoDialog(FastSearchActivity.this,tmdbVodInfo.getResults().get(0)))
+                                    .asCustom(new TmdbVodInfoDialog(FastSearchActivity.this,results.get(0)))
                                     .show();
                         }else {
                             ToastUtils.showShort("未查询到相关信息");

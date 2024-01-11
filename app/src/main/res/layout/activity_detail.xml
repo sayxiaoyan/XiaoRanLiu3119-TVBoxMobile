@@ -198,16 +198,33 @@
                         />
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="线路"
-                    android:textColor="@color/text_gray"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginTop="14dp"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    />
+                    android:layout_marginHorizontal="14dp"
+                    android:layout_marginTop="14dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="线路"
+                        android:textColor="@color/text_gray"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_centerVertical="true"
+                        />
+                    <TextView
+                        android:id="@+id/tvChangeLine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="快捷换线"
+                        android:drawableRight="@drawable/ic_change_20"
+                        android:textColor="@color/text_gray"
+                        android:drawablePadding="4dp"
+                        android:paddingVertical="6dp"
+                        android:paddingLeft="20dp"
+                        android:layout_alignParentRight="true"
+                        />
+                </RelativeLayout>
                 <!--        线路列表-->
                 <com.owen.tvrecyclerview.widget.TvRecyclerView
                     android:id="@+id/mGridViewFlag"

@@ -213,33 +213,14 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         });
 
         seriesFlagAdapter.setOnItemClickListener((adapter, view, position) -> {
-            String newFlag = seriesFlagAdapter.getData().get(position).name;
-            if (vodInfo != null && !vodInfo.playFlag.equals(newFlag)) {
-                for (int i = 0; i < vodInfo.seriesFlags.size(); i++) {
-                    VodInfo.VodSeriesFlag flag = vodInfo.seriesFlags.get(i);
-                    if (flag.name.equals(vodInfo.playFlag)) {
-                        flag.selected = false;
-                        seriesFlagAdapter.notifyItemChanged(i);
-                        break;
-                    }
-                }
-                VodInfo.VodSeriesFlag flag = vodInfo.seriesFlags.get(position);
-                flag.selected = true;
-                // clean pre flag select status
-                if (vodInfo.seriesMap.get(vodInfo.playFlag).size() > vodInfo.playIndex) {
-                    vodInfo.seriesMap.get(vodInfo.playFlag).get(vodInfo.playIndex).selected = false;
-                }
-                vodInfo.playFlag = newFlag;
-                seriesFlagAdapter.notifyItemChanged(position);
-                refreshList();
-            }
+            chooseFlag(position);
         });
 
         seriesAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 FastClickCheckUtil.check(view);
-                chooseSeries(position);
+                chooseSeries(position,false);
             }
         });
 
@@ -274,6 +255,10 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                     }
                 }
             });
+        });
+        mBinding.tvChangeLine.setOnClickListener(v -> {
+            FastClickCheckUtil.check(v);
+            quickLineChange();
         });
         setLoadSir(mBinding.llLayout);
     }
@@ -343,13 +328,39 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
                     .hasNavigationBar(false)
                     .maxHeight(ScreenUtils.getScreenHeight() - (ScreenUtils.getScreenHeight() / 4))
                     .asCustom(new AllVodSeriesBottomDialog(this, seriesAdapter.getData(), (position, text) -> {
-                        chooseSeries(position);
+                        chooseSeries(position,false);
                     }));
             mAllSeriesBottomDialog.show();
         }
     }
 
-    private void chooseSeries(int position){
+    private void chooseFlag(int position){
+        //新选中的flag
+        String newFlag = seriesFlagAdapter.getData().get(position).name;
+        if (vodInfo != null && !vodInfo.playFlag.equals(newFlag)) {
+            for (int i = 0; i < vodInfo.seriesFlags.size(); i++) {//遍历flag集合
+                VodInfo.VodSeriesFlag flag = vodInfo.seriesFlags.get(i);
+                if (flag.name.equals(vodInfo.playFlag)) {//取消当前播放的选中状态
+                    flag.selected = false;
+                    seriesFlagAdapter.notifyItemChanged(i);
+                    break;
+                }
+            }
+            //新选中的flag
+            VodInfo.VodSeriesFlag flag = vodInfo.seriesFlags.get(position);
+            flag.selected = true;
+            //清除上一个线路集数的选中状态
+            List<VodInfo.VodSeries> currentSeriesList = vodInfo.seriesMap.get(vodInfo.playFlag);
+            if (currentSeriesList.size() > vodInfo.playIndex) {//有效集数
+                currentSeriesList.get(vodInfo.playIndex).selected = false;
+            }
+            vodInfo.playFlag = newFlag;
+            seriesFlagAdapter.notifyItemChanged(position);
+            refreshList();
+        }
+    }
+
+    private void chooseSeries(int position,boolean reloadWithChangeLine){
         if (vodInfo != null && vodInfo.seriesMap.get(vodInfo.playFlag).size() > 0) {
             boolean reload = false;
             for (int j = 0; j < vodInfo.seriesMap.get(vodInfo.playFlag).size(); j++) {
@@ -373,7 +384,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
             seriesAdapter.notifyItemChanged(vodInfo.playIndex);
 
             //选集全屏 想选集不全屏的注释下面一行
-            if (!showPreview || reload) {
+            if (!showPreview || reload || reloadWithChangeLine) {
                 jumpToPlay();
             }
         }
@@ -425,8 +436,9 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
 
     @SuppressLint("NotifyDataSetChanged")
     void refreshList() {
-        if (vodInfo.seriesMap.get(vodInfo.playFlag).size() <= vodInfo.playIndex) {
-            vodInfo.playIndex = 0;
+        int seriesSize = vodInfo.seriesMap.get(vodInfo.playFlag).size();
+        if (seriesSize>0 && seriesSize <= vodInfo.playIndex) {//当前集数大于新选线路的总集数,设置为最后一集
+            vodInfo.playIndex = seriesSize - 1;
         }
 
         if (vodInfo.seriesMap.get(vodInfo.playFlag) != null) {
@@ -967,5 +979,23 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
 
     public String getCurrentVodUrl(){
         return playFragment==null?"":playFragment.getFinalUrl();
+    }
+
+    public void quickLineChange(){
+        List<VodInfo.VodSeriesFlag> flags = seriesFlagAdapter.getData();
+        if (flags.size()>1){
+            int currentIndex = 0;
+            for (int i = 0; i <flags.size(); i++) {
+                if (flags.get(i).selected){
+                    currentIndex = i;
+                }
+            }
+            currentIndex+=1;
+            if (currentIndex>=flags.size()){
+                currentIndex = 0;
+            }
+            chooseFlag(currentIndex);
+            mBinding.mGridView.postDelayed(() -> chooseSeries(vodInfo.playIndex,true),300);
+        }
     }
 }
