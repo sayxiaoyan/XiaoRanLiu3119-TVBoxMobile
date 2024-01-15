@@ -1,8 +1,6 @@
 package com.github.tvbox.osc.ui.adapter;
 
-import android.graphics.Color;
 import android.view.View;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -13,18 +11,17 @@ import java.util.ArrayList;
 
 public class ParseAdapter extends BaseQuickAdapter<ParseBean, BaseViewHolder> {
     public ParseAdapter() {
-        super(R.layout.item_play_parse, new ArrayList<>());
+        super(R.layout.item_select_flag, new ArrayList<>());
     }
 
     @Override
     protected void convert(BaseViewHolder helper, ParseBean item) {
-        TextView tvParse = helper.getView(R.id.tvParse);
-        tvParse.setVisibility(View.VISIBLE);
+        View select = helper.getView(R.id.vFlag);
         if (item.isDefault()) {
-            tvParse.setTextColor(mContext.getResources().getColor(R.color.color_02F8E1));
+            select.setVisibility(View.VISIBLE);
         } else {
-            tvParse.setTextColor(Color.WHITE);
+            select.setVisibility(View.GONE);
         }
-        tvParse.setText(item.getName());
+        helper.setText(R.id.tvFlag, item.getName());
     }
 }

@@ -162,6 +162,7 @@ public class VodController extends BaseController {
     int videoPlayState = 0;
     LockRunnable lockRunnable = new LockRunnable();
     private boolean isLock = false;
+    private ParseAdapter mParseAdapter;
 
     private Runnable myRunnable2 = new Runnable() {
         @Override
@@ -277,21 +278,21 @@ public class VodController extends BaseController {
         });
 
         mGridView.setLayoutManager(new V7LinearLayoutManager(getContext(), 0, false));
-        ParseAdapter parseAdapter = new ParseAdapter();
-        parseAdapter.setOnItemClickListener((adapter, view, position) -> {
-            ParseBean parseBean = parseAdapter.getItem(position);
+        mParseAdapter = new ParseAdapter();
+        mParseAdapter.setOnItemClickListener((adapter, view, position) -> {
+            ParseBean parseBean = mParseAdapter.getItem(position);
             // 当前默认解析需要刷新
-            int currentDefault = parseAdapter.getData().indexOf(ApiConfig.get().getDefaultParse());
-            parseAdapter.notifyItemChanged(currentDefault);
+            int currentDefault = mParseAdapter.getData().indexOf(ApiConfig.get().getDefaultParse());
+            mParseAdapter.notifyItemChanged(currentDefault);
             ApiConfig.get().setDefaultParse(parseBean);
-            parseAdapter.notifyItemChanged(position);
+            mParseAdapter.notifyItemChanged(position);
             listener.changeParse(parseBean);
             hideBottom();
         });
-        mGridView.setAdapter(parseAdapter);
-        parseAdapter.setNewData(ApiConfig.get().getParseBeanList());
+        mGridView.setAdapter(mParseAdapter);
+        mParseAdapter.setNewData(ApiConfig.get().getParseBeanList());
 
-        mParseRoot.setVisibility(VISIBLE);
+        //mParseRoot.setVisibility(VISIBLE);
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -696,7 +697,10 @@ public class VodController extends BaseController {
     }
 
     public void showParse(boolean userJxList) {
-        mParseRoot.setVisibility(userJxList ? VISIBLE : GONE);
+        //mParseRoot.setVisibility(userJxList ? VISIBLE : GONE);
+        if (listener!=null && mParseAdapter!=null){
+            listener.showParseRoot(userJxList,mParseAdapter);
+        }
     }
 
     private JSONObject mPlayerConfig = null;
@@ -788,6 +792,8 @@ public class VodController extends BaseController {
         void showSetting();
 
         void pip();
+
+        void showParseRoot(boolean show,ParseAdapter adapter);
     }
 
     public void setListener(VodControlListener listener) {

@@ -29,7 +29,7 @@
             android:clipToPadding="false"
             app:tv_horizontalSpacingWithMargins="@dimen/dp_10"
             app:tv_selectedItemIsCentered="true"
-            tools:listitem="@layout/item_series_flag"
+            tools:listitem="@layout/item_select_flag"
             />
         <TextView
             android:id="@+id/tvSort"

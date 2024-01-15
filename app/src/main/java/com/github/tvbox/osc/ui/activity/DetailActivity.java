@@ -42,6 +42,7 @@ import com.github.tvbox.osc.base.BaseVbActivity;
 import com.github.tvbox.osc.bean.AbsXml;
 import com.github.tvbox.osc.bean.CastVideo;
 import com.github.tvbox.osc.bean.Movie;
+import com.github.tvbox.osc.bean.ParseBean;
 import com.github.tvbox.osc.bean.SourceBean;
 import com.github.tvbox.osc.bean.VodInfo;
 import com.github.tvbox.osc.cache.RoomDataManger;
@@ -50,6 +51,7 @@ import com.github.tvbox.osc.databinding.ActivityDetailBinding;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.receiver.BatteryReceiver;
 import com.github.tvbox.osc.service.PlayService;
+import com.github.tvbox.osc.ui.adapter.ParseAdapter;
 import com.github.tvbox.osc.ui.adapter.SeriesAdapter;
 import com.github.tvbox.osc.ui.adapter.SeriesFlagAdapter;
 import com.github.tvbox.osc.ui.dialog.AllVodSeriesBottomDialog;
@@ -998,5 +1000,20 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
             chooseFlag(currentIndex);
             mBinding.mGridView.postDelayed(() -> chooseSeries(vodInfo.playIndex,true),300);
         }
+    }
+
+    public void showParseRoot(boolean show, ParseAdapter adapter){
+        mBinding.rvParse.setAdapter(adapter);
+        int defaultIndex = 0;
+        for (int i = 0; i < adapter.getData().size(); i++) {
+            if (adapter.getData().get(i).isDefault()){
+                defaultIndex = i;
+                break;
+            }
+        }
+        if (defaultIndex!=0){
+            mBinding.rvParse.scrollToPosition(defaultIndex);
+        }
+        mBinding.parseRoot.setVisibility(show?View.VISIBLE:View.GONE);
     }
 }

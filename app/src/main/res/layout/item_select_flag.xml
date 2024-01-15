@@ -13,7 +13,7 @@
     android:paddingBottom="@dimen/dp_1">
 
     <TextView
-        android:id="@+id/tvSeriesFlag"
+        android:id="@+id/tvFlag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -22,7 +22,7 @@
         tools:text="11111111111" />
 
     <View
-        android:id="@+id/tvSeriesFlagSelect"
+        android:id="@+id/vFlag"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_4"
         android:layout_marginLeft="@dimen/dp_5"
