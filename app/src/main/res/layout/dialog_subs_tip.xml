@@ -27,7 +27,7 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="订阅模块使用"
+                android:text="订阅提示"
                 android:textColor="@color/text_gray"
                 android:textStyle="bold"
                 android:textSize="16sp"/>
@@ -62,30 +62,12 @@
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_search_subs1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cornerRadius="20dp"
-        android:textColor="@color/text_gray"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_marginTop="20dp"
-        android:text="逛逛网站"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_search_subs2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cornerRadius="20dp"
-        android:textColor="@color/text_gray"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:text="逛逛开源社区 (需魔法)"/>
-
-    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cornerRadius="20dp"
+        android:layout_marginTop="20dp"
         android:textColor="@color/text_gray"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:text="以后再说"/>
+        android:text="知道了"/>
 </LinearLayout>
