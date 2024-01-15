@@ -997,6 +997,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
             if (currentIndex>=flags.size()){
                 currentIndex = 0;
             }
+            mBinding.mGridViewFlag.smoothScrollToPosition(currentIndex);
             chooseFlag(currentIndex);
             mBinding.mGridView.postDelayed(() -> chooseSeries(vodInfo.playIndex,true),300);
         }
