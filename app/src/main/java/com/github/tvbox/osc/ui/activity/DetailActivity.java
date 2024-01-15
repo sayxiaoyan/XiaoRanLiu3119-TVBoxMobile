@@ -148,6 +148,7 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         super.onResume();
         openBackgroundPlay = false;
         playServerSwitch(false);
+        mBinding.ivPrivateBrowsing.postDelayed(NotificationUtils::cancelAll,800);
     }
 
     private void initView() {
