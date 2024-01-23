@@ -151,7 +151,6 @@ public class PlayingControlRightDialog extends DrawerPopupView {
      */
     public void updateAboutIjkVisible(){
         mBinding.decode.setVisibility(mController.mPlayerIJKBtn.getVisibility());
-        mBinding.voice.setVisibility(mController.mAudioTrackBtn.getVisibility());
     }
 
     /**

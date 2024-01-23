@@ -145,7 +145,6 @@ public class PlayingControlDialog extends BottomPopupView {
      */
     public void updateAboutIjkVisible(){
         mBinding.decode.setVisibility(mController.mPlayerIJKBtn.getVisibility());
-        mBinding.voice.setVisibility(mController.mAudioTrackBtn.getVisibility());
     }
 
     /**
