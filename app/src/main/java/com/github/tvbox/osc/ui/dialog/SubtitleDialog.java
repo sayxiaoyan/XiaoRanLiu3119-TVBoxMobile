@@ -195,6 +195,14 @@ public class SubtitleDialog extends BaseDialog {
                 Toast.makeText(getContext(), "设置样式成功", Toast.LENGTH_SHORT).show();
             }
         });
+        findViewById(R.id.subtitleOpen).setOnClickListener(v -> {
+            dismiss();
+            mSubtitleViewListener.subtitleOpen(true);
+        });
+        findViewById(R.id.subtitleClose).setOnClickListener(v -> {
+            dismiss();
+            mSubtitleViewListener.subtitleOpen(false);
+        });
     }
 
     public void setLocalFileChooserListener(LocalFileChooserListener localFileChooserListener) {
@@ -222,5 +230,6 @@ public class SubtitleDialog extends BaseDialog {
         void setSubtitleDelay(int milliseconds);
         void selectInternalSubtitle();
         void setTextStyle(int style);
+        void subtitleOpen(boolean b);
     }
 }

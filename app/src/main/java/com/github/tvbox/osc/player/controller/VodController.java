@@ -584,10 +584,6 @@ public class VodController extends BaseController {
             listener.selectSubtitle();
             hideBottom();
         });
-        mZimuBtn.setOnLongClickListener(view -> {
-            hideSubtitle();
-            return true;
-        });
         mAudioTrackBtn.setOnClickListener(view -> {
             FastClickCheckUtil.check(view);
             listener.selectAudioTrack();
@@ -1056,15 +1052,16 @@ public class VodController extends BaseController {
         mHandler.removeCallbacks(myRunnable2);
     }
 
-    public void hideSubtitle() {
-        mSubtitleView.setVisibility(View.GONE);
-        mSubtitleView.destroy();
-        mSubtitleView.clearSubtitleCache();
-        mSubtitleView.isInternal = false;
+    public void openSubtitle(boolean open) {
+        if (open) {
+            mSubtitleView.setVisibility(VISIBLE);
+            Toast.makeText(getContext(), "字幕已开启", Toast.LENGTH_SHORT).show();
+        } else {
+            mSubtitleView.setVisibility(View.GONE);
+            Toast.makeText(getContext(), "字幕已关闭", Toast.LENGTH_SHORT).show();
+        }
         hideBottom();
-        Toast.makeText(getContext(), "字幕已关闭", Toast.LENGTH_SHORT).show();
     }
-
 
     public void increaseTime(String type) {
         try {

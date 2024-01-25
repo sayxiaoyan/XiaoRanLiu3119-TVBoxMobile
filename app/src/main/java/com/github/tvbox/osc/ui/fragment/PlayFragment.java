@@ -434,6 +434,11 @@ public class PlayFragment extends BaseLazyFragment {
             public void setTextStyle(int style) {
                 setSubtitleViewTextStyle(style);
             }
+
+            @Override
+            public void subtitleOpen(boolean b) {
+                mController.openSubtitle(b);
+            }
         });
         subtitleDialog.setSearchSubtitleListener(new SubtitleDialog.SearchSubtitleListener() {
             @Override
