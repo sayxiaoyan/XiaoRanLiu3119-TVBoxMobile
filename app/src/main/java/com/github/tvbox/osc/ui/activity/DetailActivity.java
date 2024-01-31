@@ -463,7 +463,6 @@ public class DetailActivity extends BaseVbActivity<ActivityDetailBinding> {
         sourceViewModel.detailResult.observe(this, new Observer<AbsXml>() {
             @Override
             public void onChanged(AbsXml absXml) {
-                LogUtils.d("detailResult onChanged");
                 if (absXml != null && absXml.movie != null && absXml.movie.videoList != null && absXml.movie.videoList.size() > 0) {
                     showSuccess();
                     mVideo = absXml.movie.videoList.get(0);
