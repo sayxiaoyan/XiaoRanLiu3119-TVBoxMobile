@@ -61,4 +61,12 @@ public class HawkConfig {
      * 广告过滤
      */
     public static final String VIDEO_PURIFY = "video_purify";
+    /**
+     * 长按的倍速播放设置
+     */
+    public static final String VIDEO_SPEED = "video_speed";
+    /**
+     * 搜索记录
+     */
+    public static final String HISTORY_SEARCH = "history_search";
 }

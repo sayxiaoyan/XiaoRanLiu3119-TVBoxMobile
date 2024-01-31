@@ -987,7 +987,7 @@ public class VodController extends BaseController {
             fromLongPress = true;
             try {
                 speed_old = (float) mPlayerConfig.getDouble("sp");
-                float speed = SPUtils.getInstance().getFloat(CacheConst.VIDEO_SPEED, 2.0f);
+                float speed = Hawk.get(HawkConfig.VIDEO_SPEED, 2.0f);
                 mPlayerConfig.put("sp", speed);
                 updatePlayerCfgView();
                 listener.updatePlayerCfg();

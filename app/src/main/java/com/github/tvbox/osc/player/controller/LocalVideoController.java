@@ -33,9 +33,11 @@ import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
 import com.github.tvbox.osc.ui.dialog.SelectDialog;
 import com.github.tvbox.osc.ui.widget.MyBatteryView;
 import com.github.tvbox.osc.util.FastClickCheckUtil;
+import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.PlayerHelper;
 import com.github.tvbox.osc.util.ScreenUtils;
 import com.github.tvbox.osc.util.SubtitleHelper;
+import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
 
@@ -911,7 +913,7 @@ public class LocalVideoController extends BaseController {
     public void onLongPress(MotionEvent e) {
         if (videoPlayState != VideoView.STATE_PAUSED) {
             fromLongPress = true;
-            float speed = SPUtils.getInstance().getFloat(CacheConst.VIDEO_SPEED, 2.0f);
+            float speed = Hawk.get(HawkConfig.VIDEO_SPEED, 2.0f);
             mControlWrapper.setSpeed(speed);
             mLlSpeed.setVisibility(VISIBLE);
             mTvSpeedTip.setText(speed + "x");

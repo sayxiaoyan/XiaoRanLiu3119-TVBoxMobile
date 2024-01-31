@@ -190,42 +190,33 @@ public class ModelSettingFragment extends BaseLazyFragment {
         });
 
         tvLongPressSpeed = findViewById(R.id.tvSpeed);
-        float beforeSpeed = SPUtils.getInstance().getFloat(CacheConst.VIDEO_SPEED, 2.0f);
-        tvLongPressSpeed.setText(String.valueOf(beforeSpeed));
+        tvLongPressSpeed.setText(String.valueOf(Hawk.get(HawkConfig.VIDEO_SPEED, 2.0f)));
         findViewById(R.id.llPressSpeed).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] items = {"2.0", "3.0"};
-                int defaultPos = Arrays.asList(items).indexOf(String.valueOf(beforeSpeed));
-
-                ArrayList<Integer> types = new ArrayList<>();
-                types.add(0);
-                types.add(1);
-                SelectDialog<Integer> dialog = new SelectDialog<>(mActivity);
+                ArrayList<String> types = new ArrayList<>();
+                types.add("2.0");
+                types.add("3.0");
+                types.add("4.0");
+                types.add("5.0");
+                types.add("6.0");
+                types.add("8.0");
+                types.add("10.0");
+                int defaultPos = types.indexOf(String.valueOf(Hawk.get(HawkConfig.VIDEO_SPEED, 2.0f)));
+                SelectDialog<String> dialog = new SelectDialog<>(mActivity);
                 dialog.setTip("请选择");
-                dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<Integer>() {
+                dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<String>() {
                     @Override
-                    public void click(Integer value, int pos) {
-                        SPUtils.getInstance().put(CacheConst.VIDEO_SPEED, Float.parseFloat(items[pos]));
-                        tvLongPressSpeed.setText(items[pos]);
-                        v.postDelayed(() -> dialog.dismiss(), 500);
+                    public void click(String value, int pos) {
+                        Hawk.put(HawkConfig.VIDEO_SPEED,Float.parseFloat(value));
+                        tvLongPressSpeed.setText(value);
                     }
 
                     @Override
-                    public String getDisplay(Integer val) {
-                        return items[val];
+                    public String getDisplay(String val) {
+                        return val;
                     }
-                }, new DiffUtil.ItemCallback<Integer>() {
-                    @Override
-                    public boolean areItemsTheSame(@NonNull @NotNull Integer oldItem, @NonNull @NotNull Integer newItem) {
-                        return oldItem.intValue() == newItem.intValue();
-                    }
-
-                    @Override
-                    public boolean areContentsTheSame(@NonNull @NotNull Integer oldItem, @NonNull @NotNull Integer newItem) {
-                        return oldItem.intValue() == newItem.intValue();
-                    }
-                }, types, defaultPos);
+                }, SelectDialogAdapter.stringDiff, types, defaultPos);
                 dialog.show();
             }
         });

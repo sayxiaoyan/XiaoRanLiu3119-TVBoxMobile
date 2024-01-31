@@ -363,7 +363,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
 
     private void initHistorySearch(){
 
-        List<String> mSearchHistory = Hawk.get(CacheConst.HISTORY_SEARCH, new ArrayList<>());
+        List<String> mSearchHistory = Hawk.get(HawkConfig.HISTORY_SEARCH, new ArrayList<>());
 
         mBinding.llHistory.setVisibility(mSearchHistory.size() > 0 ? View.VISIBLE : View.GONE);
         mBinding.flHistory.setAdapter(new TagAdapter<String>(mSearchHistory)
@@ -384,7 +384,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
         });
 
         findViewById(R.id.iv_clear_history).setOnClickListener(view -> {
-            Hawk.put(CacheConst.HISTORY_SEARCH, new ArrayList<>());
+            Hawk.put(HawkConfig.HISTORY_SEARCH, new ArrayList<>());
             //FlowLayout及其adapter貌似没有清空数据的api,简单粗暴重置
             view.postDelayed(this::initHistorySearch,300);
         });
@@ -505,7 +505,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
 
     private void saveSearchHistory(String searchWord){
         if (!searchWord.isEmpty()) {
-            ArrayList<String> history = Hawk.get(CacheConst.HISTORY_SEARCH, new ArrayList<>());
+            ArrayList<String> history = Hawk.get(HawkConfig.HISTORY_SEARCH, new ArrayList<>());
             if (!history.contains(searchWord)){
                 history.add(0, searchWord);
             }else {
@@ -515,7 +515,7 @@ public class FastSearchActivity extends BaseVbActivity<ActivityFastSearchBinding
             if (history.size() > 30){
                 history.remove(30);
             }
-            Hawk.put(CacheConst.HISTORY_SEARCH, history);
+            Hawk.put(HawkConfig.HISTORY_SEARCH, history);
         }
     }
 

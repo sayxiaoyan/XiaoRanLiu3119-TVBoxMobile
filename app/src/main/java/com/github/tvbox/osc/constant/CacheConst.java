@@ -16,12 +16,5 @@ public class CacheConst {
      * 存储视频播放进度的SP库,key为对应视频的path
      */
     public static final String VIDEO_PROGRESS_SP = "video_progress_sp";
-    /**
-     * 长按的倍速播放设置
-     */
-    public static final String VIDEO_SPEED = "video_speed";
-    /**
-     * 搜索记录
-     */
-    public static final String HISTORY_SEARCH = "history_search";
+
 }
