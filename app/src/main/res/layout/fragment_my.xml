@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingVertical="16dp">
+            android:paddingVertical="20dp">
 
             <LinearLayout
                 android:id="@+id/llSubscription"
@@ -44,6 +44,7 @@
                 android:orientation="horizontal"
                 android:paddingVertical="16dp"
                 android:paddingHorizontal="24dp"
+                android:foreground="?android:selectableItemBackground"
                 >
 
                 <ImageView
@@ -87,7 +88,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingVertical="16dp"
-                android:paddingHorizontal="24dp">
+                android:paddingHorizontal="24dp"
+                android:foreground="?android:selectableItemBackground">
 
                 <ImageView
                     android:layout_width="28dp"
@@ -129,7 +131,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingVertical="16dp"
-                android:paddingHorizontal="24dp">
+                android:paddingHorizontal="24dp"
+                android:foreground="?android:selectableItemBackground">
 
                 <ImageView
                     android:layout_width="28dp"
@@ -171,7 +174,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingVertical="16dp"
-                android:paddingHorizontal="24dp">
+                android:paddingHorizontal="24dp"
+                android:foreground="?android:selectableItemBackground">
 
                 <ImageView
                     android:layout_width="28dp"
@@ -213,7 +217,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingVertical="16dp"
-                android:paddingHorizontal="24dp">
+                android:paddingHorizontal="24dp"
+                android:foreground="?android:selectableItemBackground">
 
                 <ImageView
                     android:layout_width="28dp"
@@ -256,6 +261,7 @@
                 android:orientation="horizontal"
                 android:paddingVertical="16dp"
                 android:paddingHorizontal="24dp"
+                android:foreground="?android:selectableItemBackground"
                 >
 
                 <ImageView
@@ -298,7 +304,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingVertical="16dp"
-                android:paddingHorizontal="24dp">
+                android:paddingHorizontal="24dp"
+                android:foreground="?android:selectableItemBackground">
 
                 <ImageView
                     android:layout_width="28dp"
@@ -340,7 +347,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingVertical="16dp"
-                android:paddingHorizontal="24dp">
+                android:paddingHorizontal="24dp"
+                android:foreground="?android:selectableItemBackground">
 
                 <ImageView
                     android:layout_width="28dp"

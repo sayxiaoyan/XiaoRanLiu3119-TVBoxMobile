@@ -74,9 +74,7 @@ public class ModelSettingFragment extends BaseLazyFragment {
     private TextView tvHomeRec;
     private TextView tvHistoryNum;
     private TextView tvFastSearchText;
-    private TextView tvIjkCachePlay;
     TextView tvLongPressSpeed;
-    private TextView tvVideoPurifyText;
 
     public static ModelSettingFragment newInstance() {
         return new ModelSettingFragment().setArguments();
@@ -112,7 +110,6 @@ public class ModelSettingFragment extends BaseLazyFragment {
         tvHomeRec = findViewById(R.id.tvHomeRec);
         tvHistoryNum = findViewById(R.id.tvHistoryNum);
 
-        tvIjkCachePlay = findViewById(R.id.tvIjkCachePlay);
         tvMediaCodec.setText(Hawk.get(HawkConfig.IJK_CODEC, ""));
         tvDebugOpen.setText(Hawk.get(HawkConfig.DEBUG_OPEN, false) ? "已打开" : "已关闭");
         tvParseWebView.setText(Hawk.get(HawkConfig.PARSE_WEBVIEW, true) ? "系统自带" : "XWalkView");
@@ -123,12 +120,11 @@ public class ModelSettingFragment extends BaseLazyFragment {
         tvScale.setText(PlayerHelper.getScaleName(Hawk.get(HawkConfig.PLAY_SCALE, 0)));
         tvPlay.setText(PlayerHelper.getPlayerName(Hawk.get(HawkConfig.PLAY_TYPE, 0)));
         tvRender.setText(PlayerHelper.getRenderName(Hawk.get(HawkConfig.PLAY_RENDER, 0)));
-        tvIjkCachePlay.setText(Hawk.get(HawkConfig.IJK_CACHE_PLAY, false) ? "开启" : "关闭");
 
         //隐私浏览
         SwitchMaterial switchPrivate = findViewById(R.id.switchPrivateBrowsing);
         switchPrivate.setChecked(Hawk.get(HawkConfig.PRIVATE_BROWSING, false));
-        switchPrivate.setOnClickListener(view -> {
+        findViewById(R.id.llPrivateBrowsing).setOnClickListener(view -> {
             boolean newConfig = !Hawk.get(HawkConfig.PRIVATE_BROWSING, false);
             switchPrivate.setChecked(newConfig);
             Hawk.put(HawkConfig.PRIVATE_BROWSING, newConfig);
@@ -620,7 +616,6 @@ public class ModelSettingFragment extends BaseLazyFragment {
             }
         });
 
-        findViewById(R.id.llIjkCachePlay).setOnClickListener((view -> onClickIjkCachePlay(view)));
         findViewById(R.id.llClearCache).setOnClickListener((view -> {
             new XPopup.Builder(mActivity)
                     .isDarkTheme(Utils.isDarkTheme())
@@ -693,20 +688,24 @@ public class ModelSettingFragment extends BaseLazyFragment {
                     }, null, R.layout.dialog_input).show();
         });
 
-        tvVideoPurifyText = findViewById(R.id.tvVideoPurifyText);
-        tvVideoPurifyText.setText(Hawk.get(HawkConfig.VIDEO_PURIFY, true) ? "开启" : "关闭");
+        SwitchMaterial switchVideoPurify = findViewById(R.id.switchVideoPurify);
+        switchVideoPurify.setChecked(Hawk.get(HawkConfig.VIDEO_PURIFY, true));
         // toggle purify video -------------------------------------
         findViewById(R.id.llVideoPurify).setOnClickListener(v -> {
             FastClickCheckUtil.check(v);
-            Hawk.put(HawkConfig.VIDEO_PURIFY, !Hawk.get(HawkConfig.VIDEO_PURIFY, true));
-            tvVideoPurifyText.setText(Hawk.get(HawkConfig.VIDEO_PURIFY, true) ? "开启" : "关闭");
+            boolean newConfig = !Hawk.get(HawkConfig.VIDEO_PURIFY, true);
+            switchVideoPurify.setChecked(newConfig);
+            Hawk.put(HawkConfig.VIDEO_PURIFY, newConfig);
         });
-    }
 
-    private void onClickIjkCachePlay(View v) {
-        FastClickCheckUtil.check(v);
-        Hawk.put(HawkConfig.IJK_CACHE_PLAY, !Hawk.get(HawkConfig.IJK_CACHE_PLAY, false));
-        tvIjkCachePlay.setText(Hawk.get(HawkConfig.IJK_CACHE_PLAY, false) ? "开启" : "关闭");
+        SwitchMaterial switchIjkCachePlay = findViewById(R.id.switchIjkCachePlay);
+        switchIjkCachePlay.setChecked(Hawk.get(HawkConfig.IJK_CACHE_PLAY, false));
+        findViewById(R.id.llIjkCachePlay).setOnClickListener((v -> {
+            FastClickCheckUtil.check(v);
+            boolean newConfig = !Hawk.get(HawkConfig.IJK_CACHE_PLAY, false);
+            switchIjkCachePlay.setChecked(newConfig);
+            Hawk.put(HawkConfig.IJK_CACHE_PLAY, newConfig);
+        }));
     }
 
     private void onClickClearCache(View v) {
